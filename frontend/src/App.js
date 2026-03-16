@@ -1,6 +1,9 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import AdminLogin from './pages/Admin/Login';
+import AdminDashboard from './pages/Admin/Dashboard';
+import { Toaster } from './components/ui/toaster';
 
 function App() {
   return (
@@ -8,8 +11,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
       </BrowserRouter>
+      <Toaster />
     </div>
   );
 }

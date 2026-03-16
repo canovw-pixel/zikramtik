@@ -112,9 +112,10 @@ export const countries = [
 ];
 
 export const heroContent = {
-  title: "Şimdi bu emanet seninle.",
-  subtitle: "Her dokunuşunda niyetini tazele. Her sayışında kalbini hatırla. Çünkü zikir, sayıdan ibaret değildir; zikir, hatırlamaktır.",
-  cta: "Koleksiyonu Keşfet"
+  title: "Nesilden nesile , Kalpten kalbe..",
+  subtitle: "Dünyada ilk kez, ustalıkla mücevher standardında işlenen bu eser, insanlığın mirasını bir kalpten diğerine zarafetle taşır.",
+  cta: "Koleksiyonu Keşfet",
+  bannerImage: "https://customer-assets.emergentagent.com/job_web-clone-tool-12/artifacts/ikpvmjlh_banner.jpeg"
 };
 
 export const brandContent = {

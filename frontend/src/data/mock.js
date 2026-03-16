@@ -15,6 +15,7 @@ export const products = [
     ],
     featured: true,
     category: "zikirmatik",
+    categoryName: "Zikirmatik",
     inStock: true
   },
   {
@@ -31,6 +32,7 @@ export const products = [
     ],
     featured: true,
     category: "zikirmatik",
+    categoryName: "Zikirmatik",
     inStock: true
   },
   {
@@ -46,11 +48,12 @@ export const products = [
     ],
     featured: false,
     category: "zikirmatik",
+    categoryName: "Zikirmatik",
     inStock: true
   },
   {
     id: 4,
-    name: "Zikra Zikirmatik - Premium",
+    name: "Premium Altın Aksesuar",
     shortName: "Premium",
     description: "Lüks ve maneviyatın birleşimi. Her detayda özen, her sayışta huzur.",
     price: 1499,
@@ -60,12 +63,13 @@ export const products = [
       "https://customer-assets.emergentagent.com/job_web-clone-tool-12/artifacts/ln7knnc7_zikrmatik%202.png"
     ],
     featured: false,
-    category: "zikirmatik",
+    category: "aksesuar",
+    categoryName: "Aksesuar",
     inStock: true
   },
   {
     id: 5,
-    name: "Zikra Zikirmatik - Elmas İşlemeli",
+    name: "Elmas İşlemeli Aksesuar",
     shortName: "Elmas İşlemeli",
     description: "Işıltının manevi yolculukla buluştuğu an. Elmas detaylarla süslenmiş özel tasarım.",
     price: 2299,
@@ -76,23 +80,31 @@ export const products = [
     ],
     featured: false,
     category: "aksesuar",
+    categoryName: "Aksesuar",
     inStock: true
   },
   {
     id: 6,
-    name: "Zikra Zikirmatik - Minimal",
-    shortName: "Minimal",
-    description: "Sadeliğin gücü. Günlük kullanım için zarif ve işlevsel.",
-    price: 799,
+    name: "Özel İsim Gravürlü Zikirmatik",
+    shortName: "İsme Özel",
+    description: "Size özel tasarlanmış, isim veya mesaj gravürü ile kişiselleştirilmiş zikirmatik.",
+    price: 1599,
     currency: "USD",
     image: "https://customer-assets.emergentagent.com/job_web-clone-tool-12/artifacts/ln7knnc7_zikrmatik%202.png",
     images: [
       "https://customer-assets.emergentagent.com/job_web-clone-tool-12/artifacts/ln7knnc7_zikrmatik%202.png"
     ],
     featured: false,
-    category: "zikirmatik",
+    category: "kisisellestirilmis",
+    categoryName: "Kişiselleştirilmiş Aksesuar",
     inStock: true
   }
+];
+
+export const categories = [
+  { id: "zikirmatik", name: "Zikirmatik", description: "Mücevher sanatıyla buluşan zikir" },
+  { id: "aksesuar", name: "Aksesuar", description: "Zarif ve şık tasarımlar" },
+  { id: "kisisellestirilmis", name: "Kişiselleştirilmiş Aksesuar", description: "Size özel tasarımlar" }
 ];
 
 export const countries = [

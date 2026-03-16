@@ -1,9 +1,12 @@
 import React from 'react';
-import { products } from '../data/mock';
+import { products, categories } from '../data/mock';
 import ProductCard from './ProductCard';
 
 const ProductGrid = ({ selectedCountry }) => {
-  const regularProducts = products.filter(p => !p.featured);
+  // Group products by category
+  const getProductsByCategory = (categoryId) => {
+    return products.filter(p => p.category === categoryId && !p.featured);
+  };
 
   return (
     <section id="products" className="py-20 bg-white">
@@ -18,12 +21,36 @@ const ProductGrid = ({ selectedCountry }) => {
           </p>
         </div>
 
-        {/* Products Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {regularProducts.map((product) => (
-            <ProductCard key={product.id} product={product} selectedCountry={selectedCountry} />
-          ))}
-        </div>
+        {/* Categories */}
+        {categories.map((category) => {
+          const categoryProducts = getProductsByCategory(category.id);
+          
+          if (categoryProducts.length === 0) return null;
+
+          return (
+            <div key={category.id} className="mb-20 last:mb-0">
+              {/* Category Header */}
+              <div className="mb-10">
+                <div className="flex items-center space-x-4 mb-3">
+                  <h3 className="text-3xl font-bold text-gray-900">
+                    {category.name}
+                  </h3>
+                  <span className="px-4 py-1 bg-burgundy-100 text-burgundy-700 rounded-full text-sm font-semibold">
+                    {categoryProducts.length} Ürün
+                  </span>
+                </div>
+                <p className="text-gray-600 text-lg">{category.description}</p>
+              </div>
+
+              {/* Products Grid */}
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {categoryProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} selectedCountry={selectedCountry} />
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

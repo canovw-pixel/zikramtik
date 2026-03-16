@@ -66,10 +66,15 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
       const category = categories.find(c => c.id === formData.category);
       
       const productData = {
-        ...formData,
+        name: formData.name,
+        short_name: formData.short_name,
+        description: formData.description,
+        category: formData.category,
         category_name: category?.name || '',
         images: imageUrl ? [imageUrl] : [],
         prices: prices,
+        featured: formData.featured,
+        in_stock: formData.in_stock,
       };
 
       if (product) {

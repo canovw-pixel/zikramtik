@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Star, ShoppingBag } from 'lucide-react';
 
 const FeaturedProducts = ({ selectedCountry, products }) => {
+  const navigate = useNavigate();
   const featuredProducts = products.filter(p => p.featured);
 
   const formatPrice = (price) => {
@@ -40,7 +42,8 @@ const FeaturedProducts = ({ selectedCountry, products }) => {
           {featuredProducts.map((product) => (
             <div
               key={product.id}
-              className="group relative bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
+              onClick={() => navigate(`/product/${product.id}`)}
+              className="group relative bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer"
             >
               {/* Featured Badge */}
               <div className="absolute top-6 left-6 z-10">

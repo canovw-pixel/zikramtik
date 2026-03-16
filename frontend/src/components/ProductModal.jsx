@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, Upload, Trash2, Image as ImageIcon } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { productsAPI } from '../services/api';
+import { productsAPI, uploadAPI } from '../services/api';
 import { toast } from '../hooks/use-toast';
 import { countries } from '../data/mock';
 
@@ -20,8 +20,8 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
     featured: false,
   });
   
-  const [imageUrl, setImageUrl] = useState('');
-  const [imagePreview, setImagePreview] = useState('');
+  const [uploadedImages, setUploadedImages] = useState([]);
+  const [uploading, setUploading] = useState(false);
   const [prices, setPrices] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -38,10 +38,7 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
         featured: product.featured ?? false,
       });
       setPrices(product.prices || {});
-      if (product.images && product.images.length > 0) {
-        setImageUrl(product.images[0]);
-        setImagePreview(product.images[0]);
-      }
+      setUploadedImages(product.images || []);
     } else {
       // Initialize default prices for new product
       const defaultPrices = {};
@@ -53,13 +50,50 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
         };
       });
       setPrices(defaultPrices);
-      setImagePreview('');
-      setImageUrl('');
+      setUploadedImages([]);
     }
-  }, [product]);
+  }, [product, isOpen]);
+
+  const handleFileSelect = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    setUploading(true);
+    try {
+      const response = await uploadAPI.uploadImages(files);
+      const newUrls = response.data.urls.map(url => process.env.REACT_APP_BACKEND_URL + url);
+      setUploadedImages(prev => [...prev, ...newUrls]);
+      toast({
+        title: 'Başarılı',
+        description: `${files.length} fotoğraf yüklendi`,
+      });
+    } catch (error) {
+      toast({
+        title: 'Hata',
+        description: 'Fotoğraflar yüklenemedi',
+        variant: 'destructive',
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemoveImage = (index) => {
+    setUploadedImages(prev => prev.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (uploadedImages.length === 0) {
+      toast({
+        title: 'Uyarı',
+        description: 'Lütfen en az 1 ürün fotoğrafı yükleyin',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
     setLoading(true);
 
     try {
@@ -71,7 +105,7 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
         description: formData.description,
         category: formData.category,
         category_name: category?.name || '',
-        images: imageUrl ? [imageUrl] : [],
+        images: uploadedImages,
         prices: prices,
         featured: formData.featured,
         in_stock: formData.in_stock,
@@ -120,7 +154,7 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
       <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl my-8">
         {/* Header */}
-        <div className="sticky top-0 bg-burgundy-700 text-white p-6 flex items-center justify-between rounded-t-2xl">
+        <div className="sticky top-0 bg-burgundy-700 text-white p-6 flex items-center justify-between rounded-t-2xl z-10">
           <h2 className="text-2xl font-bold">
             {product ? 'Ürünü Düzenle' : 'Yeni Ürün Ekle'}
           </h2>
@@ -167,63 +201,18 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
               />
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Kategori *</label>
-                <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Kategori seçin" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map(cat => (
-                      <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* Image Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Ürün Görseli</label>
-              <div className="space-y-3">
-                <Input
-                  value={imageUrl}
-                  onChange={(e) => {
-                    setImageUrl(e.target.value);
-                    setImagePreview(e.target.value);
-                  }}
-                  placeholder="Görsel URL'sini girin (https://example.com/image.jpg)"
-                />
-                
-                {imagePreview && (
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-                    <p className="text-sm text-gray-600 mb-2">Önizleme:</p>
-                    <img 
-                      src={imagePreview} 
-                      alt="Preview" 
-                      className="w-full max-w-xs h-48 object-cover rounded-lg mx-auto"
-                      onError={() => {
-                        setImagePreview('');
-                        toast({
-                          title: 'Hata',
-                          description: 'Görsel yüklenemedi. URL\'yi kontrol edin.',
-                          variant: 'destructive',
-                        });
-                      }}
-                    />
-                  </div>
-                )}
-                
-                {!imagePreview && (
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                    <p className="text-sm text-gray-500">Görsel URL\'sini yukarıdaki alana yapıştırın</p>
-                    <p className="text-xs text-gray-400 mt-2">
-                      Örnek: https://customer-assets.emergentagent.com/...
-                    </p>
-                  </div>
-                )}
-              </div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Kategori *</label>
+              <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Kategori seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map(cat => (
+                    <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex items-center space-x-6">
@@ -247,6 +236,62 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
                 <span className="text-sm text-gray-700">Öne Çıkar</span>
               </label>
             </div>
+          </div>
+
+          {/* Image Upload */}
+          <div className="space-y-4 border-t pt-6">
+            <h3 className="text-lg font-semibold text-gray-900">Ürün Fotoğrafları</h3>
+            
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleFileSelect}
+                className="hidden"
+                id="image-upload"
+                disabled={uploading}
+              />
+              <label
+                htmlFor="image-upload"
+                className="flex flex-col items-center justify-center cursor-pointer"
+              >
+                <Upload className="w-12 h-12 text-gray-400 mb-3" />
+                <p className="text-sm font-medium text-gray-700 mb-1">
+                  {uploading ? 'Yükleniyor...' : 'Fotoğraf yüklemek için tıklayın'}
+                </p>
+                <p className="text-xs text-gray-500">
+                  Birden fazla fotoğraf seçebilirsiniz (PNG, JPG, JPEG)
+                </p>
+              </label>
+            </div>
+
+            {/* Image Preview Grid */}
+            {uploadedImages.length > 0 && (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {uploadedImages.map((url, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={url}
+                      alt={`Product ${index + 1}`}
+                      className="w-full h-32 object-cover rounded-lg border-2 border-gray-200"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(index)}
+                      className="absolute top-2 right-2 p-1.5 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                    {index === 0 && (
+                      <span className="absolute bottom-2 left-2 px-2 py-1 bg-burgundy-700 text-white text-xs rounded-full">
+                        Ana Fotoğraf
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Pricing */}
@@ -281,7 +326,7 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
             <Button type="button" variant="outline" onClick={onClose}>
               İptal
             </Button>
-            <Button type="submit" disabled={loading} className="bg-burgundy-700 hover:bg-burgundy-800">
+            <Button type="submit" disabled={loading || uploading} className="bg-burgundy-700 hover:bg-burgundy-800">
               {loading ? 'Kaydediliyor...' : (product ? 'Güncelle' : 'Oluştur')}
             </Button>
           </div>

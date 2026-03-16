@@ -47,4 +47,21 @@ export const ordersAPI = {
   updateStatus: (id, status) => api.put(`/orders/${id}/status`, { status }),
 };
 
+// Upload API
+export const uploadAPI = {
+  uploadImages: async (files) => {
+    const formData = new FormData();
+    files.forEach(file => {
+      formData.append('files', file);
+    });
+    
+    return api.post('/upload/images', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+  listImages: () => api.get('/upload/images'),
+};
+
 export default api;

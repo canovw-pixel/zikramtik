@@ -1,7 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Heart } from 'lucide-react';
 
 const ProductCard = ({ product, selectedCountry }) => {
+  const navigate = useNavigate();
+  
   const getPrice = (product) => {
     const countryPrice = product.prices?.[selectedCountry.code];
     return countryPrice?.price || 0;
@@ -11,8 +14,15 @@ const ProductCard = ({ product, selectedCountry }) => {
     return `${selectedCountry.symbol}${price}`;
   };
 
+  const handleProductClick = () => {
+    navigate(`/product/${product.id}`);
+  };
+
   return (
-    <div className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
+    <div 
+      className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer"
+      onClick={handleProductClick}
+    >
       {/* Favorite Button */}
       <button className="absolute top-4 right-4 z-10 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-md hover:bg-burgundy-700 hover:text-white transition-all">
         <Heart className="w-5 h-5" />

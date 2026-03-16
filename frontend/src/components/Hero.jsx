@@ -30,7 +30,7 @@ const Hero = () => {
           </div>
           
           {/* Hero Title */}
-          <h1 className="hero-title text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-12 drop-shadow-2xl">
+          <h1 className="hero-title text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-16 drop-shadow-2xl">
             {heroContent.title}
           </h1>
           

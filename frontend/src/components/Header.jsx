@@ -21,8 +21,8 @@ const Header = ({ cart, selectedCountry, onCountryChange }) => {
                 />
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-burgundy-900">Zikra</h1>
-                <p className="text-xs text-gray-600">Craponia Atelier</p>
+                <h1 className="text-xl font-bold text-burgundy-900 elegant-script text-2xl">Zikra</h1>
+                <p className="text-xs text-gray-600" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Craponia Atelier</p>
               </div>
             </div>
 

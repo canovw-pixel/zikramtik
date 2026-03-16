@@ -24,18 +24,18 @@ const Hero = () => {
         <div className="max-w-3xl">
           {/* Brand Badge */}
           <div className="inline-block mb-8">
-            <span className="px-6 py-3 bg-burgundy-700/90 backdrop-blur-sm text-white rounded-full text-sm font-semibold shadow-lg">
+            <span className="px-6 py-3 bg-burgundy-700/90 backdrop-blur-sm text-white rounded-full text-sm font-semibold shadow-lg elegant-script text-lg">
               Craponia Atelier
             </span>
           </div>
           
           {/* Hero Title */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-8 drop-shadow-2xl">
+          <h1 className="hero-title text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-8 drop-shadow-2xl">
             {heroContent.title}
           </h1>
           
           {/* Hero Subtitle */}
-          <p className="text-xl sm:text-2xl text-white/95 leading-relaxed mb-10 drop-shadow-lg">
+          <p className="text-xl sm:text-2xl text-white/95 leading-relaxed mb-10 drop-shadow-lg font-light" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
             {heroContent.subtitle}
           </p>
 

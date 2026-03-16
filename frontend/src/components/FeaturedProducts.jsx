@@ -1,13 +1,21 @@
 import React from 'react';
-import { products } from '../data/mock';
 import { Star, ShoppingBag } from 'lucide-react';
 
-const FeaturedProducts = ({ selectedCountry }) => {
+const FeaturedProducts = ({ selectedCountry, products }) => {
   const featuredProducts = products.filter(p => p.featured);
 
   const formatPrice = (price) => {
     return `${selectedCountry.symbol}${price}`;
   };
+
+  const getPrice = (product) => {
+    const countryPrice = product.prices?.[selectedCountry.code];
+    return countryPrice?.price || 0;
+  };
+
+  if (featuredProducts.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-20 bg-gradient-to-b from-white to-cream-50">
@@ -45,7 +53,7 @@ const FeaturedProducts = ({ selectedCountry }) => {
               {/* Product Image */}
               <div className="relative h-96 overflow-hidden bg-gradient-to-br from-burgundy-50 to-gold-50">
                 <img
-                  src={product.image}
+                  src={product.images?.[0] || 'https://via.placeholder.com/400'}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
@@ -65,7 +73,7 @@ const FeaturedProducts = ({ selectedCountry }) => {
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Fiyat</p>
                     <p className="text-3xl font-bold text-burgundy-700">
-                      {formatPrice(product.price)}
+                      {formatPrice(getPrice(product))}
                     </p>
                   </div>
                   <button className="px-6 py-3 bg-burgundy-700 text-white rounded-xl font-semibold hover:bg-burgundy-800 transition-all shadow-lg hover:shadow-xl flex items-center space-x-2">

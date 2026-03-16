@@ -2,6 +2,11 @@ import React from 'react';
 import { ShoppingCart, Heart } from 'lucide-react';
 
 const ProductCard = ({ product, selectedCountry }) => {
+  const getPrice = (product) => {
+    const countryPrice = product.prices?.[selectedCountry.code];
+    return countryPrice?.price || 0;
+  };
+  
   const formatPrice = (price) => {
     return `${selectedCountry.symbol}${price}`;
   };
@@ -16,7 +21,7 @@ const ProductCard = ({ product, selectedCountry }) => {
       {/* Product Image */}
       <div className="relative h-80 overflow-hidden bg-gradient-to-br from-cream-50 to-burgundy-50">
         <img
-          src={product.image}
+          src={product.images?.[0] || 'https://via.placeholder.com/400'}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
@@ -32,9 +37,9 @@ const ProductCard = ({ product, selectedCountry }) => {
 
       {/* Product Info */}
       <div className="p-6">
-        {product.category && (
+        {product.category_name && (
           <span className="inline-block px-3 py-1 bg-burgundy-100 text-burgundy-700 text-xs font-semibold rounded-full mb-3">
-            {product.category}
+            {product.category_name}
           </span>
         )}
         
@@ -50,7 +55,7 @@ const ProductCard = ({ product, selectedCountry }) => {
           <div>
             <p className="text-xs text-gray-500 mb-1">Fiyat</p>
             <p className="text-2xl font-bold text-burgundy-700">
-              {formatPrice(product.price)}
+              {formatPrice(getPrice(product))}
             </p>
           </div>
           

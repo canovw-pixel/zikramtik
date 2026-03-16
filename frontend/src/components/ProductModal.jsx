@@ -21,6 +21,7 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
   });
   
   const [imageUrl, setImageUrl] = useState('');
+  const [imagePreview, setImagePreview] = useState('');
   const [prices, setPrices] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -39,6 +40,7 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
       setPrices(product.prices || {});
       if (product.images && product.images.length > 0) {
         setImageUrl(product.images[0]);
+        setImagePreview(product.images[0]);
       }
     } else {
       // Initialize default prices for new product
@@ -51,6 +53,8 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
         };
       });
       setPrices(defaultPrices);
+      setImagePreview('');
+      setImageUrl('');
     }
   }, [product]);
 
@@ -172,14 +176,48 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
                   </SelectContent>
                 </Select>
               </div>
+            </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Görsel URL</label>
+            {/* Image Upload */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Ürün Görseli</label>
+              <div className="space-y-3">
                 <Input
                   value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  placeholder="https://example.com/image.png"
+                  onChange={(e) => {
+                    setImageUrl(e.target.value);
+                    setImagePreview(e.target.value);
+                  }}
+                  placeholder="Görsel URL'sini girin (https://example.com/image.jpg)"
                 />
+                
+                {imagePreview && (
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
+                    <p className="text-sm text-gray-600 mb-2">Önizleme:</p>
+                    <img 
+                      src={imagePreview} 
+                      alt="Preview" 
+                      className="w-full max-w-xs h-48 object-cover rounded-lg mx-auto"
+                      onError={() => {
+                        setImagePreview('');
+                        toast({
+                          title: 'Hata',
+                          description: 'Görsel yüklenemedi. URL\'yi kontrol edin.',
+                          variant: 'destructive',
+                        });
+                      }}
+                    />
+                  </div>
+                )}
+                
+                {!imagePreview && (
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                    <p className="text-sm text-gray-500">Görsel URL\'sini yukarıdaki alana yapıştırın</p>
+                    <p className="text-xs text-gray-400 mt-2">
+                      Örnek: https://customer-assets.emergentagent.com/...
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 

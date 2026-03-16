@@ -1,8 +1,7 @@
 import React from 'react';
-import { products, categories } from '../data/mock';
 import ProductCard from './ProductCard';
 
-const ProductGrid = ({ selectedCountry }) => {
+const ProductGrid = ({ selectedCountry, products, categories }) => {
   // Group products by category
   const getProductsByCategory = (categoryId) => {
     return products.filter(p => p.category === categoryId && !p.featured);
@@ -53,6 +52,12 @@ const ProductGrid = ({ selectedCountry }) => {
             </div>
           );
         })}
+        
+        {products.filter(p => !p.featured).length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500">Henüz ürün bulunmamaktadır.</p>
+          </div>
+        )}
       </div>
     </section>
   );

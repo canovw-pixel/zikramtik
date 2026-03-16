@@ -22,7 +22,7 @@ const FeaturedProducts = ({ selectedCountry }) => {
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
             Mücevher Ustasından Kalplere
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto product-description">
             Bazı yolculuklar ellerle başlar… Bazıları ise kalple.
           </p>
         </div>
@@ -57,7 +57,7 @@ const FeaturedProducts = ({ selectedCountry }) => {
                 <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-burgundy-700 transition-colors" style={{ fontFamily: "'Cinzel', serif" }}>
                   {product.name}
                 </h3>
-                <p className="text-gray-600 mb-6 leading-relaxed" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+                <p className="text-gray-600 mb-6 leading-relaxed product-description">
                   {product.description}
                 </p>
 

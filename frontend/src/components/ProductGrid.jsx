@@ -16,7 +16,7 @@ const ProductGrid = ({ selectedCountry }) => {
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
             Tüm Koleksiyon
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto product-description">
             Her detayda özen, her sayışta huzur. Zikirmatik koleksiyonumuzu keşfedin.
           </p>
         </div>
@@ -39,7 +39,7 @@ const ProductGrid = ({ selectedCountry }) => {
                     {categoryProducts.length} Ürün
                   </span>
                 </div>
-                <p className="text-gray-600 text-lg" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+                <p className="text-gray-600 text-lg product-description">
                   {category.description}
                 </p>
               </div>

@@ -42,7 +42,7 @@ const ProductCard = ({ product, selectedCountry }) => {
           {product.name}
         </h3>
         
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2 product-description">
           {product.description}
         </p>
 

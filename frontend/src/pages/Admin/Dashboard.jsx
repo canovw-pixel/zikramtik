@@ -2,13 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productsAPI, categoriesAPI } from '../../services/api';
 import { Button } from '../../components/ui/button';
-import { Star, Plus, Edit, Trash2, LogOut } from 'lucide-react';
+import { Star, Plus, Edit, Trash2, LogOut, Package } from 'lucide-react';
 import { toast } from '../../hooks/use-toast';
+import ProductModal from '../../components/ProductModal';
+import ConfirmDialog from '../../components/ConfirmDialog';
 
 const AdminDashboard = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showProductModal, setShowProductModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  
   const navigate = useNavigate();
   const adminUser = JSON.parse(localStorage.getItem('admin_user') || '{}');
 
@@ -59,6 +67,45 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleEditProduct = (product) => {
+    setSelectedProduct(product);
+    setShowProductModal(true);
+  };
+
+  const handleNewProduct = () => {
+    setSelectedProduct(null);
+    setShowProductModal(true);
+  };
+
+  const handleDeleteClick = (product) => {
+    setProductToDelete(product);
+    setShowDeleteDialog(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!productToDelete) return;
+    
+    setDeleteLoading(true);
+    try {
+      await productsAPI.delete(productToDelete.id);
+      toast({
+        title: 'Başarılı',
+        description: 'Ürün silindi',
+      });
+      setShowDeleteDialog(false);
+      setProductToDelete(null);
+      loadData();
+    } catch (error) {
+      toast({
+        title: 'Hata',
+        description: error.response?.data?.detail || 'Ürün silinemedi',
+        variant: 'destructive',
+      });
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('admin_token');
     localStorage.removeItem('admin_user');
@@ -81,7 +128,7 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="bg-white shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -98,14 +145,24 @@ const AdminDashboard = () => {
               </div>
             </div>
             
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              className="flex items-center space-x-2"
-            >
-              <LogOut className="w-4 h-4" />
-              <span>Çıkış</span>
-            </Button>
+            <div className="flex items-center space-x-3">
+              <Button
+                onClick={() => window.open('/', '_blank')}
+                variant="outline"
+                className="flex items-center space-x-2"
+              >
+                <Package className="w-4 h-4" />
+                <span>Siteyi Görüntüle</span>
+              </Button>
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                className="flex items-center space-x-2"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Çıkış</span>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -121,6 +178,9 @@ const AdminDashboard = () => {
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-600 mb-2">Öne Çıkan</h3>
             <p className="text-3xl font-bold text-gold-600">{featuredProducts.length} / 2</p>
+            {featuredProducts.length === 2 && (
+              <p className="text-xs text-gray-500 mt-2">⚠️ Maksimum öne çıkan sayısına ulaşıldı</p>
+            )}
           </div>
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-600 mb-2">Kategoriler</h3>
@@ -133,7 +193,10 @@ const AdminDashboard = () => {
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-gray-900">Ürünler</h2>
-              <Button className="bg-burgundy-700 hover:bg-burgundy-800 flex items-center space-x-2">
+              <Button 
+                onClick={handleNewProduct}
+                className="bg-burgundy-700 hover:bg-burgundy-800 flex items-center space-x-2"
+              >
                 <Plus className="w-4 h-4" />
                 <span>Yeni Ürün</span>
               </Button>
@@ -141,59 +204,105 @@ const AdminDashboard = () => {
           </div>
 
           <div className="p-6">
-            <div className="space-y-4">
-              {products.map((product) => (
-                <div
-                  key={product.id}
-                  className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
-                >
-                  <div className="flex items-center space-x-4 flex-1">
-                    <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      className="w-16 h-16 object-cover rounded-lg"
-                    />
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900">{product.name}</h3>
-                      <p className="text-sm text-gray-600">{product.category_name}</p>
-                      <div className="flex items-center space-x-2 mt-1">
-                        {product.featured && (
-                          <span className="px-2 py-1 bg-gold-100 text-gold-700 text-xs rounded-full flex items-center space-x-1">
-                            <Star className="w-3 h-3 fill-gold-700" />
-                            <span>Öne Çıkan</span>
+            {products.length === 0 ? (
+              <div className="text-center py-12">
+                <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-600 mb-4">Henüz ürün yok</p>
+                <Button onClick={handleNewProduct} className="bg-burgundy-700 hover:bg-burgundy-800">
+                  İlk Ürünü Ekle
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {products.map((product) => (
+                  <div
+                    key={product.id}
+                    className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center space-x-4 flex-1">
+                      <img
+                        src={product.images[0] || 'https://via.placeholder.com/100'}
+                        alt={product.name}
+                        className="w-16 h-16 object-cover rounded-lg"
+                      />
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900">{product.name}</h3>
+                        <p className="text-sm text-gray-600">{product.category_name}</p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          {product.featured && (
+                            <span className="px-2 py-1 bg-gold-100 text-gold-700 text-xs rounded-full flex items-center space-x-1">
+                              <Star className="w-3 h-3 fill-gold-700" />
+                              <span>Öne Çıkan</span>
+                            </span>
+                          )}
+                          <span className={`px-2 py-1 text-xs rounded-full ${
+                            product.in_stock ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                          }`}>
+                            {product.in_stock ? 'Stokta' : 'Stok Yok'}
                           </span>
-                        )}
-                        <span className={`px-2 py-1 text-xs rounded-full ${
-                          product.in_stock ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                        }`}>
-                          {product.in_stock ? 'Stokta' : 'Stok Yok'}
-                        </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center space-x-2">
-                    <Button
-                      onClick={() => handleToggleFeatured(product.id, product.featured)}
-                      variant={product.featured ? 'default' : 'outline'}
-                      size="sm"
-                      className={product.featured ? 'bg-gold-600 hover:bg-gold-700' : ''}
-                    >
-                      <Star className={`w-4 h-4 ${product.featured ? 'fill-white' : ''}`} />
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                    <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        onClick={() => handleToggleFeatured(product.id, product.featured)}
+                        variant={product.featured ? 'default' : 'outline'}
+                        size="sm"
+                        className={product.featured ? 'bg-gold-600 hover:bg-gold-700' : ''}
+                        title={product.featured ? 'Öne çıkarmadan kaldır' : 'Öne çıkar'}
+                      >
+                        <Star className={`w-4 h-4 ${product.featured ? 'fill-white' : ''}`} />
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleEditProduct(product)}
+                        title="Düzenle"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="text-red-600 hover:text-red-700"
+                        onClick={() => handleDeleteClick(product)}
+                        title="Sil"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </main>
+
+      {/* Modals */}
+      <ProductModal
+        isOpen={showProductModal}
+        onClose={() => {
+          setShowProductModal(false);
+          setSelectedProduct(null);
+        }}
+        product={selectedProduct}
+        categories={categories}
+        onSuccess={loadData}
+      />
+
+      <ConfirmDialog
+        isOpen={showDeleteDialog}
+        onClose={() => {
+          setShowDeleteDialog(false);
+          setProductToDelete(null);
+        }}
+        onConfirm={handleDeleteConfirm}
+        title="Ürünü Sil"
+        message={`"${productToDelete?.name}" adlı ürünü silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`}
+        loading={deleteLoading}
+      />
     </div>
   );
 };

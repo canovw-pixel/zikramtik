@@ -20,7 +20,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 pt-40 z-10">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 pt-32 z-10">
         <div className="max-w-3xl">
           {/* Brand Badge */}
           <div className="inline-block mb-8">
@@ -30,7 +30,7 @@ const Hero = () => {
           </div>
           
           {/* Hero Title */}
-          <h1 className="hero-title text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-28 drop-shadow-2xl">
+          <h1 className="hero-title text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-40 drop-shadow-2xl">
             {heroContent.title}
           </h1>
           

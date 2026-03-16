@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Globe, Menu, X } from 'lucide-react';
 import CountrySelector from './CountrySelector';
 
 const Header = ({ cart, selectedCountry, onCountryChange }) => {
   const [showCountryModal, setShowCountryModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -12,8 +14,8 @@ const Header = ({ cart, selectedCountry, onCountryChange }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="w-14 h-14 rounded-full overflow-hidden shadow-lg border-2 border-burgundy-600">
+            <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+              <div className="w-14 h-14 rounded-full overflow-hidden shadow-lg border-2 border-burgundy-600 cursor-pointer">
                 <img
                   src="https://customer-assets.emergentagent.com/job_web-clone-tool-12/artifacts/99jr70kx_logo.jpeg"
                   alt="Zikra Logo"
@@ -21,10 +23,10 @@ const Header = ({ cart, selectedCountry, onCountryChange }) => {
                 />
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-burgundy-900 elegant-script text-2xl">Zikra</h1>
+                <h1 className="text-xl font-bold text-burgundy-900 elegant-script text-2xl cursor-pointer">Zikra</h1>
                 <p className="text-xs text-gray-600 brand-script">Craponia Atelier</p>
               </div>
-            </div>
+            </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
@@ -56,10 +58,14 @@ const Header = ({ cart, selectedCountry, onCountryChange }) => {
               </button>
 
               {/* Cart */}
-              <button className="relative p-2 hover:bg-burgundy-50 rounded-lg transition-colors">
-                <ShoppingCart className="w-6 h-6 text-burgundy-700" />
+              <button 
+                onClick={() => navigate('/cart')}
+                className="relative p-2 hover:bg-burgundy-50 rounded-lg transition-colors group"
+                title="Sepetime Git"
+              >
+                <ShoppingCart className="w-6 h-6 text-burgundy-700 group-hover:scale-110 transition-transform" />
                 {cart > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-burgundy-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-burgundy-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold animate-pulse">
                     {cart}
                   </span>
                 )}

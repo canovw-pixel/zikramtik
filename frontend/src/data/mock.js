@@ -125,7 +125,7 @@ export const countries = [
 
 export const heroContent = {
   title: "Nesilden nesile , Kalpten kalbe..",
-  subtitle: "Dünyada ilk kez, ustalıkla mücevher standardında işlenen bu eser, insanlığın mirasını bir kalpten diğerine zarafetle taşır.",
+  subtitle: "Dünyada ilk kez, ustalıkla mücevher standardında işlenen bu eser, ruhunuzun manevi mirasını bir kalpten diğerine zarafetle taşır.",
   cta: "Koleksiyonu Keşfet",
   bannerImage: "https://customer-assets.emergentagent.com/job_web-clone-tool-12/artifacts/ikpvmjlh_banner.jpeg"
 };

@@ -24,7 +24,7 @@ const Hero = () => {
         <div className="max-w-3xl">
           {/* Brand Badge */}
           <div className="inline-block mb-8">
-            <span className="px-6 py-3 bg-burgundy-700/90 backdrop-blur-sm text-white rounded-full text-base font-normal shadow-lg brand-script">
+            <span className="px-6 py-3 bg-burgundy-700/90 backdrop-blur-sm text-white rounded-full text-lg font-normal shadow-lg brand-script">
               Craponia Atelier
             </span>
           </div>
@@ -35,7 +35,7 @@ const Hero = () => {
           </h1>
           
           {/* Hero Subtitle */}
-          <p className="text-xl sm:text-2xl text-white/95 leading-relaxed mb-10 drop-shadow-lg product-description font-light">
+          <p className="text-xl sm:text-2xl text-white/95 leading-relaxed mb-10 drop-shadow-lg hero-subtitle">
             {heroContent.subtitle}
           </p>
 

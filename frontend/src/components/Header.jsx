@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Globe, Menu, X } from 'lucide-react';
 import CountrySelector from './CountrySelector';
+import { useCart } from '../context/CartContext';
 
-const Header = ({ cart, selectedCountry, onCountryChange }) => {
+const Header = ({ selectedCountry, onCountryChange }) => {
   const [showCountryModal, setShowCountryModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { getCartCount } = useCart();
+  const cartCount = getCartCount();
 
   return (
     <>
@@ -62,11 +65,12 @@ const Header = ({ cart, selectedCountry, onCountryChange }) => {
                 onClick={() => navigate('/cart')}
                 className="relative p-2 hover:bg-burgundy-50 rounded-lg transition-colors group"
                 title="Sepetime Git"
+                data-testid="cart-button"
               >
                 <ShoppingCart className="w-6 h-6 text-burgundy-700 group-hover:scale-110 transition-transform" />
-                {cart > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-burgundy-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold animate-pulse">
-                    {cart}
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-burgundy-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-semibold animate-pulse" data-testid="cart-count">
+                    {cartCount}
                   </span>
                 )}
               </button>

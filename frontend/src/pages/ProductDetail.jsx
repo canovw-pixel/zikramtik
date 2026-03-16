@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { ShoppingCart, Heart, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { Button } from '../components/ui/button';
+import { useCart } from '../context/CartContext';
 import { toast } from '../hooks/use-toast';
 
 const ProductDetail = () => {
@@ -15,7 +16,7 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState(countries[1]); // Turkey
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [cart, setCart] = useState(0);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     loadProduct();
@@ -48,11 +49,7 @@ const ProductDetail = () => {
   };
 
   const handleAddToCart = () => {
-    setCart(prev => prev + 1);
-    toast({
-      title: 'Başarılı',
-      description: 'Ürün sepete eklendi',
-    });
+    addToCart(product, 1, selectedCountry);
   };
 
   const nextImage = () => {
@@ -85,7 +82,6 @@ const ProductDetail = () => {
   return (
     <div className="min-h-screen bg-white">
       <Header 
-        cart={cart} 
         selectedCountry={selectedCountry} 
         onCountryChange={setSelectedCountry}
       />

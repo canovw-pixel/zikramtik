@@ -9,7 +9,6 @@ import { countries } from '../data/mock';
 import { productsAPI, categoriesAPI } from '../services/api';
 
 const Home = () => {
-  const [cart, setCart] = useState(0);
   const [selectedCountry, setSelectedCountry] = useState(countries[1]); // Default: Turkey
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -51,7 +50,6 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-white">
       <Header 
-        cart={cart} 
         selectedCountry={selectedCountry} 
         onCountryChange={setSelectedCountry}
       />

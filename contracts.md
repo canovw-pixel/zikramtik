@@ -311,7 +311,7 @@ PORT=8001
 
 ### Frontend (.env):
 ```
-REACT_APP_BACKEND_URL=https://web-clone-tool-12.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://craponia-commerce.preview.emergentagent.com
 ```
 
 ## 10. Implementation Order

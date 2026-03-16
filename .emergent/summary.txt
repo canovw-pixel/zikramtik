@@ -1,0 +1,153 @@
+<analysis>**original_problem_statement:**
+The user wants to build an e-commerce website that is a clone of .
+
+**PRODUCT REQUIREMENTS:**
+-   **Primary Product:** A niche product called zikirmatik (a digital prayer bead ring), which should be prominently featured. The site will also sell other stocked items.
+-   **Design:** Minimal and luxurious, with a strong emphasis on a burgundy (bordo) color theme.
+-   **Branding:** The brand is Craponia Atelier, and the zikirmatik model is Zikra. A round logo should be in the top-left corner.
+-   **Admin Panel:** A simple and easy-to-use control panel for adding, editing, and removing products.
+-   **Product Features:**
+    -   An option to feature up to two products, which will be displayed prominently on the homepage.
+    -   Support for multiple images per product, uploaded from the local machine.
+    -   A dedicated detail page for each product.
+-   **Global Sales:**
+    -   The website must support international sales.
+    -   Product prices must be set manually for each country.
+    -   The site should automatically detect the visitor's country and display the corresponding currency and price.
+-   **Payment:** Integration with the iyzico payment gateway. This is currently on hold, and a mock payment system will be used in the interim.
+
+**User's preferred language**: Turkish
+
+**what currently exists?**
+A full-stack application with a React frontend and FastAPI backend.
+-   **Frontend:** A complete, visually designed frontend that is connected to the backend API. It includes a homepage with a banner, featured products, and categorized product lists. There is a product detail page and a fully functional admin panel for product management (add/edit/delete, image uploads, featured toggle). A country selector dynamically updates prices.
+-   **Backend:** A robust API with endpoints for admin authentication (JWT) and full CRUD (Create, Read, Update, Delete) functionality for products. It includes an image upload endpoint that saves files locally. The order creation process is currently mocked.
+
+**Last working item**:
+-   Last item agent was working: The user reported that the shopping cart is not functional. Products can be added, but they do not appear on the cart page, and there is no way to check out. The agent began implementing a proper global state management system for the cart using React's Context API. The file  has been created.
+-   Status: IN PROGRESS
+-   Agent Testing Done: N
+-   Which testing method agent to use? frontend testing agent
+-   User Testing Done: N
+
+**All Pending/In progress Issue list**:
+-   **Issue 1: Shopping cart is not functional (P0)**
+    -   **Description:** The core e-commerce functionality is broken. Users cannot add items to the cart, view their cart's contents, or proceed to checkout.
+    -   **Status:** IN PROGRESS
+    -   **Details:**
+        -   **Attempted fixes:** The agent created a  file to serve as the foundation for a global cart state.
+        -   **Next debug checklist:**
+            1.  Wrap the main application in  with the  from .
+            2.  Modify the Add to Cart button in  to call the  function from the context.
+            3.  Update  to display a dynamic item count from the cart context.
+            4.  Rebuild the  to render products from the cart context and allow for quantity adjustments or item removal.
+            5.  Add a Proceed to Checkout button on the cart page that navigates to a new checkout page.
+        -   **Why fix this issue and what will be achieved with the fix?** This is the highest priority issue. Fixing it will make the website's primary goal—selling products—functional.
+        -   **Should Test frontend/backend/both after fix?** Frontend
+
+**In progress Task List**:
+-   **Task 1: Implement a Fully Functional Shopping Cart (P0)**
+    -   **Where to resume:** Continue the integration of . The context has been created but is not yet consumed by any components.
+    -   **What will be achieved with this?** A complete end-to-end shopping cart experience, allowing users to add products, view them in a persistent cart, and initiate the checkout process.
+    -   **Status:** IN PROGRESS
+    -   **Should Test frontend/backend/both after fix?** Frontend
+    -   **Blocked on something:** None
+
+**Upcoming and Future Tasks**
+
+-   **Upcoming Tasks:**
+    -   **P1: Build the Checkout Flow:** Create a checkout page where users can enter shipping information. This will trigger the backend's mock order creation endpoint.
+    -   **P2: Implement Admin Category Management:** The admin panel currently lacks a UI for managing product categories, although the backend API supports it.
+    -   **P3: Implement Admin Order Management:** Add a section to the admin panel to view and manage customer orders.
+
+-   **Future Tasks:**
+    -   **P0: iyzico Payment Gateway Integration:** Once the user provides the API keys, replace the mock payment system in  with a real iyzico integration.
+
+**Completed work in this session**
+-   **Frontend UI:** Built the complete frontend, including the homepage, product detail page, and admin panel, following the user's design specifications (burgundy theme, luxury feel).
+-   **Admin Panel:** Created a secure, fully functional admin dashboard for product management, including multi-image uploads from local files, a featuring system, and country-specific pricing.
+-   **Backend API:** Developed all necessary backend services for products, admin authentication, and a mock order system.
+-   **Frontend-Backend Integration:** Successfully connected the frontend to the backend API, replacing all mock data with live data from the database.
+-   **Design Iteration:** Performed multiple cycles of revisions on fonts and layout spacing based on direct user feedback to achieve the desired aesthetic.
+
+**Earlier issues found/mentioned but not fixed**
+-   None. The agent has addressed all issues raised by the user so far.
+
+**Known issue recurrence from previous fork**
+-   N/A
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+-   **Frontend:** React, TailwindCSS, , React Context API for global state.
+-   **Backend:** FastAPI, MongoDB (using  for async operations), JWT for authentication.
+-   **Architecture:** Full-stack application with a RESTful API connecting the frontend and backend.
+
+**key DB schema**
+-   **users:** 
+-   **products:** 
+-   **orders:**  (currently mocked)
+
+**changes in tech stack**
+-   None.
+
+**All files of reference**
+-   : Newly created file for the cart state, currently in progress.
+-   : Needs to be updated to use the  to add items.
+-   : Needs to be rebuilt to display items from the .
+-   : Needs to be updated to show the cart item count from the .
+-   : Contains the mock payment logic.
+-   : Includes the file upload route logic.
+
+**Areas that need refactoring**:
+-   The hardcoded list of 12 countries for pricing in the admin form () could be made dynamic in the future, but is functional for the current scope.
+
+**key api endpoints**
+-   : Admin login.
+-   : Handles multi-image uploads.
+-   : Full CRUD operations for products.
+-   : Creates an order using a mock payment system.
+
+**Critical Info for New Agent**
+-   The immediate and highest priority task is to fix the shopping cart. The user wants to see a fully functional purchase flow.
+-   The iyzico payment integration is **postponed**. You must first implement the cart and checkout using the existing **mock payment** backend. The user does not have the API keys yet.
+-   The user is very particular about visual design. Be prepared for specific feedback on fonts, colors, and spacing.
+-   Admin credentials are:  / .
+
+**documents and test reports created in this job**
+-   
+
+**Last 10 User Messages and any pending HUMAN messages**
+1.  **User:** The product doesn't stay in the cart after being added, and checkout is not possible. Please fix this to make the product purchasable. (PENDING)
+2.  **User:** Make the logo and the Zikra text in the header link to the homepage, and activate the Go to my cart button. (COMPLETED)
+3.  **User:** We need to handle image uploads from the local machine with multiple photos, and each product should have its own detail page. (COMPLETED)
+4.  **User:** When adding a new product, image loading doesn't work, and the new product doesn't appear on the page. Let's make the upload process simpler with a preview. (COMPLETED)
+5.  **User:** The New Product button in the admin panel isn't working. Let's ensure all buttons are functional before the page goes live. (COMPLETED)
+6.  **User:** How do I log in to the admin panel? I want to take a look. (COMPLETED)
+7.  **User:** I'm being asked for information to apply for iyzico. Is it possible to connect it after the page is published? (COMPLETED - Agreed to use mock payment for now).
+8.  **User:** Let's start the backend. (COMPLETED)
+9.  **User:** Provide the iyzico information. (COMPLETED - User then realized they didn't have it).
+10. **User:** Let's increase the space between the texts. (Multiple similar requests, all COMPLETED).
+
+**Project Health Check:**
+-   **Broken:** Shopping cart and checkout flow.
+-   **Mocked:** The entire order creation and payment process.
+
+**3rd Party Integrations**
+-   **iyzico:** Planned for payment processing but not yet integrated. Requires a user-provided API key.
+-   **Google Fonts:** Used for , , , , , and .
+
+**Testing status**
+-   Testing agent used after significant changes: NO
+-   Troubleshoot agent used after agent stuck in loop: YES (for a backend circular import error)
+-   Test files created: None
+-   Known regressions: None
+
+**Credentials to test flow:**
+-   **Admin Panel URL:** 
+-   **Admin Email:** 
+-   **Admin Password:** 
+
+**What agent forgot to execute**
+-   Nothing has been forgotten. The agent was in the process of addressing the user's most recent request (fixing the cart) when the session ended.</analysis>

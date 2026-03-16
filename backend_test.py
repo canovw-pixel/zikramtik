@@ -11,7 +11,7 @@ from datetime import datetime
 import os
 
 # Backend URL from frontend .env
-BACKEND_URL = "https://web-clone-tool-12.preview.emergentagent.com/api"
+BACKEND_URL = "https://craponia-commerce.preview.emergentagent.com/api"
 
 # Test credentials from seed data
 TEST_CREDENTIALS = {

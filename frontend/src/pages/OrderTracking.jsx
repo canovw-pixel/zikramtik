@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Package, Truck, CheckCircle, Clock, XCircle, ArrowLeft } from 'lucide-react';
+import { Search, Package, Truck, CheckCircle, Clock, XCircle, ArrowLeft, ExternalLink } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
 import { ordersAPI } from '../services/api';
 import { countries } from '../data/mock';
 import { toast } from '../hooks/use-toast';
+import { getCargoTrackingUrl } from '../utils/cargo';
 
 const STATUS_STEPS = {
   pending: { step: 1, label: 'Beklemede', icon: Clock, color: 'text-amber-600' },
@@ -159,6 +160,18 @@ const OrderTracking = () => {
                   <p>Takip No: <span className="font-semibold">{order.tracking_number}</span></p>
                   {order.shipped_at && <p>Kargoya Verilme: <span className="font-semibold">{formatDate(order.shipped_at)}</span></p>}
                 </div>
+                {getCargoTrackingUrl(order.cargo_company, order.tracking_number) && (
+                  <a
+                    href={getCargoTrackingUrl(order.cargo_company, order.tracking_number)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-2 mt-3 px-4 py-2 bg-cyan-700 text-white text-sm font-medium rounded-lg hover:bg-cyan-800 transition-colors"
+                    data-testid="tracking-external-link"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span>Kargo Takip Sayfasina Git</span>
+                  </a>
+                )}
               </div>
             )}
 

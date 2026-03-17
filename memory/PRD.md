@@ -5,41 +5,29 @@ Build an e-commerce website clone of `reiskuyumculuk.com` for "Craponia Atelier"
 
 ## User Personas
 - **Customers:** Browse products, add to cart, checkout with shipping info, track orders
-- **Admin:** Manage products (CRUD, images, pricing, featured toggle), manage orders (view, ship, deliver, cancel)
-
-## Core Requirements
-- Burgundy/luxury theme, responsive design
-- Product CRUD with multi-image upload, featuring system
-- Country-specific pricing with auto-detection
-- Shopping cart with localStorage persistence
-- Checkout flow with mock payment
-- Admin panel (auth: admin@zikra.com / admin123)
-- Order management with shipping/cargo tracking
-- Customer order tracking by order number
+- **Admin:** Manage products (CRUD, images, pricing, featured toggle), manage orders (view, ship with barcode label, deliver, cancel)
 
 ## Tech Stack
-- **Frontend:** React, TailwindCSS, react-router-dom, Context API
+- **Frontend:** React, TailwindCSS, react-router-dom, Context API, react-barcode
 - **Backend:** FastAPI, MongoDB (motor), JWT auth
-- **Architecture:** RESTful API, /api prefix routing
 
 ## What's Been Implemented
 - [x] Full frontend UI (homepage, product detail, admin panel)
 - [x] Backend API (products CRUD, categories, auth, upload, orders)
-- [x] Admin panel with product management
+- [x] Admin panel with product management + order management
 - [x] Multi-image upload from local machine
 - [x] Country selector with dynamic pricing
-- [x] Shopping cart with CartContext + localStorage (Feb 2026)
-- [x] Cart page with quantity controls, remove items (Feb 2026)
-- [x] Checkout page with shipping form + customer email (Feb 2026)
-- [x] Order confirmation page (Feb 2026)
-- [x] Mock order creation via backend API (Feb 2026)
-- [x] Admin order management - list, stats, filters, detail view (Feb 2026)
-- [x] Admin shipping modal - cargo company + tracking number (Feb 2026)
-- [x] Auto status change to "shipped" when tracking number added (Feb 2026)
-- [x] Mock email notification on shipping (Feb 2026)
-- [x] Customer order tracking page /order-tracking (Feb 2026)
-- [x] Order progress steps visualization (Feb 2026)
-- [x] Header navigation with "Siparis Takibi" link (Feb 2026)
+- [x] Shopping cart with CartContext + localStorage
+- [x] Cart page with quantity controls, remove items
+- [x] Checkout page with shipping form + customer email
+- [x] Order confirmation page
+- [x] Mock order creation via backend API
+- [x] Admin order management - list, stats, filters, detail view
+- [x] Admin shipping modal - cargo company + tracking number (auto-sets shipped)
+- [x] Mock email notification on shipping
+- [x] Customer order tracking page /order-tracking with progress steps
+- [x] Cargo tracking URL links to company websites (Yurtici, Aras, MNG, PTT, UPS, DHL, FedEx)
+- [x] Printable shipping label with barcode (react-barcode)
 
 ## API Endpoints
 - `POST /api/auth/login` - Admin login
@@ -57,7 +45,7 @@ Build an e-commerce website clone of `reiskuyumculuk.com` for "Craponia Atelier"
 
 ## DB Schema
 - **users:** {email, password_hash}
-- **products:** {id, name, description, category_id, images[], prices: {country: {price}}, stock, is_featured}
+- **products:** {id, name, description, category_id, images[], prices, stock, is_featured}
 - **orders:** {id, order_number, products[], country, shipping_address, billing_address, customer_email, total_amount, currency, status, payment_status, tracking_number, cargo_company, shipped_at}
 
 ## Backlog (Prioritized)
@@ -66,13 +54,16 @@ Build an e-commerce website clone of `reiskuyumculuk.com` for "Craponia Atelier"
 
 ### P1
 - Admin category management UI
-- Real email notification service (SendGrid/Resend integration)
+- Real email notification service (SendGrid/Resend)
+- Real cargo API integration (auto tracking number)
 
 ### P2
-- Customer account system
-- Order history for customers
-- Email notifications for order status changes (not just shipping)
+- Customer account system & order history
 
 ## Mocked Systems
 - **Payment:** Orders created with status "pending", no real payment processing
 - **Email:** Shipping notifications logged to console, not actually sent
+- **Cargo barcode:** Generated from manually entered tracking number, not from cargo company API
+
+## Credentials
+- Admin: admin@zikra.com / admin123

@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productsAPI, categoriesAPI, ordersAPI } from '../../services/api';
 import { Button } from '../../components/ui/button';
-import { Star, Plus, Edit, Trash2, LogOut, Package, ShoppingCart, Truck, Eye, X, Search } from 'lucide-react';
+import { Star, Plus, Edit, Trash2, LogOut, Package, ShoppingCart, Truck, Eye, X, Search, ExternalLink, Printer } from 'lucide-react';
 import { toast } from '../../hooks/use-toast';
 import ProductModal from '../../components/ProductModal';
 import ConfirmDialog from '../../components/ConfirmDialog';
+import { getCargoTrackingUrl, CARGO_COMPANIES } from '../../utils/cargo';
+import ShippingLabel from '../../components/ShippingLabel';
 
 const STATUS_MAP = {
   pending: { label: 'Beklemede', color: 'bg-amber-100 text-amber-700' },
@@ -35,6 +37,7 @@ const AdminDashboard = () => {
   const [cargoCompany, setCargoCompany] = useState('');
   const [shippingLoading, setShippingLoading] = useState(false);
   const [orderStatusFilter, setOrderStatusFilter] = useState('');
+  const [labelOrder, setLabelOrder] = useState(null);
 
   const navigate = useNavigate();
   const adminUser = JSON.parse(localStorage.getItem('admin_user') || '{}');
@@ -441,6 +444,26 @@ const AdminDashboard = () => {
                                 Kargo: {order.cargo_company} | Takip No: {order.tracking_number}
                               </p>
                               {order.shipped_at && <p className="text-xs text-cyan-600 mt-1">Kargoya verilme: {formatDate(order.shipped_at)}</p>}
+                              <div className="flex items-center gap-2 mt-2">
+                                {getCargoTrackingUrl(order.cargo_company, order.tracking_number) && (
+                                  <a
+                                    href={getCargoTrackingUrl(order.cargo_company, order.tracking_number)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center space-x-1 px-3 py-1.5 bg-cyan-700 text-white text-xs font-medium rounded-lg hover:bg-cyan-800 transition-colors"
+                                    data-testid={`tracking-link-${order.id}`}
+                                  >
+                                    <ExternalLink className="w-3 h-3" /><span>Kargo Takip</span>
+                                  </a>
+                                )}
+                                <button
+                                  onClick={() => setLabelOrder(order)}
+                                  className="inline-flex items-center space-x-1 px-3 py-1.5 bg-gray-700 text-white text-xs font-medium rounded-lg hover:bg-gray-800 transition-colors"
+                                  data-testid={`print-label-${order.id}`}
+                                >
+                                  <Printer className="w-3 h-3" /><span>Kargo Etiketi</span>
+                                </button>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -480,15 +503,9 @@ const AdminDashboard = () => {
                   data-testid="input-cargo-company"
                 >
                   <option value="">Secin...</option>
-                  <option value="Yurtici Kargo">Yurtici Kargo</option>
-                  <option value="Aras Kargo">Aras Kargo</option>
-                  <option value="MNG Kargo">MNG Kargo</option>
-                  <option value="PTT Kargo">PTT Kargo</option>
-                  <option value="Surat Kargo">Surat Kargo</option>
-                  <option value="UPS">UPS</option>
-                  <option value="DHL">DHL</option>
-                  <option value="FedEx">FedEx</option>
-                  <option value="Diger">Diger</option>
+                  {CARGO_COMPANIES.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -546,6 +563,11 @@ const AdminDashboard = () => {
         message={`"${productToDelete?.name}" adli urunu silmek istediginizden emin misiniz? Bu islem geri alinamaz.`}
         loading={deleteLoading}
       />
+
+      {/* Shipping Label Modal */}
+      {labelOrder && (
+        <ShippingLabel order={labelOrder} onClose={() => setLabelOrder(null)} />
+      )}
     </div>
   );
 };

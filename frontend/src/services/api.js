@@ -45,7 +45,10 @@ export const ordersAPI = {
   create: (data) => api.post('/orders', data),
   getAll: (params) => api.get('/orders', { params }),
   getById: (id) => api.get(`/orders/${id}`),
+  getStats: () => api.get('/orders/stats/summary'),
+  trackByNumber: (orderNumber) => api.get(`/orders/track/${orderNumber}`),
   updateStatus: (id, status) => api.put(`/orders/${id}/status`, { status }),
+  updateShipping: (id, data) => api.put(`/orders/${id}/shipping`, data),
 };
 
 // Upload API

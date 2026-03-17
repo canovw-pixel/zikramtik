@@ -14,6 +14,7 @@ const Checkout = () => {
   const { cartItems, getCartTotal, getCartCount, clearCart } = useCart();
   const [selectedCountry, setSelectedCountry] = useState(countries[1]);
   const [loading, setLoading] = useState(false);
+  const [customerEmail, setCustomerEmail] = useState('');
   const [form, setForm] = useState({
     full_name: '',
     address: '',
@@ -68,6 +69,7 @@ const Checkout = () => {
         },
         shipping_address: { ...form },
         billing_address: { ...form },
+        customer_email: customerEmail || null,
       };
 
       const response = await ordersAPI.create(orderData);
@@ -205,6 +207,17 @@ const Checkout = () => {
                       placeholder="+90 5XX XXX XX XX"
                       required
                       data-testid="input-phone"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">E-posta (Kargo bildirimi icin)</label>
+                    <input
+                      type="email"
+                      value={customerEmail}
+                      onChange={(e) => setCustomerEmail(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-burgundy-500 focus:border-transparent outline-none transition-all"
+                      placeholder="ornek@email.com"
+                      data-testid="input-email"
                     />
                   </div>
                 </div>

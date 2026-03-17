@@ -42,9 +42,9 @@ const Header = ({ selectedCountry, onCountryChange }) => {
               <a href="#about" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
                 Hakkımızda
               </a>
-              <a href="#contact" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
-                İletişim
-              </a>
+              <Link to="/order-tracking" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
+                Siparis Takibi
+              </Link>
             </nav>
 
             {/* Right Section */}
@@ -121,6 +121,13 @@ const Header = ({ selectedCountry, onCountryChange }) => {
                 >
                   İletişim
                 </a>
+                <Link
+                  to="/order-tracking"
+                  className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Siparis Takibi
+                </Link>
               </nav>
             </div>
           )}

@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
-from typing import List, Dict, Optional
-from datetime import datetime
+from typing import List, Optional
+from datetime import datetime, timezone
 import uuid
 import random
 import string
@@ -36,19 +36,28 @@ class Order(BaseModel):
     country: CountryInfo
     shipping_address: Address
     billing_address: Address
+    customer_email: Optional[str] = None
     total_amount: float
     currency: str
-    status: str = "pending"  # pending, paid, processing, shipped, delivered, cancelled
-    payment_status: str = "pending"  # pending, success, failed
+    status: str = "pending"
+    payment_status: str = "pending"
     payment_id: Optional[str] = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    tracking_number: Optional[str] = None
+    cargo_company: Optional[str] = None
+    shipped_at: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class OrderCreate(BaseModel):
     products: List[OrderProduct]
     country: CountryInfo
     shipping_address: Address
     billing_address: Address
+    customer_email: Optional[str] = None
 
 class OrderStatusUpdate(BaseModel):
     status: str
+
+class ShippingUpdate(BaseModel):
+    tracking_number: str
+    cargo_company: str

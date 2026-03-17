@@ -4,8 +4,8 @@
 Build an e-commerce website clone of `reiskuyumculuk.com` for "Craponia Atelier" brand selling "Zikra" zikirmatik (digital prayer bead ring) and other products. Minimal, luxurious design with burgundy theme. Global sales with multi-currency, admin panel, and iyzico payment (pending).
 
 ## User Personas
-- **Customers:** Browse products, add to cart, checkout with shipping info
-- **Admin:** Manage products (CRUD, images, pricing, featured toggle), view orders
+- **Customers:** Browse products, add to cart, checkout with shipping info, track orders
+- **Admin:** Manage products (CRUD, images, pricing, featured toggle), manage orders (view, ship, deliver, cancel)
 
 ## Core Requirements
 - Burgundy/luxury theme, responsive design
@@ -14,6 +14,8 @@ Build an e-commerce website clone of `reiskuyumculuk.com` for "Craponia Atelier"
 - Shopping cart with localStorage persistence
 - Checkout flow with mock payment
 - Admin panel (auth: admin@zikra.com / admin123)
+- Order management with shipping/cargo tracking
+- Customer order tracking by order number
 
 ## Tech Stack
 - **Frontend:** React, TailwindCSS, react-router-dom, Context API
@@ -28,9 +30,16 @@ Build an e-commerce website clone of `reiskuyumculuk.com` for "Craponia Atelier"
 - [x] Country selector with dynamic pricing
 - [x] Shopping cart with CartContext + localStorage (Feb 2026)
 - [x] Cart page with quantity controls, remove items (Feb 2026)
-- [x] Checkout page with shipping form (Feb 2026)
+- [x] Checkout page with shipping form + customer email (Feb 2026)
 - [x] Order confirmation page (Feb 2026)
 - [x] Mock order creation via backend API (Feb 2026)
+- [x] Admin order management - list, stats, filters, detail view (Feb 2026)
+- [x] Admin shipping modal - cargo company + tracking number (Feb 2026)
+- [x] Auto status change to "shipped" when tracking number added (Feb 2026)
+- [x] Mock email notification on shipping (Feb 2026)
+- [x] Customer order tracking page /order-tracking (Feb 2026)
+- [x] Order progress steps visualization (Feb 2026)
+- [x] Header navigation with "Siparis Takibi" link (Feb 2026)
 
 ## API Endpoints
 - `POST /api/auth/login` - Admin login
@@ -40,12 +49,16 @@ Build an e-commerce website clone of `reiskuyumculuk.com` for "Craponia Atelier"
 - `POST /api/upload/images` - Image upload
 - `POST /api/orders` - Create order (MOCK payment)
 - `GET /api/orders/:id` - Get order details
-- `GET /api/orders` - List orders (admin)
+- `GET /api/orders` - List orders (admin, with pagination)
+- `GET /api/orders/stats/summary` - Order stats (admin)
+- `GET /api/orders/track/:order_number` - Public order tracking
+- `PUT /api/orders/:id/status` - Update order status (admin)
+- `PUT /api/orders/:id/shipping` - Add tracking number + auto ship (admin)
 
 ## DB Schema
 - **users:** {email, password_hash}
 - **products:** {id, name, description, category_id, images[], prices: {country: {price}}, stock, is_featured}
-- **orders:** {id, order_number, products[], country, shipping_address, billing_address, total_amount, currency, status, payment_status}
+- **orders:** {id, order_number, products[], country, shipping_address, billing_address, customer_email, total_amount, currency, status, payment_status, tracking_number, cargo_company, shipped_at}
 
 ## Backlog (Prioritized)
 ### P0
@@ -53,11 +66,13 @@ Build an e-commerce website clone of `reiskuyumculuk.com` for "Craponia Atelier"
 
 ### P1
 - Admin category management UI
-- Admin order management UI
+- Real email notification service (SendGrid/Resend integration)
 
 ### P2
-- Customer order tracking
-- Email notifications for orders
+- Customer account system
+- Order history for customers
+- Email notifications for order status changes (not just shipping)
 
 ## Mocked Systems
-- **Payment:** Orders created with status "pending", no real payment processing. Backend has mock-payment endpoint.
+- **Payment:** Orders created with status "pending", no real payment processing
+- **Email:** Shipping notifications logged to console, not actually sent

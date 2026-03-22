@@ -9,7 +9,7 @@
 
 set -e
 
-DOMAIN=${1:-"example.com"}
+DOMAIN=${1:-"zikramatik.com"}
 APP_DIR="/var/www/zikra"
 BACKEND_DIR="$APP_DIR/backend"
 FRONTEND_DIR="$APP_DIR/frontend"

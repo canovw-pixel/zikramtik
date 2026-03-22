@@ -16,8 +16,8 @@ Guzelhosting veya domain saglayicinizin DNS panelinden:
 
 | Tip | Ad | Deger |
 |-----|-----|-------|
-| A | @ | VPS_IP_ADRESINIZ |
-| A | www | VPS_IP_ADRESINIZ |
+| A | @ | 89.252.185.130 |
+| A | www | 89.252.185.130 |
 
 > DNS degisikligi 5-30 dakika surebilir.
 
@@ -28,7 +28,7 @@ Windows'ta: **PuTTY** veya **Windows Terminal** kullanin
 Mac/Linux'ta: Terminal kullanin
 
 ```bash
-ssh root@VPS_IP_ADRESINIZ
+ssh root@89.252.185.130
 # Sifrenizi girin
 ```
 
@@ -47,9 +47,9 @@ Bilgisayarinizda yeni bir terminal acin:
 unzip craponia-commerce.zip
 
 # Dosyalari VPS'e yukleyin
-scp -r deploy/* root@VPS_IP_ADRESINIZ:/root/
-scp -r backend root@VPS_IP_ADRESINIZ:/var/www/zikra/
-scp -r frontend root@VPS_IP_ADRESINIZ:/var/www/zikra/
+scp -r deploy/* root@89.252.185.130:/root/
+scp -r backend root@89.252.185.130:/var/www/zikra/
+scp -r frontend root@89.252.185.130:/var/www/zikra/
 ```
 
 ### 4c. VPS'te kurulumu baslatin
@@ -60,13 +60,13 @@ VPS terminaline geri donun:
 mkdir -p /var/www/zikra
 
 # Ilk kurulum (sistem + MongoDB + Node.js + Nginx)
-sudo bash /root/setup-vps.sh craponiaatelier.com
+sudo bash /root/setup-vps.sh zikramatik.com
 ```
-> `craponiaatelier.com` yerine kendi domain adinizi yazin
+> `zikramatik.com` yerine kendi domain adinizi yazin
 
 ### 4d. Deploy edin
 ```bash
-sudo bash /var/www/zikra/deploy.sh craponiaatelier.com
+sudo bash /var/www/zikra/deploy.sh zikramatik.com
 ```
 
 ---
@@ -75,7 +75,7 @@ sudo bash /var/www/zikra/deploy.sh craponiaatelier.com
 DNS ayarlari yayildiktan sonra:
 
 ```bash
-sudo certbot --nginx -d craponiaatelier.com -d www.craponiaatelier.com
+sudo certbot --nginx -d zikramatik.com -d www.zikramatik.com
 ```
 > Sertifika otomatik yenilenir, baska bir sey yapmaniza gerek yok.
 
@@ -92,7 +92,7 @@ deactivate
 ```
 
 Artik admin paneline girebilirsiniz:
-- **URL:** https://craponiaatelier.com/admin/login
+- **URL:** https://zikramatik.com/admin/login
 - **E-posta:** admin@zikra.com
 - **Sifre:** admin123
 

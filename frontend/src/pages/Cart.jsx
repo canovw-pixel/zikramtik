@@ -7,17 +7,22 @@ import { Button } from '../components/ui/button';
 import { useCart } from '../context/CartContext';
 import { countries } from '../data/mock';
 import { formatPrice } from '../utils/format';
+import { detectCountryByIP } from '../utils/geoip';
 
 const Cart = () => {
   const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = React.useState(countries[1]);
   const { cartItems, removeFromCart, updateQuantity, getCartTotal, getCartCount } = useCart();
 
+  React.useEffect(() => {
+    detectCountryByIP().then(detected => setSelectedCountry(detected));
+  }, []);
+
   const totalAmount = getCartTotal();
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header selectedCountry={selectedCountry} onCountryChange={setSelectedCountry} />
+      <Header selectedCountry={selectedCountry} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 pt-32">
         <button

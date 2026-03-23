@@ -7,6 +7,7 @@ import About from '../components/About';
 import Footer from '../components/Footer';
 import { countries } from '../data/mock';
 import { productsAPI, categoriesAPI } from '../services/api';
+import { detectCountryByIP } from '../utils/geoip';
 
 const Home = () => {
   const [selectedCountry, setSelectedCountry] = useState(countries[1]); // Default: Turkey
@@ -16,6 +17,9 @@ const Home = () => {
 
   useEffect(() => {
     loadData();
+    detectCountryByIP().then(detected => {
+      setSelectedCountry(detected);
+    });
   }, []);
 
   const loadData = async () => {
@@ -51,7 +55,7 @@ const Home = () => {
     <div className="min-h-screen bg-white">
       <Header 
         selectedCountry={selectedCountry} 
-        onCountryChange={setSelectedCountry}
+       
       />
       <Hero />
       <FeaturedProducts 

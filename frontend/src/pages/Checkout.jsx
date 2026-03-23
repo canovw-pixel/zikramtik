@@ -9,6 +9,7 @@ import { ordersAPI } from '../services/api';
 import { countries } from '../data/mock';
 import { toast } from '../hooks/use-toast';
 import { formatPrice } from '../utils/format';
+import { detectCountryByIP } from '../utils/geoip';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -16,6 +17,10 @@ const Checkout = () => {
   const [selectedCountry, setSelectedCountry] = useState(countries[1]);
   const [loading, setLoading] = useState(false);
   const [customerEmail, setCustomerEmail] = useState('');
+
+  useState(() => {
+    detectCountryByIP().then(detected => setSelectedCountry(detected));
+  }, []);
   const [form, setForm] = useState({
     full_name: '',
     address: '',
@@ -87,7 +92,7 @@ const Checkout = () => {
   if (cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Header selectedCountry={selectedCountry} onCountryChange={setSelectedCountry} />
+        <Header selectedCountry={selectedCountry} />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 pt-32 text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Sepetiniz bos</h1>
           <p className="text-gray-600 mb-8">Odeme yapabilmek icin sepetinize urun ekleyin.</p>
@@ -102,7 +107,7 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header selectedCountry={selectedCountry} onCountryChange={setSelectedCountry} />
+      <Header selectedCountry={selectedCountry} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 pt-32">
         <button

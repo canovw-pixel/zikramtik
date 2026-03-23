@@ -9,18 +9,20 @@ import { Button } from '../components/ui/button';
 import { useCart } from '../context/CartContext';
 import { toast } from '../hooks/use-toast';
 import { formatPrice } from '../utils/format';
+import { detectCountryByIP } from '../utils/geoip';
 
 const ProductDetail = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedCountry, setSelectedCountry] = useState(countries[1]); // Turkey
+  const [selectedCountry, setSelectedCountry] = useState(countries[1]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { addToCart } = useCart();
 
   useEffect(() => {
     loadProduct();
+    detectCountryByIP().then(detected => setSelectedCountry(detected));
   }, [productId]);
 
   const loadProduct = async () => {
@@ -84,7 +86,7 @@ const ProductDetail = () => {
     <div className="min-h-screen bg-white">
       <Header 
         selectedCountry={selectedCountry} 
-        onCountryChange={setSelectedCountry}
+       
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 pt-32">

@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Globe, Menu, X } from 'lucide-react';
-import CountrySelector from './CountrySelector';
 import { useCart } from '../context/CartContext';
 
-const Header = ({ selectedCountry, onCountryChange }) => {
-  const [showCountryModal, setShowCountryModal] = useState(false);
+const Header = ({ selectedCountry }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { getCartCount } = useCart();
@@ -49,16 +47,16 @@ const Header = ({ selectedCountry, onCountryChange }) => {
 
             {/* Right Section */}
             <div className="flex items-center space-x-4">
-              {/* Country Selector */}
-              <button
-                onClick={() => setShowCountryModal(true)}
-                className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-burgundy-50 transition-colors"
+              {/* Country Display (auto-detected) */}
+              <div
+                className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-burgundy-50"
+                title="Ulkeniz otomatik algilandi"
               >
                 <Globe className="w-5 h-5 text-burgundy-700" />
                 <span className="hidden sm:inline text-sm font-medium text-gray-700">
                   {selectedCountry.flag} {selectedCountry.currency}
                 </span>
-              </button>
+              </div>
 
               {/* Cart */}
               <button 
@@ -134,17 +132,7 @@ const Header = ({ selectedCountry, onCountryChange }) => {
         </div>
       </header>
 
-      {/* Country Selector Modal */}
-      {showCountryModal && (
-        <CountrySelector
-          selectedCountry={selectedCountry}
-          onSelect={(country) => {
-            onCountryChange(country);
-            setShowCountryModal(false);
-          }}
-          onClose={() => setShowCountryModal(false)}
-        />
-      )}
+      {/* Country Selector Modal - removed, country auto-detected */}
     </>
   );
 };

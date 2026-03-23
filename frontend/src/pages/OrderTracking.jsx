@@ -9,6 +9,7 @@ import { countries } from '../data/mock';
 import { toast } from '../hooks/use-toast';
 import { getCargoTrackingUrl } from '../utils/cargo';
 import { formatPrice } from '../utils/format';
+import { detectCountryByIP } from '../utils/geoip';
 
 const STATUS_STEPS = {
   pending: { step: 1, label: 'Beklemede', icon: Clock, color: 'text-amber-600' },
@@ -26,6 +27,10 @@ const OrderTracking = () => {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+
+  useState(() => {
+    detectCountryByIP().then(detected => setSelectedCountry(detected));
+  }, []);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -57,7 +62,7 @@ const OrderTracking = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header selectedCountry={selectedCountry} onCountryChange={setSelectedCountry} />
+      <Header selectedCountry={selectedCountry} />
 
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24 pt-32">
         <button

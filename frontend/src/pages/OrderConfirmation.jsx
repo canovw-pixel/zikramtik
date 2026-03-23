@@ -7,6 +7,7 @@ import { Button } from '../components/ui/button';
 import { ordersAPI } from '../services/api';
 import { countries } from '../data/mock';
 import { formatPrice } from '../utils/format';
+import { detectCountryByIP } from '../utils/geoip';
 
 const OrderConfirmation = () => {
   const { orderId } = useParams();
@@ -17,6 +18,7 @@ const OrderConfirmation = () => {
 
   useEffect(() => {
     loadOrder();
+    detectCountryByIP().then(detected => setSelectedCountry(detected));
   }, [orderId]);
 
   const loadOrder = async () => {
@@ -40,7 +42,7 @@ const OrderConfirmation = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header selectedCountry={selectedCountry} onCountryChange={setSelectedCountry} />
+      <Header selectedCountry={selectedCountry} />
 
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24 pt-32">
         <div className="bg-white rounded-2xl shadow-lg p-8 sm:p-12 text-center" data-testid="order-confirmation">

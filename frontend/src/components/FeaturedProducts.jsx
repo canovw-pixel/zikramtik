@@ -1,14 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Star, ShoppingBag } from 'lucide-react';
+import { formatPrice } from '../utils/format';
 
 const FeaturedProducts = ({ selectedCountry, products }) => {
   const navigate = useNavigate();
   const featuredProducts = products.filter(p => p.featured);
-
-  const formatPrice = (price) => {
-    return `${selectedCountry.symbol}${price}`;
-  };
 
   const getPrice = (product) => {
     const countryPrice = product.prices?.[selectedCountry.code];
@@ -76,7 +73,7 @@ const FeaturedProducts = ({ selectedCountry, products }) => {
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Fiyat</p>
                     <p className="text-3xl font-bold text-burgundy-700">
-                      {formatPrice(getPrice(product))}
+                      {formatPrice(getPrice(product), selectedCountry.symbol)}
                     </p>
                   </div>
                   <button className="px-6 py-3 bg-burgundy-700 text-white rounded-xl font-semibold hover:bg-burgundy-800 transition-all shadow-lg hover:shadow-xl flex items-center space-x-2">

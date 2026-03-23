@@ -119,7 +119,7 @@ const Checkout = () => {
           <span>Sepete Don</span>
         </button>
 
-        <h1 className="text-4xl font-bold text-gray-900 mb-8" style={{ fontFamily: "'Cinzel', serif" }} data-testid="checkout-title">
+        <h1 className="text-4xl font-bold text-gray-900 mb-8" style={{ fontFamily: "'Source Serif 4', serif" }} data-testid="checkout-title">
           Odeme
         </h1>
 

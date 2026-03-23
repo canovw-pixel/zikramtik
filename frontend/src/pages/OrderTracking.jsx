@@ -73,7 +73,7 @@ const OrderTracking = () => {
           <span>Ana Sayfa</span>
         </button>
 
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2" style={{ fontFamily: "'Cinzel', serif" }} data-testid="tracking-title">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2" style={{ fontFamily: "'Source Serif 4', serif" }} data-testid="tracking-title">
           Siparis Takibi
         </h1>
         <p className="text-gray-600 mb-8">Siparis numaranizi girerek kargonuzu takip edebilirsiniz.</p>

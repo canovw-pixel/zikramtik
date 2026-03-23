@@ -184,7 +184,7 @@ const ProductDetail = () => {
               {product.category_name}
             </span>
 
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
               {product.name}
             </h1>
 

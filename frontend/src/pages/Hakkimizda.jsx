@@ -16,7 +16,7 @@ const Hakkimizda = () => {
         {/* Hero Section */}
         <div className="bg-gradient-to-br from-burgundy-900 to-burgundy-800 text-white py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4" style={{ fontFamily: "'Source Serif 4', serif" }}>
               Hakk&#305;m&#305;zda
             </h1>
             <p className="text-lg text-burgundy-100">
@@ -34,7 +34,7 @@ const Hakkimizda = () => {
 
           {/* Company Story */}
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6" style={{ fontFamily: "'Cinzel', serif" }}>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6" style={{ fontFamily: "'Source Serif 4', serif" }}>
               Hikayemiz
             </h2>
             <div className="prose prose-lg text-gray-600 space-y-4">
@@ -59,7 +59,7 @@ const Hakkimizda = () => {
 
           {/* Mission */}
           <section className="mb-12 bg-burgundy-50 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Source Serif 4', serif" }}>
               Misyonumuz
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed">
@@ -71,7 +71,7 @@ const Hakkimizda = () => {
 
           {/* Values */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8" style={{ fontFamily: "'Cinzel', serif" }}>
+            <h2 className="text-2xl font-bold text-gray-900 mb-8" style={{ fontFamily: "'Source Serif 4', serif" }}>
               De&#287;erlerimiz
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -99,7 +99,7 @@ const Hakkimizda = () => {
 
           {/* Company Info */}
           <section className="bg-gray-50 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6" style={{ fontFamily: "'Cinzel', serif" }}>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6" style={{ fontFamily: "'Source Serif 4', serif" }}>
               Firma Bilgileri
             </h2>
             <div className="space-y-3 text-gray-600">

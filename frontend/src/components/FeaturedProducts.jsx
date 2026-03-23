@@ -62,7 +62,7 @@ const FeaturedProducts = ({ selectedCountry, products }) => {
 
               {/* Product Info */}
               <div className="p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-burgundy-700 transition-colors" style={{ fontFamily: "'Cinzel', serif" }}>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-burgundy-700 transition-colors" style={{ fontFamily: "'Source Serif 4', serif" }}>
                   {product.name}
                 </h3>
                 <p className="text-gray-600 mb-6 leading-relaxed product-description">

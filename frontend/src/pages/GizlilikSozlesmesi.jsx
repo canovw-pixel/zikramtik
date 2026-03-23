@@ -15,7 +15,7 @@ const GizlilikSozlesmesi = () => {
       <main className="pt-24 pb-16">
         <div className="bg-gradient-to-br from-burgundy-900 to-burgundy-800 text-white py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4" style={{ fontFamily: "'Source Serif 4', serif" }}>
               Gizlilik S{'\u00f6'}zle{'\u015f'}mesi
             </h1>
           </div>
@@ -31,7 +31,7 @@ const GizlilikSozlesmesi = () => {
             <p className="text-sm text-gray-500">Son g{'\u00fc'}ncelleme: {new Date().toLocaleDateString('tr-TR')}</p>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 1. Genel Bilgilendirme
               </h2>
               <p>
@@ -47,7 +47,7 @@ const GizlilikSozlesmesi = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 2. Toplanan Veriler
               </h2>
               <p>Web sitemizi kulland{'\u0131'}{'\u011f'}{'\u0131'}n{'\u0131'}zda a{'\u015f'}a{'\u011f'}{'\u0131'}daki veriler toplanabilir:</p>
@@ -61,7 +61,7 @@ const GizlilikSozlesmesi = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 3. Verilerin Kullan{'\u0131'}m Ama{'\u00e7'}lar{'\u0131'}
               </h2>
               <p>Toplanan ki{'\u015f'}isel verileriniz a{'\u015f'}a{'\u011f'}{'\u0131'}daki ama{'\u00e7'}larla kullan{'\u0131'}lmaktad{'\u0131'}r:</p>
@@ -76,7 +76,7 @@ const GizlilikSozlesmesi = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 4. Verilerin Payla{'\u015f'}{'\u0131'}lmas{'\u0131'}
               </h2>
               <p>Ki{'\u015f'}isel verileriniz a{'\u015f'}a{'\u011f'}{'\u0131'}daki durumlar d{'\u0131'}{'\u015f'}{'\u0131'}nda {'\u00fc'}{'\u00e7'}{'\u00fc'}nc{'\u00fc'} taraflarla payla{'\u015f'}{'\u0131'}lmaz:</p>
@@ -88,7 +88,7 @@ const GizlilikSozlesmesi = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 5. {'\u00c7'}erez (Cookie) Kullan{'\u0131'}m{'\u0131'}
               </h2>
               <p>
@@ -100,7 +100,7 @@ const GizlilikSozlesmesi = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 6. Veri G{'\u00fc'}venli{'\u011f'}i
               </h2>
               <p>
@@ -112,7 +112,7 @@ const GizlilikSozlesmesi = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 7. Haklar{'\u0131'}n{'\u0131'}z (KVKK Madde 11)
               </h2>
               <p>6698 say{'\u0131'}l{'\u0131'} KVKK kapsam{'\u0131'}nda a{'\u015f'}a{'\u011f'}{'\u0131'}daki haklara sahipsiniz:</p>
@@ -128,7 +128,7 @@ const GizlilikSozlesmesi = () => {
             </section>
 
             <section className="bg-burgundy-50 rounded-xl p-6">
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 8. {'\u0130'}leti{'\u015f'}im
               </h2>
               <p className="mt-2">

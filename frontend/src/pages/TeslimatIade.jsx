@@ -15,7 +15,7 @@ const TeslimatIade = () => {
       <main className="pt-24 pb-16">
         <div className="bg-gradient-to-br from-burgundy-900 to-burgundy-800 text-white py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4" style={{ fontFamily: "'Source Serif 4', serif" }}>
               Teslimat ve {'\u0130'}ade {'\u015e'}artlar{'\u0131'}
             </h1>
           </div>
@@ -29,7 +29,7 @@ const TeslimatIade = () => {
 
           <div className="prose prose-lg max-w-none text-gray-700 space-y-8">
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 1. Teslimat Ko{'\u015f'}ullar{'\u0131'}
               </h2>
               <h3 className="text-xl font-semibold text-gray-800 mt-4">1.1 Teslimat S{'\u00fc'}resi</h3>
@@ -63,7 +63,7 @@ const TeslimatIade = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 2. {'\u0130'}ade ve De{'\u011f'}i{'\u015f'}im Ko{'\u015f'}ullar{'\u0131'}
               </h2>
               <h3 className="text-xl font-semibold text-gray-800 mt-4">2.1 {'\u0130'}ade S{'\u00fc'}resi</h3>
@@ -99,7 +99,7 @@ const TeslimatIade = () => {
             </section>
 
             <section className="bg-burgundy-50 rounded-xl p-6">
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 {'\u0130'}leti{'\u015f'}im
               </h2>
               <p className="mt-2">

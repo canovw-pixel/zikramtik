@@ -34,7 +34,7 @@ const Cart = () => {
           <span>Geri Don</span>
         </button>
 
-        <h1 className="text-4xl font-bold text-gray-900 mb-8" style={{ fontFamily: "'Cinzel', serif" }} data-testid="cart-title">
+        <h1 className="text-4xl font-bold text-gray-900 mb-8" style={{ fontFamily: "'Source Serif 4', serif" }} data-testid="cart-title">
           Sepetim
         </h1>
 

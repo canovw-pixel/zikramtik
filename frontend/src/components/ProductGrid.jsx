@@ -12,7 +12,7 @@ const ProductGrid = ({ selectedCountry, products, categories }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Source Serif 4', serif" }}>
             Tüm Koleksiyon
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto product-description">
@@ -31,7 +31,7 @@ const ProductGrid = ({ selectedCountry, products, categories }) => {
               {/* Category Header */}
               <div className="mb-10">
                 <div className="flex items-center space-x-4 mb-3">
-                  <h3 className="text-3xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+                  <h3 className="text-3xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                     {category.name}
                   </h3>
                   <span className="px-4 py-1 bg-burgundy-100 text-burgundy-700 rounded-full text-sm font-semibold">

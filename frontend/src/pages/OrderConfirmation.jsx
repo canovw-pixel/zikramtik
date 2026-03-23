@@ -50,7 +50,7 @@ const OrderConfirmation = () => {
             <CheckCircle className="w-12 h-12 text-green-600" />
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Source Serif 4', serif" }}>
             Siparisiniz Alindi!
           </h1>
 

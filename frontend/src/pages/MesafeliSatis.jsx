@@ -15,7 +15,7 @@ const MesafeliSatis = () => {
       <main className="pt-24 pb-16">
         <div className="bg-gradient-to-br from-burgundy-900 to-burgundy-800 text-white py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4" style={{ fontFamily: "'Source Serif 4', serif" }}>
               Mesafeli Sat{'\u0131'}{'\u015f'} S{'\u00f6'}zle{'\u015f'}mesi
             </h1>
           </div>
@@ -29,7 +29,7 @@ const MesafeliSatis = () => {
 
           <div className="prose prose-lg max-w-none text-gray-700 space-y-8">
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 Madde 1 - Taraflar
               </h2>
               <h3 className="text-xl font-semibold text-gray-800 mt-4">1.1 Sat{'\u0131'}c{'\u0131'} Bilgileri</h3>
@@ -49,7 +49,7 @@ const MesafeliSatis = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 Madde 2 - S{'\u00f6'}zle{'\u015f'}menin Konusu
               </h2>
               <p>
@@ -62,7 +62,7 @@ const MesafeliSatis = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 Madde 3 - S{'\u00f6'}zle{'\u015f'}me Konusu {'\u00dc'}r{'\u00fc'}n Bilgileri
               </h2>
               <p>
@@ -73,7 +73,7 @@ const MesafeliSatis = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 Madde 4 - Genel H{'\u00fc'}k{'\u00fc'}mler
               </h2>
               <ul className="list-disc pl-6 space-y-3">
@@ -102,7 +102,7 @@ const MesafeliSatis = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 Madde 5 - Teslimat Ko{'\u015f'}ullar{'\u0131'}
               </h2>
               <p>
@@ -113,7 +113,7 @@ const MesafeliSatis = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 Madde 6 - {'\u00d6'}deme {'\u015e'}ekli
               </h2>
               <p>
@@ -124,7 +124,7 @@ const MesafeliSatis = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 Madde 7 - Cayma Hakk{'\u0131'}
               </h2>
               <p>
@@ -142,7 +142,7 @@ const MesafeliSatis = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 Madde 8 - Cayma Hakk{'\u0131'} Kullan{'\u0131'}lamayacak {'\u00dc'}r{'\u00fc'}nler
               </h2>
               <ul className="list-disc pl-6 space-y-2">
@@ -153,7 +153,7 @@ const MesafeliSatis = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 Madde 9 - Temerr{'\u00fc'}t Hali ve Hukuki Sonu{'\u00e7'}lar{'\u0131'}
               </h2>
               <p>
@@ -164,7 +164,7 @@ const MesafeliSatis = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Cinzel', serif" }}>
+              <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "'Source Serif 4', serif" }}>
                 Madde 10 - Yetkili Mahkeme
               </h2>
               <p>

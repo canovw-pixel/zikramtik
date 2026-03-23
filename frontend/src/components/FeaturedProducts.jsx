@@ -26,7 +26,7 @@ const FeaturedProducts = ({ selectedCountry, products }) => {
             <span className="text-burgundy-700 font-semibold uppercase tracking-wide">Öne Çıkan Koleksiyon</span>
             <Star className="w-6 h-6 text-gold-600 fill-gold-600" />
           </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Source Serif 4', serif" }}>
             Mücevher Ustasından Kalplere
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto product-description">

@@ -1,8 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
 
 const Footer = () => {
+  const navigate = useNavigate();
+
+  const handleNavClick = (path) => {
+    navigate(path);
+    setTimeout(() => window.scrollTo({ top: 0 }), 0);
+  };
   return (
     <footer className="bg-gradient-to-br from-burgundy-900 to-burgundy-800 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -32,19 +38,19 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">H{'\u0131'}zl{'\u0131'} Eri{'\u015f'}im</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-burgundy-100 hover:text-white transition-colors">
+                <button onClick={() => handleNavClick('/')} className="text-burgundy-100 hover:text-white transition-colors">
                   Ana Sayfa
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/hakkimizda" className="text-burgundy-100 hover:text-white transition-colors">
+                <button onClick={() => handleNavClick('/hakkimizda')} className="text-burgundy-100 hover:text-white transition-colors">
                   Hakk{'\u0131'}m{'\u0131'}zda
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/order-tracking" className="text-burgundy-100 hover:text-white transition-colors">
+                <button onClick={() => handleNavClick('/order-tracking')} className="text-burgundy-100 hover:text-white transition-colors">
                   Sipari{'\u015f'} Takibi
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
@@ -54,19 +60,19 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Yasal</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/teslimat-iade" className="text-burgundy-100 hover:text-white transition-colors" data-testid="footer-delivery-link">
+                <button onClick={() => handleNavClick('/teslimat-iade')} className="text-burgundy-100 hover:text-white transition-colors" data-testid="footer-delivery-link">
                   Teslimat ve {'\u0130'}ade {'\u015e'}artlar{'\u0131'}
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/gizlilik" className="text-burgundy-100 hover:text-white transition-colors" data-testid="footer-privacy-link">
+                <button onClick={() => handleNavClick('/gizlilik')} className="text-burgundy-100 hover:text-white transition-colors" data-testid="footer-privacy-link">
                   Gizlilik S{'\u00f6'}zle{'\u015f'}mesi
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/mesafeli-satis" className="text-burgundy-100 hover:text-white transition-colors" data-testid="footer-distance-sales-link">
+                <button onClick={() => handleNavClick('/mesafeli-satis')} className="text-burgundy-100 hover:text-white transition-colors" data-testid="footer-distance-sales-link">
                   Mesafeli Sat{'\u0131'}{'\u015f'} S{'\u00f6'}zle{'\u015f'}mesi
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
@@ -144,15 +150,15 @@ const Footer = () => {
               &copy; {new Date().getFullYear()} Zikra - Craponia Atelier. T{'\u00fc'}m haklar{'\u0131'} sakl{'\u0131'}d{'\u0131'}r.
             </p>
             <div className="flex items-center space-x-6">
-              <Link to="/gizlilik" className="text-burgundy-200 hover:text-white text-sm transition-colors">
-                Gizlilik Sozlesmesi
-              </Link>
-              <Link to="/mesafeli-satis" className="text-burgundy-200 hover:text-white text-sm transition-colors">
-                Mesafeli Satis Sozlesmesi
-              </Link>
-              <Link to="/teslimat-iade" className="text-burgundy-200 hover:text-white text-sm transition-colors">
+              <button onClick={() => handleNavClick('/gizlilik')} className="text-burgundy-200 hover:text-white text-sm transition-colors">
+                Gizlilik S{'\u00f6'}zle{'\u015f'}mesi
+              </button>
+              <button onClick={() => handleNavClick('/mesafeli-satis')} className="text-burgundy-200 hover:text-white text-sm transition-colors">
+                Mesafeli Sat{'\u0131'}{'\u015f'} S{'\u00f6'}zle{'\u015f'}mesi
+              </button>
+              <button onClick={() => handleNavClick('/teslimat-iade')} className="text-burgundy-200 hover:text-white text-sm transition-colors">
                 Teslimat ve {'\u0130'}ade
-              </Link>
+              </button>
             </div>
           </div>
         </div>

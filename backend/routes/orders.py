@@ -4,7 +4,7 @@ from routes.auth import get_current_user
 from database import db
 from typing import List, Optional
 from datetime import datetime, timezone
-from utils.email import send_shipping_notification
+from utils.email import send_shipping_notification, send_order_confirmation
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 
@@ -28,9 +28,13 @@ async def create_order(order_data: OrderCreate):
     order_dict = order.dict()
     await db.orders.insert_one(order_dict)
 
+    # Send order confirmation email
+    email_result = await send_order_confirmation(order_dict)
+
     return {
         "order": {k: v for k, v in order_dict.items() if k != "_id"},
-        "message": "Order created successfully. (MOCK: Payment system not yet configured)"
+        "message": "Siparisiniz basariyla olusturuldu.",
+        "email_notification": email_result,
     }
 
 @router.get("/track/{order_number}")

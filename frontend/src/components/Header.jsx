@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingCart, Globe, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 const Header = ({ selectedCountry }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { getCartCount } = useCart();
   const cartCount = getCartCount();
+
+  const handleNavClick = (path) => {
+    if (location.pathname === path) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate(path);
+      setTimeout(() => window.scrollTo({ top: 0 }), 0);
+    }
+  };
 
   return (
     <>
@@ -15,7 +25,7 @@ const Header = ({ selectedCountry }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+            <button onClick={() => handleNavClick('/')} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
               <div className="w-14 h-14 rounded-full overflow-hidden shadow-lg border-2 border-burgundy-600 cursor-pointer">
                 <img
                   src="https://customer-assets.emergentagent.com/job_web-clone-tool-12/artifacts/99jr70kx_logo.jpeg"
@@ -27,22 +37,22 @@ const Header = ({ selectedCountry }) => {
                 <h1 className="text-xl font-bold text-burgundy-900 elegant-script text-2xl cursor-pointer">Zikra</h1>
                 <p className="text-xs text-gray-600 brand-script">Craponia Atelier</p>
               </div>
-            </Link>
+            </button>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <Link to="/" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
+              <button onClick={() => handleNavClick('/')} className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
                 Ana Sayfa
-              </Link>
+              </button>
               <a href="/#products" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
                 {'\u00dc'}r{'\u00fc'}nler
               </a>
-              <Link to="/hakkimizda" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
+              <button onClick={() => handleNavClick('/hakkimizda')} className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
                 Hakk{'\u0131'}m{'\u0131'}zda
-              </Link>
-              <Link to="/order-tracking" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
+              </button>
+              <button onClick={() => handleNavClick('/order-tracking')} className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
                 Sipari{'\u015f'} Takibi
-              </Link>
+              </button>
             </nav>
 
             {/* Right Section */}
@@ -91,34 +101,30 @@ const Header = ({ selectedCountry }) => {
           {mobileMenuOpen && (
             <div className="md:hidden py-4 border-t border-gray-200">
               <nav className="flex flex-col space-y-3">
-                <Link
-                  to="/"
-                  className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
-                  onClick={() => setMobileMenuOpen(false)}
+                <button
+                  className="text-left text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
+                  onClick={() => { setMobileMenuOpen(false); handleNavClick('/'); }}
                 >
                   Ana Sayfa
-                </Link>
-                <Link
-                  to="/hakkimizda"
-                  className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
-                  onClick={() => setMobileMenuOpen(false)}
+                </button>
+                <button
+                  className="text-left text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
+                  onClick={() => { setMobileMenuOpen(false); handleNavClick('/hakkimizda'); }}
                 >
                   Hakk{'\u0131'}m{'\u0131'}zda
-                </Link>
-                <Link
-                  to="/teslimat-iade"
-                  className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
-                  onClick={() => setMobileMenuOpen(false)}
+                </button>
+                <button
+                  className="text-left text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
+                  onClick={() => { setMobileMenuOpen(false); handleNavClick('/teslimat-iade'); }}
                 >
                   Teslimat ve {'\u0130'}ade
-                </Link>
-                <Link
-                  to="/order-tracking"
-                  className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
-                  onClick={() => setMobileMenuOpen(false)}
+                </button>
+                <button
+                  className="text-left text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
+                  onClick={() => { setMobileMenuOpen(false); handleNavClick('/order-tracking'); }}
                 >
                   Sipari{'\u015f'} Takibi
-                </Link>
+                </button>
               </nav>
             </div>
           )}

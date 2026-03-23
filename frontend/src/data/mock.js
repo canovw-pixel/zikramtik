@@ -115,12 +115,11 @@ export const countries = [
   { code: "FR", name: "France", currency: "EUR", symbol: "€", flag: "🇫🇷", lang: "fr" },
   { code: "SA", name: "Saudi Arabia", currency: "SAR", symbol: "﷼", flag: "🇸🇦", lang: "ar" },
   { code: "AE", name: "United Arab Emirates", currency: "AED", symbol: "د.إ", flag: "🇦🇪", lang: "ar" },
-  { code: "ES", name: "España", currency: "EUR", symbol: "€", flag: "🇪🇸", lang: "es" },
   { code: "IT", name: "Italia", currency: "EUR", symbol: "€", flag: "🇮🇹", lang: "it" },
   { code: "NL", name: "Nederland", currency: "EUR", symbol: "€", flag: "🇳🇱", lang: "nl" },
-  { code: "BR", name: "Brasil", currency: "BRL", symbol: "R$", flag: "🇧🇷", lang: "pt" },
-  { code: "JP", name: "日本", currency: "JPY", symbol: "¥", flag: "🇯🇵", lang: "ja" },
-  { code: "CN", name: "中国", currency: "CNY", symbol: "¥", flag: "🇨🇳", lang: "zh" }
+  { code: "AZ", name: "Azerbaycan", currency: "AZN", symbol: "₼", flag: "🇦🇿", lang: "az" },
+  { code: "QA", name: "Qatar", currency: "QAR", symbol: "﷼", flag: "🇶🇦", lang: "ar" },
+  { code: "KW", name: "Kuwait", currency: "KWD", symbol: "د.ك", flag: "🇰🇼", lang: "ar" }
 ];
 
 export const heroContent = {

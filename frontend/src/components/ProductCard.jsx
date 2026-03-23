@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Heart } from 'lucide-react';
+import { formatPrice } from '../utils/format';
 
 const ProductCard = ({ product, selectedCountry }) => {
   const navigate = useNavigate();
@@ -8,10 +9,6 @@ const ProductCard = ({ product, selectedCountry }) => {
   const getPrice = (product) => {
     const countryPrice = product.prices?.[selectedCountry.code];
     return countryPrice?.price || 0;
-  };
-  
-  const formatPrice = (price) => {
-    return `${selectedCountry.symbol}${price}`;
   };
 
   const handleProductClick = () => {
@@ -65,7 +62,7 @@ const ProductCard = ({ product, selectedCountry }) => {
           <div>
             <p className="text-xs text-gray-500 mb-1">Fiyat</p>
             <p className="text-2xl font-bold text-burgundy-700">
-              {formatPrice(getPrice(product))}
+              {formatPrice(getPrice(product), selectedCountry.symbol)}
             </p>
           </div>
           

@@ -8,6 +8,7 @@ import { useCart } from '../context/CartContext';
 import { ordersAPI } from '../services/api';
 import { countries } from '../data/mock';
 import { toast } from '../hooks/use-toast';
+import { formatPrice } from '../utils/format';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -26,10 +27,6 @@ const Checkout = () => {
   });
 
   const totalAmount = getCartTotal();
-
-  const formatPrice = (price, symbol) => {
-    return `${symbol || selectedCountry.symbol}${price.toLocaleString()}`;
-  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

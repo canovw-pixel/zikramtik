@@ -8,6 +8,7 @@ import { ShoppingCart, Heart, ChevronLeft, ChevronRight, Star } from 'lucide-rea
 import { Button } from '../components/ui/button';
 import { useCart } from '../context/CartContext';
 import { toast } from '../hooks/use-toast';
+import { formatPrice } from '../utils/format';
 
 const ProductDetail = () => {
   const { productId } = useParams();
@@ -44,8 +45,8 @@ const ProductDetail = () => {
     return countryPrice?.price || 0;
   };
 
-  const formatPrice = (price) => {
-    return `${selectedCountry.symbol}${price.toLocaleString()}`;
+  const formatPriceLocal = (price) => {
+    return formatPrice(price, selectedCountry.symbol);
   };
 
   const handleAddToCart = () => {
@@ -195,7 +196,7 @@ const ProductDetail = () => {
                 <div>
                   <p className="text-sm text-gray-500 mb-1">Fiyat</p>
                   <p className="text-4xl font-bold text-burgundy-700">
-                    {formatPrice(getPrice())}
+                    {formatPriceLocal(getPrice())}
                   </p>
                 </div>
                 <div className="text-right">

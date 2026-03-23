@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
 import { ordersAPI } from '../services/api';
 import { countries } from '../data/mock';
+import { formatPrice } from '../utils/format';
 
 const OrderConfirmation = () => {
   const { orderId } = useParams();
@@ -71,7 +72,7 @@ const OrderConfirmation = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">Toplam</span>
                   <span className="font-bold text-burgundy-700 text-lg" data-testid="order-total">
-                    {order.currency} {order.total_amount?.toLocaleString()}
+                    {formatPrice(order.total_amount, order.currency + ' ')}
                   </span>
                 </div>
 
@@ -85,7 +86,7 @@ const OrderConfirmation = () => {
                           <p className="text-xs text-gray-500">{item.quantity} adet</p>
                         </div>
                         <p className="text-sm font-medium text-gray-900">
-                          {item.currency} {(item.price * item.quantity).toLocaleString()}
+                          {formatPrice(item.price * item.quantity, item.currency + ' ')}
                         </p>
                       </div>
                     ))}

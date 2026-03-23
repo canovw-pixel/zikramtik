@@ -8,6 +8,7 @@ import ProductModal from '../../components/ProductModal';
 import ConfirmDialog from '../../components/ConfirmDialog';
 import { getCargoTrackingUrl, CARGO_COMPANIES } from '../../utils/cargo';
 import ShippingLabel from '../../components/ShippingLabel';
+import { formatPrice } from '../../utils/format';
 
 const STATUS_MAP = {
   pending: { label: 'Beklemede', color: 'bg-amber-100 text-amber-700' },
@@ -357,7 +358,7 @@ const AdminDashboard = () => {
                           </div>
                           <div className="text-sm text-gray-600 space-y-1">
                             <p>{order.shipping_address?.full_name} - {order.shipping_address?.city}</p>
-                            <p className="font-semibold text-burgundy-700">{order.currency} {order.total_amount?.toLocaleString()}</p>
+                            <p className="font-semibold text-burgundy-700">{formatPrice(order.total_amount, order.currency + ' ')}</p>
                             <p className="text-xs text-gray-400">{formatDate(order.created_at)}</p>
                             {order.tracking_number && (
                               <p className="text-xs text-cyan-700">
@@ -423,7 +424,7 @@ const AdminDashboard = () => {
                               {order.products?.map((item, idx) => (
                                 <div key={idx} className="flex justify-between text-sm py-1">
                                   <span>{item.name} x{item.quantity}</span>
-                                  <span className="font-medium">{item.currency} {(item.price * item.quantity).toLocaleString()}</span>
+                                  <span className="font-medium">{formatPrice(item.price * item.quantity, item.currency + ' ')}</span>
                                 </div>
                               ))}
                             </div>

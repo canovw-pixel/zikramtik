@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
 import { useCart } from '../context/CartContext';
 import { countries } from '../data/mock';
+import { formatPrice } from '../utils/format';
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -13,10 +14,6 @@ const Cart = () => {
   const { cartItems, removeFromCart, updateQuantity, getCartTotal, getCartCount } = useCart();
 
   const totalAmount = getCartTotal();
-
-  const formatPrice = (price, symbol) => {
-    return `${symbol || selectedCountry.symbol}${price.toLocaleString()}`;
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">

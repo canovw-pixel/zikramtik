@@ -8,6 +8,7 @@ import { ordersAPI } from '../services/api';
 import { countries } from '../data/mock';
 import { toast } from '../hooks/use-toast';
 import { getCargoTrackingUrl } from '../utils/cargo';
+import { formatPrice } from '../utils/format';
 
 const STATUS_STEPS = {
   pending: { step: 1, label: 'Beklemede', icon: Clock, color: 'text-amber-600' },
@@ -185,14 +186,14 @@ const OrderTracking = () => {
                       <p className="text-sm font-medium text-gray-900">{item.name}</p>
                       <p className="text-xs text-gray-500">{item.quantity} adet</p>
                     </div>
-                    <p className="text-sm font-semibold text-gray-900">{item.currency} {(item.price * item.quantity).toLocaleString()}</p>
+                    <p className="text-sm font-semibold text-gray-900">{formatPrice(item.price * item.quantity, item.currency + ' ')}</p>
                   </div>
                 ))}
               </div>
 
               <div className="flex justify-between pt-3 border-t">
                 <span className="font-bold text-gray-900">Toplam</span>
-                <span className="font-bold text-burgundy-700 text-lg">{order.currency} {order.total_amount?.toLocaleString()}</span>
+                <span className="font-bold text-burgundy-700 text-lg">{formatPrice(order.total_amount, order.currency + ' ')}</span>
               </div>
 
               {order.shipping_address && (

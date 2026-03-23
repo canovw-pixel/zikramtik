@@ -7,6 +7,10 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
 import OrderTracking from './pages/OrderTracking';
+import Hakkimizda from './pages/Hakkimizda';
+import TeslimatIade from './pages/TeslimatIade';
+import GizlilikSozlesmesi from './pages/GizlilikSozlesmesi';
+import MesafeliSatis from './pages/MesafeliSatis';
 import AdminLogin from './pages/Admin/Login';
 import AdminDashboard from './pages/Admin/Dashboard';
 import { Toaster } from './components/ui/toaster';
@@ -23,6 +27,10 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
             <Route path="/order-tracking" element={<OrderTracking />} />
+            <Route path="/hakkimizda" element={<Hakkimizda />} />
+            <Route path="/teslimat-iade" element={<TeslimatIade />} />
+            <Route path="/gizlilik" element={<GizlilikSozlesmesi />} />
+            <Route path="/mesafeli-satis" element={<MesafeliSatis />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Routes>

@@ -31,17 +31,17 @@ const Header = ({ selectedCountry }) => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#home" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
+              <Link to="/" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
                 Ana Sayfa
+              </Link>
+              <a href="/#products" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
+                {'\u00dc'}r{'\u00fc'}nler
               </a>
-              <a href="#products" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
-                Ürünler
-              </a>
-              <a href="#about" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
-                Hakkımızda
-              </a>
+              <Link to="/hakkimizda" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
+                Hakk{'\u0131'}m{'\u0131'}zda
+              </Link>
               <Link to="/order-tracking" className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium">
-                Siparis Takibi
+                Sipari{'\u015f'} Takibi
               </Link>
             </nav>
 
@@ -91,48 +91,39 @@ const Header = ({ selectedCountry }) => {
           {mobileMenuOpen && (
             <div className="md:hidden py-4 border-t border-gray-200">
               <nav className="flex flex-col space-y-3">
-                <a
-                  href="#home"
+                <Link
+                  to="/"
                   className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Ana Sayfa
-                </a>
-                <a
-                  href="#products"
+                </Link>
+                <Link
+                  to="/hakkimizda"
                   className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Ürünler
-                </a>
-                <a
-                  href="#about"
+                  Hakk{'\u0131'}m{'\u0131'}zda
+                </Link>
+                <Link
+                  to="/teslimat-iade"
                   className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Hakkımızda
-                </a>
-                <a
-                  href="#contact"
-                  className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  İletişim
-                </a>
+                  Teslimat ve {'\u0130'}ade
+                </Link>
                 <Link
                   to="/order-tracking"
                   className="text-gray-700 hover:text-burgundy-700 transition-colors font-medium py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Siparis Takibi
+                  Sipari{'\u015f'} Takibi
                 </Link>
               </nav>
             </div>
           )}
         </div>
       </header>
-
-      {/* Country Selector Modal - removed, country auto-detected */}
     </>
   );
 };

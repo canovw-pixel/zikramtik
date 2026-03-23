@@ -7,7 +7,7 @@ import requests
 import os
 import uuid
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://craponia-commerce.preview.emergentagent.com')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://zikra-atelier.preview.emergentagent.com')
 
 # ============= AUTH FIXTURES =============
 @pytest.fixture(scope="module")

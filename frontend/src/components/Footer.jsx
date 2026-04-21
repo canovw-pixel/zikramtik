@@ -114,10 +114,10 @@ const Footer = () => {
         <div className="border-t border-burgundy-700 pt-8 mb-8">
           <div className="flex flex-col items-center space-y-4">
             <p className="text-burgundy-300 text-xs uppercase tracking-wider font-medium">G{'\u00fc'}venli {'\u00d6'}deme</p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-3">
               {/* Visa */}
-              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[72px] h-[46px] flex items-center justify-center" data-testid="visa-logo">
-                <svg viewBox="0 0 780 500" className="h-7 w-auto px-2">
+              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[76px] h-[48px] flex items-center justify-center" data-testid="visa-logo">
+                <svg viewBox="0 0 780 500" className="h-7 px-1" style={{width:'60px'}}>
                   <path d="M293.2 348.7l33.4-195.8h53.4l-33.4 195.8h-53.4z" fill="#1A1F71"/>
                   <path d="M538.3 159.4c-10.6-4-27.2-8.3-47.9-8.3-52.8 0-90 26.6-90.2 64.7-.3 28.2 26.5 43.9 46.8 53.3 20.8 9.6 27.8 15.8 27.7 24.4-.1 13.2-16.6 19.2-32 19.2-21.4 0-32.7-3-50.3-10.2l-6.9-3.1-7.5 43.8c12.5 5.5 35.6 10.2 59.6 10.5 56.2 0 92.7-26.3 93.1-67 .2-22.3-14-39.3-44.8-53.3-18.7-9.1-30.1-15.1-30-24.3 0-8.1 9.7-16.8 30.6-16.8 17.5-.3 30.1 3.5 40 7.5l4.8 2.3 7-42.7z" fill="#1A1F71"/>
                   <path d="M676.3 152.9h-41.3c-12.8 0-22.4 3.5-28 16.3l-79.4 179.5h56.2s9.2-24.2 11.3-29.5c6.1 0 60.9.1 68.7.1 1.6 6.9 6.5 29.4 6.5 29.4h49.7l-43.7-195.8zm-66.1 126.3c4.4-11.3 21.4-54.8 21.4-54.8-.3.5 4.4-11.4 7.1-18.8l3.6 17s10.3 47 12.4 56.6h-44.5z" fill="#1A1F71"/>
@@ -126,41 +126,54 @@ const Footer = () => {
                 </svg>
               </div>
               {/* Mastercard */}
-              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[72px] h-[46px] flex items-center justify-center" data-testid="mastercard-logo">
-                <svg viewBox="0 0 152 100" className="h-7 w-auto px-2">
+              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[76px] h-[48px] flex items-center justify-center" data-testid="mastercard-logo">
+                <svg viewBox="0 0 152 100" className="h-7" style={{width:'48px'}}>
                   <circle cx="50" cy="50" r="40" fill="#EB001B"/>
                   <circle cx="102" cy="50" r="40" fill="#F79E1B"/>
                   <path d="M76 19.4c12 9.7 19.7 24.4 19.7 40.6S88 90.9 76 100.6c-12-9.7-19.7-24.4-19.7-40.6S64 29.1 76 19.4z" fill="#FF5F00"/>
                 </svg>
               </div>
               {/* Troy */}
-              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[72px] h-[46px] flex items-center justify-center" data-testid="troy-logo">
-                <svg viewBox="0 0 120 46" className="h-6 w-auto px-1">
+              <div className="rounded-lg shadow-md hover:shadow-lg transition-shadow w-[76px] h-[48px] flex items-center justify-center overflow-hidden" data-testid="troy-logo">
+                <svg viewBox="0 0 200 120" className="w-full h-full">
                   <defs>
-                    <linearGradient id="troyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#00529B"/>
-                      <stop offset="100%" stopColor="#003DA5"/>
+                    <linearGradient id="troyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#1B3A6B"/>
+                      <stop offset="50%" stopColor="#003DA5"/>
+                      <stop offset="100%" stopColor="#0052CC"/>
+                    </linearGradient>
+                    <linearGradient id="troyAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#E31E24"/>
+                      <stop offset="100%" stopColor="#FF4747"/>
                     </linearGradient>
                   </defs>
-                  <rect x="2" y="2" width="116" height="42" rx="6" fill="url(#troyGrad)"/>
-                  <text x="60" y="30" textAnchor="middle" fontFamily="'Arial Black', Arial, sans-serif" fontWeight="900" fontSize="22" fill="white" letterSpacing="3">TROY</text>
+                  <rect width="200" height="120" fill="url(#troyGrad)"/>
+                  <rect x="0" y="0" width="200" height="4" fill="url(#troyAccent)"/>
+                  <text x="100" y="68" textAnchor="middle" fontFamily="'Arial Black', 'Helvetica Neue', Arial, sans-serif" fontWeight="900" fontSize="42" fill="white" letterSpacing="6">TROY</text>
+                  <text x="100" y="96" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="400" fontSize="14" fill="rgba(255,255,255,0.6)" letterSpacing="5">KART</text>
                 </svg>
               </div>
               {/* American Express */}
-              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[72px] h-[46px] flex items-center justify-center" data-testid="amex-logo">
-                <svg viewBox="0 0 120 80" className="h-7 w-auto px-1">
-                  <rect width="120" height="80" rx="8" fill="#006FCF"/>
-                  <text x="60" y="35" textAnchor="middle" fontFamily="'Arial', sans-serif" fontWeight="800" fontSize="16" fill="white" letterSpacing="1">AMERICAN</text>
-                  <text x="60" y="55" textAnchor="middle" fontFamily="'Arial', sans-serif" fontWeight="800" fontSize="16" fill="white" letterSpacing="1">EXPRESS</text>
+              <div className="rounded-lg shadow-md hover:shadow-lg transition-shadow w-[76px] h-[48px] flex items-center justify-center overflow-hidden" data-testid="amex-logo">
+                <svg viewBox="0 0 200 120" className="w-full h-full">
+                  <defs>
+                    <linearGradient id="amexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#016FD0"/>
+                      <stop offset="100%" stopColor="#0044A0"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="200" height="120" fill="url(#amexGrad)"/>
+                  <text x="100" y="50" textAnchor="middle" fontFamily="'Arial', sans-serif" fontWeight="800" fontSize="22" fill="white" letterSpacing="2">AMERICAN</text>
+                  <text x="100" y="80" textAnchor="middle" fontFamily="'Arial', sans-serif" fontWeight="800" fontSize="22" fill="white" letterSpacing="2">EXPRESS</text>
+                  <line x1="20" y1="58" x2="180" y2="58" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
                 </svg>
               </div>
               {/* PayTR */}
-              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[72px] h-[46px] flex items-center justify-center" data-testid="paytr-footer-logo">
-                <svg viewBox="0 0 120 46" className="h-6 w-auto px-1">
-                  <rect x="2" y="2" width="116" height="42" rx="6" fill="white" stroke="#e0e0e0" strokeWidth="1"/>
-                  <text x="38" y="30" textAnchor="middle" fontFamily="'Arial', sans-serif" fontWeight="700" fontSize="18" fill="#1a1a2e">Pay</text>
-                  <text x="80" y="30" textAnchor="middle" fontFamily="'Arial', sans-serif" fontWeight="900" fontSize="18" fill="#0066b3">TR</text>
-                  <circle cx="104" cy="14" r="4" fill="#00a651"/>
+              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[76px] h-[48px] flex items-center justify-center" data-testid="paytr-footer-logo">
+                <svg viewBox="0 0 200 120" className="w-full h-full" style={{padding:'8px'}}>
+                  <text x="72" y="72" textAnchor="middle" fontFamily="'Helvetica Neue', Arial, sans-serif" fontWeight="600" fontSize="40" fill="#1a1a2e">Pay</text>
+                  <text x="152" y="72" textAnchor="middle" fontFamily="'Helvetica Neue', Arial, sans-serif" fontWeight="800" fontSize="40" fill="#0066CC">TR</text>
+                  <circle cx="180" cy="30" r="8" fill="#00C853"/>
                 </svg>
               </div>
             </div>

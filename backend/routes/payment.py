@@ -22,7 +22,7 @@ MERCHANT_KEY = os.environ.get("PAYTR_MERCHANT_KEY")
 MERCHANT_SALT = os.environ.get("PAYTR_MERCHANT_SALT")
 OK_URL = os.environ.get("PAYTR_OK_URL", "https://zikramatik.com/odeme-basarili")
 FAIL_URL = os.environ.get("PAYTR_FAIL_URL", "https://zikramatik.com/odeme-basarisiz")
-TEST_MODE = os.environ.get("PAYTR_TEST_MODE", "1")
+TEST_MODE = os.environ.get("PAYTR_TEST_MODE", "0")
 
 
 class PaymentTokenRequest(BaseModel):

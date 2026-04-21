@@ -1,97 +1,66 @@
-# Craponia Atelier - Zikra Zikirmatik E-Commerce
+# Zikra E-Commerce - Product Requirements Document
 
-## Problem Statement
-Build an e-commerce website for "Craponia Atelier" brand selling "Zikra" zikirmatik products. Minimal, luxurious design with burgundy theme. Clone of reiskuyumculuk.com.
+## Original Problem Statement
+E-commerce website clone of reiskuyumculuk.com for "zikirmatik" product (Brand: Craponia Atelier, Model: Zikra). Minimal/luxurious design with burgundy theme, global sales with auto IP-based country detection for pricing, payment gateway, email notifications, and cargo API integration.
 
-## Live Site
-- **Domain:** https://zikramatik.com
-- **Admin:** https://zikramatik.com/admin/login (admin@zikra.com / admin123)
-- **VPS:** 89.252.185.130 (Guzelhosting TR-VPS-2, Ubuntu 22.04, 1 GB RAM)
-
-## Company Info
-- **Firma:** Craponia Mucevherat ve Hediyelik Esya
-- **Adres:** Alemdar Mahallesi Haci Tahsin Bey Sokak Dr. Haci Tahsin Bey Is Hani No:5/7 Fatih/Istanbul
-- **Telefon:** +90 553 076 60 00
-- **E-posta:** info@zikramatik.com
+## Core Requirements
+- Minimalist, elegant UI with burgundy theme
+- Admin panel for products, categories, and orders
+- Multi-image uploads and featured products
+- Global pricing (auto IP detection via ip-api.com)
+- PayTR Payment Gateway (iFrame API)
+- SMTP Email for order/cargo notifications
+- Yurtiçi Kargo & ShipEntegra integrations (Pending)
 
 ## Tech Stack
-- **Frontend:** React, TailwindCSS, react-router-dom, Context API, react-barcode
-- **Backend:** FastAPI, MongoDB (motor), JWT auth, SMTP email
-- **Deployment:** Ubuntu 22.04 VPS, Nginx, Systemd, Let's Encrypt SSL
+- Frontend: React, TailwindCSS, React Router
+- Backend: FastAPI, MongoDB (motor async), httpx
+- Payments: PayTR iFrame API with HMAC SHA256
+- Emails: Python smtplib + email.mime
+- Font: Source Serif 4
 
-## What's Been Implemented
-- [x] Full frontend UI (homepage, product detail, admin panel)
-- [x] Backend API (products CRUD, categories, auth, upload, orders)
-- [x] Admin panel with product management + order management
-- [x] Multi-image upload from local machine
-- [x] Country selector with dynamic pricing
-- [x] Shopping cart with CartContext + localStorage
-- [x] Checkout page with shipping form + customer email
-- [x] Admin order management - list, stats, filters, detail view
-- [x] Admin shipping modal - auto status change to "shipped"
-- [x] Cargo tracking URL links (Yurtici, Aras, MNG, PTT, UPS, DHL, FedEx)
-- [x] Printable shipping label with barcode
-- [x] Customer order tracking page /order-tracking
-- [x] VPS deployment completed - site live at zikramatik.com
-- [x] SSL certificate (Let's Encrypt) installed
-- [x] Localized Price Formatting (e.g., 1.250,00)
-- [x] Auto IP-based Geolocation (ip-api.com)
-- [x] Source Serif 4 font across all pages (replaced Cinzel)
-- [x] iyzico Criteria Pages (2026-03-23):
-  - Hakkimizda sayfasi (/hakkimizda)
-  - Teslimat ve Iade Sartlari (/teslimat-iade)
-  - Gizlilik Sozlesmesi (/gizlilik) - KVKK uyumlu
-  - Mesafeli Satis Sozlesmesi (/mesafeli-satis)
-  - Visa ve MasterCard logolari (footer)
-  - iyzico ile Ode logosu (footer)
-- [x] Updated header/footer navigation with scroll-to-top fix
-- [x] SMTP Email Integration (2026-03-23):
-  - Siparis onay e-postasi (musteri siparis verince otomatik)
-  - Kargo bildirim e-postasi (admin kargo bilgisi girince otomatik)
-  - Turkce, markali HTML sablon (Craponia Atelier temasi)
-  - SMTP: mail.zikramatik.com:465 SSL
-
-## Backlog (Prioritized)
-### P0 - Next Session
-- Yurtici Kargo API entegrasyonu (yurtici siparisler) - API bilgileri bekleniyor
-- ShipEntegra API entegrasyonu (yurtdisi siparisler) - API key bekleniyor
-- Siparis durum guncelleme e-postalari (kargoda, dagitimda, teslim edildi)
-- Teslimat durumunda otomatik e-posta bildirimi
-
-### P1
-- iyzico odeme entegrasyonu (iyzico basvuru onayi bekleniyor)
-
-### P2
-- Admin kategori yonetimi UI
-- Musteri hesap sistemi ve siparis gecmisi
-
-## Credentials
-- **Admin:** admin@zikra.com / admin123
-- **SMTP:** mail.zikramatik.com:465 / info@zikramatik.com / Desert56.
-- **Github Repo:** https://github.com/canovw-pixel/zikramtik.git
-
-## VPS Deploy Commands
-```bash
-# Build
-cd /var/www/zikra && git clone https://github.com/canovw-pixel/zikramtik.git tempX && cp -r tempX/frontend/src/* frontend/src/ && cp -r tempX/frontend/public/images frontend/public/ && cp -r tempX/backend/utils/* backend/utils/ && cp -r tempX/backend/routes/* backend/routes/ && rm -rf tempX && cd frontend && yarn build
-
-# Badge remove
-cd /var/www/zikra/frontend/build && python3 -c "
-html = open('index.html','r').read()
-start = html.find('<a')
-while start != -1:
-    if 'emergent-badge' in html[start:start+200]:
-        end = html.find('</a>', start) + 4
-        html = html[:start] + html[end:]
-        break
-    start = html.find('<a', start+1)
-open('index.html','w').write(html)
-print('Badge removed successfully')
-"
-
-# Backend restart (only if backend files changed)
-sudo systemctl restart zikra-backend
+## Architecture
+```
+/app
+├── backend
+│   ├── models/ (category.py, order.py, product.py, user.py)
+│   ├── routes/ (auth.py, categories.py, orders.py, products.py, upload.py, payment.py)
+│   ├── utils/ (email.py, auth.py)
+│   ├── database.py
+│   └── server.py
+├── frontend
+│   ├── public/images/ (logos: mastercard.png, paytr.png, troy.png)
+│   ├── src
+│   │   ├── components/ (Header, Footer, Hero, ProductCard, FeaturedProducts)
+│   │   ├── pages/ (Home, Cart, Checkout, OrderTracking, Hakkimizda, PaymentSuccess, PaymentFail)
+│   │   ├── services/ (api.js)
+│   │   └── App.js
 ```
 
-## Mocked Systems
-- **Payment:** Mock - orders created with status "pending" (iyzico entegrasyonu beklemede)
+## What's Been Implemented
+- [x] Full e-commerce UI with burgundy theme
+- [x] Admin panel (products, categories, orders CRUD)
+- [x] Multi-image product uploads
+- [x] IP-based geolocation pricing (ip-api.com)
+- [x] PayTR iFrame payment integration (test mode)
+- [x] SMTP email notifications (info@zikramatik.com)
+- [x] Legal pages (Hakkımızda, Teslimat/İade, Gizlilik, Mesafeli Satış)
+- [x] Source Serif 4 custom typography
+- [x] Scroll-to-top on navigation
+- [x] Footer with real payment logos (Mastercard, Troy, PayTR PNGs) - Updated 2026-04-21
+
+## Pending / Backlog
+- [ ] P1: Yurtiçi Kargo API Integration (needs API credentials from user)
+- [ ] P1: ShipEntegra API Integration (needs API key from user)
+
+## Key API Endpoints
+- POST /api/payment/get-token - PayTR iFrame token generation
+- POST /api/payment/callback - PayTR webhook
+- GET /api/payment/status/{order_id} - Payment status check
+
+## Known Limitations
+- Preview environment cannot send emails (DNS restriction on port 465/587) - works on user's VPS
+- PayTR currently in test mode (PAYTR_TEST_MODE=1)
+
+## Deployment
+User's VPS at zikramatik.com. Deploy via "Save to Github" then SSH commands on server.

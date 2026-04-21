@@ -126,32 +126,12 @@ const Footer = () => {
                 </svg>
               </div>
               {/* Mastercard */}
-              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[76px] h-[48px] flex items-center justify-center" data-testid="mastercard-logo">
-                <svg viewBox="0 0 152 100" className="h-7" style={{width:'48px'}}>
-                  <circle cx="50" cy="50" r="40" fill="#EB001B"/>
-                  <circle cx="102" cy="50" r="40" fill="#F79E1B"/>
-                  <path d="M76 19.4c12 9.7 19.7 24.4 19.7 40.6S88 90.9 76 100.6c-12-9.7-19.7-24.4-19.7-40.6S64 29.1 76 19.4z" fill="#FF5F00"/>
-                </svg>
+              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[76px] h-[48px] flex items-center justify-center p-1.5" data-testid="mastercard-logo">
+                <img src="/images/mastercard.png" alt="Mastercard" className="max-h-full max-w-full object-contain" />
               </div>
               {/* Troy */}
-              <div className="rounded-lg shadow-md hover:shadow-lg transition-shadow w-[76px] h-[48px] flex items-center justify-center overflow-hidden" data-testid="troy-logo">
-                <svg viewBox="0 0 200 120" className="w-full h-full">
-                  <defs>
-                    <linearGradient id="troyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#1B3A6B"/>
-                      <stop offset="50%" stopColor="#003DA5"/>
-                      <stop offset="100%" stopColor="#0052CC"/>
-                    </linearGradient>
-                    <linearGradient id="troyAccent" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#E31E24"/>
-                      <stop offset="100%" stopColor="#FF4747"/>
-                    </linearGradient>
-                  </defs>
-                  <rect width="200" height="120" fill="url(#troyGrad)"/>
-                  <rect x="0" y="0" width="200" height="4" fill="url(#troyAccent)"/>
-                  <text x="100" y="68" textAnchor="middle" fontFamily="'Arial Black', 'Helvetica Neue', Arial, sans-serif" fontWeight="900" fontSize="42" fill="white" letterSpacing="6">TROY</text>
-                  <text x="100" y="96" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="400" fontSize="14" fill="rgba(255,255,255,0.6)" letterSpacing="5">KART</text>
-                </svg>
+              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[76px] h-[48px] flex items-center justify-center p-1.5" data-testid="troy-logo">
+                <img src="/images/troy.png" alt="Troy" className="max-h-full max-w-full object-contain" />
               </div>
               {/* American Express */}
               <div className="rounded-lg shadow-md hover:shadow-lg transition-shadow w-[76px] h-[48px] flex items-center justify-center overflow-hidden" data-testid="amex-logo">
@@ -169,12 +149,8 @@ const Footer = () => {
                 </svg>
               </div>
               {/* PayTR */}
-              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[76px] h-[48px] flex items-center justify-center" data-testid="paytr-footer-logo">
-                <svg viewBox="0 0 200 120" className="w-full h-full" style={{padding:'8px'}}>
-                  <text x="72" y="72" textAnchor="middle" fontFamily="'Helvetica Neue', Arial, sans-serif" fontWeight="600" fontSize="40" fill="#1a1a2e">Pay</text>
-                  <text x="152" y="72" textAnchor="middle" fontFamily="'Helvetica Neue', Arial, sans-serif" fontWeight="800" fontSize="40" fill="#0066CC">TR</text>
-                  <circle cx="180" cy="30" r="8" fill="#00C853"/>
-                </svg>
+              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[76px] h-[48px] flex items-center justify-center p-1.5" data-testid="paytr-footer-logo">
+                <img src="/images/paytr.png" alt="PayTR" className="max-h-full max-w-full object-contain" />
               </div>
             </div>
           </div>

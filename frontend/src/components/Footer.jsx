@@ -135,6 +135,21 @@ const Footer = () => {
               <div className="bg-white rounded-lg px-4 py-2 flex items-center justify-center" data-testid="paytr-footer-logo">
                 <span style={{ fontWeight: 'bold', fontSize: '16px', color: '#00a651', letterSpacing: '1px' }}>Pay<span style={{ color: '#0066b3' }}>TR</span></span>
               </div>
+              {/* Troy Logo */}
+              <div className="bg-white rounded-lg px-4 py-2 flex items-center justify-center" data-testid="troy-logo">
+                <svg viewBox="0 0 200 80" className="h-8 w-auto">
+                  <rect width="200" height="80" rx="8" fill="white"/>
+                  <text x="100" y="48" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="32" fill="#003DA5">TROY</text>
+                </svg>
+              </div>
+              {/* American Express Logo */}
+              <div className="bg-white rounded-lg px-4 py-2 flex items-center justify-center" data-testid="amex-logo">
+                <svg viewBox="0 0 780 500" className="h-8 w-auto">
+                  <rect width="780" height="500" rx="40" fill="#006FCF"/>
+                  <text x="390" y="230" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="80" fill="white">AMERICAN</text>
+                  <text x="390" y="330" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="80" fill="white">EXPRESS</text>
+                </svg>
+              </div>
             </div>
           </div>
         </div>

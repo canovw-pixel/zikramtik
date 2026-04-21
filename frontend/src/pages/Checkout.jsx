@@ -20,6 +20,7 @@ const Checkout = () => {
   const [showPayment, setShowPayment] = useState(false);
   const [iframeUrl, setIframeUrl] = useState('');
   const [currentOrderId, setCurrentOrderId] = useState('');
+  const [tlEquivalent, setTlEquivalent] = useState(null);
   const iframeRef = useRef(null);
 
   useEffect(() => {
@@ -37,6 +38,18 @@ const Checkout = () => {
   });
 
   const totalAmount = getCartTotal();
+
+  // Fetch TL equivalent when currency is not TRY
+  useEffect(() => {
+    const currency = cartItems[0]?.currency;
+    if (currency && currency !== 'TRY' && currency !== 'TL' && totalAmount > 0) {
+      paymentAPI.convertToTL(totalAmount, currency)
+        .then(resp => setTlEquivalent(resp.data))
+        .catch(() => setTlEquivalent(null));
+    } else {
+      setTlEquivalent(null);
+    }
+  }, [totalAmount, cartItems]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -143,6 +156,24 @@ const Checkout = () => {
     return () => clearInterval(interval);
   }, [showPayment, currentOrderId, clearCart, navigate]);
 
+  // Load PayTR iFrameResizer script when payment iframe is shown
+  useEffect(() => {
+    if (showPayment && iframeUrl) {
+      const script = document.createElement('script');
+      script.src = 'https://www.paytr.com/js/iframeResizer.min.js';
+      script.async = true;
+      script.onload = () => {
+        if (window.iFrameResize) {
+          window.iFrameResize({}, '#paytriframe');
+        }
+      };
+      document.body.appendChild(script);
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, [showPayment, iframeUrl]);
+
   if (cartItems.length === 0 && !showPayment) {
     return (
       <div className="min-h-screen bg-gray-50">
@@ -162,24 +193,6 @@ const Checkout = () => {
       </div>
     );
   }
-
-  // Load PayTR iFrameResizer script when payment iframe is shown
-  useEffect(() => {
-    if (showPayment && iframeUrl) {
-      const script = document.createElement('script');
-      script.src = 'https://www.paytr.com/js/iframeResizer.min.js';
-      script.async = true;
-      script.onload = () => {
-        if (window.iFrameResize) {
-          window.iFrameResize({}, '#paytriframe');
-        }
-      };
-      document.body.appendChild(script);
-      return () => {
-        document.body.removeChild(script);
-      };
-    }
-  }, [showPayment, iframeUrl]);
 
   if (showPayment && iframeUrl) {
     return (
@@ -320,6 +333,19 @@ const Checkout = () => {
                       {formatPrice(totalAmount, cartItems[0]?.symbol)}
                     </span>
                   </div>
+                  {tlEquivalent && (
+                    <div className="bg-burgundy-50 rounded-lg p-3 text-center" data-testid="tl-equivalent">
+                      <p className="text-sm text-gray-600">
+                        {"PayTR \u00FCzerinden tahsil edilecek tutar:"}
+                      </p>
+                      <p className="text-lg font-bold text-burgundy-700">
+                        {`${tlEquivalent.tl_formatted} \u20BA`}
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        {"(Anl\u0131k d\u00F6viz kuru ile hesaplanm\u0131\u015Ft\u0131r)"}
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <Button

@@ -55,6 +55,7 @@ export const ordersAPI = {
 export const paymentAPI = {
   getToken: (data) => api.post('/payment/get-token', data),
   checkStatus: (orderId) => api.get(`/payment/status/${orderId}`),
+  convertToTL: (amount, currency) => api.get(`/payment/convert-to-tl`, { params: { amount, currency } }),
 };
 
 // Upload API

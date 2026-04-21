@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from database import db
 from datetime import datetime, timezone
 from utils.email import send_order_confirmation
+from utils.currency import convert_to_tl
 import hashlib
 import hmac
 import base64
@@ -42,38 +43,34 @@ async def get_paytr_token(req: PaymentTokenRequest):
     # Build user_basket JSON array
     # Format: [[name, unit_price_TL, quantity], ...]
     # Price must be in TL (NOT kuruş), as a string
+    order_currency = order.get("currency", "TRY")
     basket_items = []
     for item in order.get("products", []):
         name = item.get("name", "Urun")
-        # Price in TL as string (e.g. "18.00"), NOT multiplied by 100
-        price_tl = f"{float(item.get('price', 0)):.2f}"
+        # Convert item price to TL
+        item_price = float(item.get("price", 0))
+        item_price_tl = await convert_to_tl(item_price, order_currency)
+        price_tl = f"{item_price_tl:.2f}"
         qty = int(item.get("quantity", 1))
         basket_items.append([name, price_tl, qty])
     user_basket = base64.b64encode(json.dumps(basket_items).encode()).decode()
 
-    # Payment amount (amount * 100) — works for all currencies
-    payment_amount = int(round(float(order.get("total_amount", 0)) * 100))
+    # Convert total amount to TL
+    total_amount_original = float(order.get("total_amount", 0))
+    total_amount_tl = await convert_to_tl(total_amount_original, order_currency)
+
+    # Payment amount in kuruş (TL * 100)
+    payment_amount = int(round(total_amount_tl * 100))
     merchant_oid = order.get("order_number", req.order_id)
     email = order.get("customer_email") or "musteri@zikramatik.com"
     user_ip = req.user_ip
 
-    # Map order currency to PayTR supported currency codes
-    # PayTR supports: TL, USD, EUR, GBP, RUB
-    order_currency = order.get("currency", "TRY")
-    currency_map = {
-        "TRY": "TL",
-        "TL": "TL",
-        "USD": "USD",
-        "EUR": "EUR",
-        "GBP": "GBP",
-        "RUB": "RUB",
-    }
-    currency = currency_map.get(order_currency, "USD")  # Default to USD for unsupported currencies
-    if order_currency not in currency_map:
-        logger.warning(f"Unsupported currency {order_currency} for order {merchant_oid}, falling back to USD")
-
+    # Always charge in TL
+    currency = "TL"
     no_installment = "1"  # 1 = no installments (tek cekim)
     max_installment = "0"  # 0 = no installments
+
+    logger.info(f"Order {merchant_oid}: {total_amount_original} {order_currency} -> {total_amount_tl} TL ({payment_amount} kurus)")
 
     # Generate token hash per PayTR docs:
     # hash_str = merchant_id + user_ip + merchant_oid + email + payment_amount + user_basket + no_installment + max_installment + currency + test_mode
@@ -110,7 +107,7 @@ async def get_paytr_token(req: PaymentTokenRequest):
         "lang": "tr",
     }
 
-    logger.info(f"PayTR token request for order {merchant_oid}, amount: {payment_amount} kurus, ip: {user_ip}")
+    logger.info(f"PayTR token request for order {merchant_oid}, amount: {payment_amount} kurus ({total_amount_original} {order_currency} -> {total_amount_tl} TL), ip: {user_ip}")
 
     try:
         async with httpx.AsyncClient(timeout=30) as client:
@@ -227,4 +224,16 @@ async def check_payment_status(order_id: str):
         "order_number": order.get("order_number"),
         "payment_status": order.get("payment_status"),
         "status": order.get("status"),
+    }
+
+
+@router.get("/convert-to-tl")
+async def convert_amount_to_tl(amount: float, currency: str):
+    """Convert any currency amount to TL for display purposes"""
+    tl_amount = await convert_to_tl(amount, currency)
+    return {
+        "original_amount": amount,
+        "original_currency": currency,
+        "tl_amount": tl_amount,
+        "tl_formatted": f"{tl_amount:,.2f}",
     }

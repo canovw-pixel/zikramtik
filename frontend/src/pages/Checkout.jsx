@@ -163,6 +163,24 @@ const Checkout = () => {
     );
   }
 
+  // Load PayTR iFrameResizer script when payment iframe is shown
+  useEffect(() => {
+    if (showPayment && iframeUrl) {
+      const script = document.createElement('script');
+      script.src = 'https://www.paytr.com/js/iframeResizer.min.js';
+      script.async = true;
+      script.onload = () => {
+        if (window.iFrameResize) {
+          window.iFrameResize({}, '#paytriframe');
+        }
+      };
+      document.body.appendChild(script);
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, [showPayment, iframeUrl]);
+
   if (showPayment && iframeUrl) {
     return (
       <div className="min-h-screen bg-gray-50">
@@ -182,8 +200,8 @@ const Checkout = () => {
               src={iframeUrl}
               id="paytriframe"
               frameBorder="0"
-              scrolling="yes"
-              style={{ width: '100%', minHeight: '600px', border: 'none' }}
+              scrolling="no"
+              style={{ width: '100%', border: 'none' }}
               data-testid="paytr-iframe"
               title="PayTR Payment"
             />

@@ -114,40 +114,53 @@ const Footer = () => {
         <div className="border-t border-burgundy-700 pt-8 mb-8">
           <div className="flex flex-col items-center space-y-4">
             <p className="text-burgundy-300 text-xs uppercase tracking-wider font-medium">G{'\u00fc'}venli {'\u00d6'}deme</p>
-            <div className="flex flex-wrap items-center justify-center gap-6">
-              {/* Visa Logo */}
-              <div className="bg-white rounded-lg px-4 py-2 flex items-center justify-center" data-testid="visa-logo">
-                <svg viewBox="0 0 780 500" className="h-8 w-auto">
-                  <path d="M293.2 348.7l33.4-195.8h53.4l-33.4 195.8h-53.4zM538.3 159.4c-10.6-4-27.2-8.3-47.9-8.3-52.8 0-90 26.6-90.2 64.7-.3 28.2 26.5 43.9 46.8 53.3 20.8 9.6 27.8 15.8 27.7 24.4-.1 13.2-16.6 19.2-32 19.2-21.4 0-32.7-3-50.3-10.2l-6.9-3.1-7.5 43.8c12.5 5.5 35.6 10.2 59.6 10.5 56.2 0 92.7-26.3 93.1-67 .2-22.3-14-39.3-44.8-53.3-18.7-9.1-30.1-15.1-30-24.3 0-8.1 9.7-16.8 30.6-16.8 17.5-.3 30.1 3.5 40 7.5l4.8 2.3 7-42.7zM676.3 152.9h-41.3c-12.8 0-22.4 3.5-28 16.3l-79.4 179.5h56.2s9.2-24.2 11.3-29.5c6.1 0 60.9.1 68.7.1 1.6 6.9 6.5 29.4 6.5 29.4h49.7l-43.7-195.8zm-66.1 126.3c4.4-11.3 21.4-54.8 21.4-54.8-.3.5 4.4-11.4 7.1-18.8l3.6 17s10.3 47 12.4 56.6h-44.5zM232.8 152.9l-52.3 133.5-5.6-27.1c-9.7-31.2-39.9-65-73.7-82l47.9 171.2 56.6-.1 84.2-195.5h-57.1" fill="#1A1F71"/>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              {/* Visa */}
+              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[72px] h-[46px] flex items-center justify-center" data-testid="visa-logo">
+                <svg viewBox="0 0 780 500" className="h-7 w-auto px-2">
+                  <path d="M293.2 348.7l33.4-195.8h53.4l-33.4 195.8h-53.4z" fill="#1A1F71"/>
+                  <path d="M538.3 159.4c-10.6-4-27.2-8.3-47.9-8.3-52.8 0-90 26.6-90.2 64.7-.3 28.2 26.5 43.9 46.8 53.3 20.8 9.6 27.8 15.8 27.7 24.4-.1 13.2-16.6 19.2-32 19.2-21.4 0-32.7-3-50.3-10.2l-6.9-3.1-7.5 43.8c12.5 5.5 35.6 10.2 59.6 10.5 56.2 0 92.7-26.3 93.1-67 .2-22.3-14-39.3-44.8-53.3-18.7-9.1-30.1-15.1-30-24.3 0-8.1 9.7-16.8 30.6-16.8 17.5-.3 30.1 3.5 40 7.5l4.8 2.3 7-42.7z" fill="#1A1F71"/>
+                  <path d="M676.3 152.9h-41.3c-12.8 0-22.4 3.5-28 16.3l-79.4 179.5h56.2s9.2-24.2 11.3-29.5c6.1 0 60.9.1 68.7.1 1.6 6.9 6.5 29.4 6.5 29.4h49.7l-43.7-195.8zm-66.1 126.3c4.4-11.3 21.4-54.8 21.4-54.8-.3.5 4.4-11.4 7.1-18.8l3.6 17s10.3 47 12.4 56.6h-44.5z" fill="#1A1F71"/>
+                  <path d="M232.8 152.9l-52.3 133.5-5.6-27.1c-9.7-31.2-39.9-65-73.7-82l47.9 171.2 56.6-.1 84.2-195.5h-57.1" fill="#1A1F71"/>
                   <path d="M124.7 152.9H38.2l-.7 4c67 16.2 111.3 55.4 129.7 102.5l-18.7-90.2c-3.2-12.4-12.8-15.9-24.8-16.3" fill="#F9A533"/>
                 </svg>
               </div>
-              {/* Mastercard Logo */}
-              <div className="bg-white rounded-lg px-4 py-2 flex items-center justify-center" data-testid="mastercard-logo">
-                <svg viewBox="0 0 780 500" className="h-8 w-auto">
-                  <rect width="780" height="500" rx="40" fill="white"/>
-                  <circle cx="312" cy="250" r="150" fill="#EB001B"/>
-                  <circle cx="468" cy="250" r="150" fill="#F79E1B"/>
-                  <path d="M390 130.7c38.6 31.3 63.3 78.6 63.3 131.3s-24.7 100-63.3 131.3c-38.6-31.3-63.3-78.6-63.3-131.3s24.7-100 63.3-131.3z" fill="#FF5F00"/>
+              {/* Mastercard */}
+              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[72px] h-[46px] flex items-center justify-center" data-testid="mastercard-logo">
+                <svg viewBox="0 0 152 100" className="h-7 w-auto px-2">
+                  <circle cx="50" cy="50" r="40" fill="#EB001B"/>
+                  <circle cx="102" cy="50" r="40" fill="#F79E1B"/>
+                  <path d="M76 19.4c12 9.7 19.7 24.4 19.7 40.6S88 90.9 76 100.6c-12-9.7-19.7-24.4-19.7-40.6S64 29.1 76 19.4z" fill="#FF5F00"/>
                 </svg>
               </div>
-              {/* PayTR Logo */}
-              <div className="bg-white rounded-lg px-4 py-2 flex items-center justify-center" data-testid="paytr-footer-logo">
-                <span style={{ fontWeight: 'bold', fontSize: '16px', color: '#00a651', letterSpacing: '1px' }}>Pay<span style={{ color: '#0066b3' }}>TR</span></span>
-              </div>
-              {/* Troy Logo */}
-              <div className="bg-white rounded-lg px-4 py-2 flex items-center justify-center" data-testid="troy-logo">
-                <svg viewBox="0 0 200 80" className="h-8 w-auto">
-                  <rect width="200" height="80" rx="8" fill="white"/>
-                  <text x="100" y="48" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="32" fill="#003DA5">TROY</text>
+              {/* Troy */}
+              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[72px] h-[46px] flex items-center justify-center" data-testid="troy-logo">
+                <svg viewBox="0 0 120 46" className="h-6 w-auto px-1">
+                  <defs>
+                    <linearGradient id="troyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#00529B"/>
+                      <stop offset="100%" stopColor="#003DA5"/>
+                    </linearGradient>
+                  </defs>
+                  <rect x="2" y="2" width="116" height="42" rx="6" fill="url(#troyGrad)"/>
+                  <text x="60" y="30" textAnchor="middle" fontFamily="'Arial Black', Arial, sans-serif" fontWeight="900" fontSize="22" fill="white" letterSpacing="3">TROY</text>
                 </svg>
               </div>
-              {/* American Express Logo */}
-              <div className="bg-white rounded-lg px-4 py-2 flex items-center justify-center" data-testid="amex-logo">
-                <svg viewBox="0 0 780 500" className="h-8 w-auto">
-                  <rect width="780" height="500" rx="40" fill="#006FCF"/>
-                  <text x="390" y="230" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="80" fill="white">AMERICAN</text>
-                  <text x="390" y="330" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="80" fill="white">EXPRESS</text>
+              {/* American Express */}
+              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[72px] h-[46px] flex items-center justify-center" data-testid="amex-logo">
+                <svg viewBox="0 0 120 80" className="h-7 w-auto px-1">
+                  <rect width="120" height="80" rx="8" fill="#006FCF"/>
+                  <text x="60" y="35" textAnchor="middle" fontFamily="'Arial', sans-serif" fontWeight="800" fontSize="16" fill="white" letterSpacing="1">AMERICAN</text>
+                  <text x="60" y="55" textAnchor="middle" fontFamily="'Arial', sans-serif" fontWeight="800" fontSize="16" fill="white" letterSpacing="1">EXPRESS</text>
+                </svg>
+              </div>
+              {/* PayTR */}
+              <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-[72px] h-[46px] flex items-center justify-center" data-testid="paytr-footer-logo">
+                <svg viewBox="0 0 120 46" className="h-6 w-auto px-1">
+                  <rect x="2" y="2" width="116" height="42" rx="6" fill="white" stroke="#e0e0e0" strokeWidth="1"/>
+                  <text x="38" y="30" textAnchor="middle" fontFamily="'Arial', sans-serif" fontWeight="700" fontSize="18" fill="#1a1a2e">Pay</text>
+                  <text x="80" y="30" textAnchor="middle" fontFamily="'Arial', sans-serif" fontWeight="900" fontSize="18" fill="#0066b3">TR</text>
+                  <circle cx="104" cy="14" r="4" fill="#00a651"/>
                 </svg>
               </div>
             </div>

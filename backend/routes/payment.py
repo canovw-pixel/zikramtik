@@ -51,14 +51,29 @@ async def get_paytr_token(req: PaymentTokenRequest):
         basket_items.append([name, price_tl, qty])
     user_basket = base64.b64encode(json.dumps(basket_items).encode()).decode()
 
-    # Payment amount in kuruş (TL * 100)
+    # Payment amount (amount * 100) — works for all currencies
     payment_amount = int(round(float(order.get("total_amount", 0)) * 100))
     merchant_oid = order.get("order_number", req.order_id)
     email = order.get("customer_email") or "musteri@zikramatik.com"
     user_ip = req.user_ip
-    currency = "TL"
-    no_installment = "0"  # 0 = show installments, 1 = no installments
-    max_installment = "4"  # Max 4 taksit for kuyum
+
+    # Map order currency to PayTR supported currency codes
+    # PayTR supports: TL, USD, EUR, GBP, RUB
+    order_currency = order.get("currency", "TRY")
+    currency_map = {
+        "TRY": "TL",
+        "TL": "TL",
+        "USD": "USD",
+        "EUR": "EUR",
+        "GBP": "GBP",
+        "RUB": "RUB",
+    }
+    currency = currency_map.get(order_currency, "USD")  # Default to USD for unsupported currencies
+    if order_currency not in currency_map:
+        logger.warning(f"Unsupported currency {order_currency} for order {merchant_oid}, falling back to USD")
+
+    no_installment = "1"  # 1 = no installments (tek cekim)
+    max_installment = "0"  # 0 = no installments
 
     # Generate token hash per PayTR docs:
     # hash_str = merchant_id + user_ip + merchant_oid + email + payment_amount + user_basket + no_installment + max_installment + currency + test_mode

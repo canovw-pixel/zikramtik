@@ -131,13 +131,9 @@ const Footer = () => {
                   <path d="M390 130.7c38.6 31.3 63.3 78.6 63.3 131.3s-24.7 100-63.3 131.3c-38.6-31.3-63.3-78.6-63.3-131.3s24.7-100 63.3-131.3z" fill="#FF5F00"/>
                 </svg>
               </div>
-              {/* iyzico Footer Logo */}
-              <div className="flex items-center justify-center" data-testid="iyzico-footer-logo">
-                <img 
-                  src="/images/iyzico-footer-white.svg" 
-                  alt="iyzico ile Ode" 
-                  className="h-8 w-auto"
-                />
+              {/* PayTR Logo */}
+              <div className="bg-white rounded-lg px-4 py-2 flex items-center justify-center" data-testid="paytr-footer-logo">
+                <span style={{ fontWeight: 'bold', fontSize: '16px', color: '#00a651', letterSpacing: '1px' }}>Pay<span style={{ color: '#0066b3' }}>TR</span></span>
               </div>
             </div>
           </div>

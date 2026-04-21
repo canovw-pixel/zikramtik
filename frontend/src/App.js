@@ -11,6 +11,8 @@ import Hakkimizda from './pages/Hakkimizda';
 import TeslimatIade from './pages/TeslimatIade';
 import GizlilikSozlesmesi from './pages/GizlilikSozlesmesi';
 import MesafeliSatis from './pages/MesafeliSatis';
+import PaymentSuccess from './pages/PaymentSuccess';
+import PaymentFail from './pages/PaymentFail';
 import AdminLogin from './pages/Admin/Login';
 import AdminDashboard from './pages/Admin/Dashboard';
 import { Toaster } from './components/ui/toaster';
@@ -31,6 +33,8 @@ function App() {
             <Route path="/teslimat-iade" element={<TeslimatIade />} />
             <Route path="/gizlilik" element={<GizlilikSozlesmesi />} />
             <Route path="/mesafeli-satis" element={<MesafeliSatis />} />
+            <Route path="/odeme-basarili" element={<PaymentSuccess />} />
+            <Route path="/odeme-basarisiz" element={<PaymentFail />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Routes>

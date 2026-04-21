@@ -51,6 +51,12 @@ export const ordersAPI = {
   updateShipping: (id, data) => api.put(`/orders/${id}/shipping`, data),
 };
 
+// Payment API
+export const paymentAPI = {
+  getToken: (data) => api.post('/payment/get-token', data),
+  checkStatus: (orderId) => api.get(`/payment/status/${orderId}`),
+};
+
 // Upload API
 export const uploadAPI = {
   uploadImages: async (files) => {

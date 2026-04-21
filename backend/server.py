@@ -7,7 +7,7 @@ import logging
 from pathlib import Path
 
 # Import routes
-from routes import auth, categories, products, orders, upload
+from routes import auth, categories, products, orders, upload, payment
 from database import client
 
 ROOT_DIR = Path(__file__).parent
@@ -37,6 +37,7 @@ api_router.include_router(categories.router)
 api_router.include_router(products.router)
 api_router.include_router(orders.router)
 api_router.include_router(upload.router)
+api_router.include_router(payment.router)
 
 # Include the router in the main app
 app.include_router(api_router)

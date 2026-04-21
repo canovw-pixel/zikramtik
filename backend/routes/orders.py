@@ -28,13 +28,9 @@ async def create_order(order_data: OrderCreate):
     order_dict = order.dict()
     await db.orders.insert_one(order_dict)
 
-    # Send order confirmation email
-    email_result = await send_order_confirmation(order_dict)
-
     return {
         "order": {k: v for k, v in order_dict.items() if k != "_id"},
-        "message": "Siparisiniz basariyla olusturuldu.",
-        "email_notification": email_result,
+        "message": "Siparisiniz olusturuldu. Odeme bekleniyor.",
     }
 
 @router.get("/track/{order_number}")

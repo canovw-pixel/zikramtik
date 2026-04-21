@@ -117,7 +117,7 @@ const MesafeliSatis = () => {
                 Madde 6 - {'\u00d6'}deme {'\u015e'}ekli
               </h2>
               <p>
-                {'\u00d6'}deme, iyzico g{'\u00fc'}venli {'\u00f6'}deme altyap{'\u0131'}s{'\u0131'} {'\u00fc'}zerinden kredi kart{'\u0131'}/banka kart{'\u0131'} 
+                {'\u00d6'}deme, PayTR g{'\u00fc'}venli {'\u00f6'}deme altyap{'\u0131'}s{'\u0131'} {'\u00fc'}zerinden kredi kart{'\u0131'}/banka kart{'\u0131'} 
                 ile yap{'\u0131'}lmaktad{'\u0131'}r. {'\u00d6'}deme i{'\u015f'}lemi s{'\u0131'}ras{'\u0131'}nda kart bilgileriniz {'\u015f'}ifrelenmi{'\u015f'} 
                 olarak iletilir ve firmam{'\u0131'}z taraf{'\u0131'}ndan saklanmaz.
               </p>

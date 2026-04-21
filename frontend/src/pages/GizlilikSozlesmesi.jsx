@@ -54,7 +54,7 @@ const GizlilikSozlesmesi = () => {
               <ul className="list-disc pl-6 space-y-2">
                 <li><span className="font-semibold">Kimlik Bilgileri:</span> Ad, soyad</li>
                 <li><span className="font-semibold">{'\u0130'}leti{'\u015f'}im Bilgileri:</span> E-posta adresi, telefon numaras{'\u0131'}, teslimat adresi</li>
-                <li><span className="font-semibold">Sipari{'\u015f'} Bilgileri:</span> Sipari{'\u015f'} ge{'\u00e7'}mi{'\u015f'}i, {'\u00f6'}deme bilgileri (kart bilgileri taraf{'\u0131'}m{'\u0131'}zca saklanmaz, iyzico taraf{'\u0131'}ndan g{'\u00fc'}venli {'\u015f'}ekilde i{'\u015f'}lenir)</li>
+                <li><span className="font-semibold">Sipari{'\u015f'} Bilgileri:</span> Sipari{'\u015f'} ge{'\u00e7'}mi{'\u015f'}i, {'\u00f6'}deme bilgileri (kart bilgileri taraf{'\u0131'}m{'\u0131'}zca saklanmaz, PayTR taraf{'\u0131'}ndan g{'\u00fc'}venli {'\u015f'}ekilde i{'\u015f'}lenir)</li>
                 <li><span className="font-semibold">Teknik Veriler:</span> IP adresi, taray{'\u0131'}c{'\u0131'} t{'\u00fc'}r{'\u00fc'}, cihaz bilgileri</li>
                 <li><span className="font-semibold">Kullan{'\u0131'}m Verileri:</span> Sayfa g{'\u00f6'}r{'\u00fc'}nt{'\u00fc'}lenmeleri, sitede ge{'\u00e7'}irilen s{'\u00fc'}re</li>
               </ul>
@@ -81,7 +81,7 @@ const GizlilikSozlesmesi = () => {
               </h2>
               <p>Ki{'\u015f'}isel verileriniz a{'\u015f'}a{'\u011f'}{'\u0131'}daki durumlar d{'\u0131'}{'\u015f'}{'\u0131'}nda {'\u00fc'}{'\u00e7'}{'\u00fc'}nc{'\u00fc'} taraflarla payla{'\u015f'}{'\u0131'}lmaz:</p>
               <ul className="list-disc pl-6 space-y-2">
-                <li><span className="font-semibold">{'\u00d6'}deme Hizmeti:</span> {'\u00d6'}deme i{'\u015f'}lemleri iyzico taraf{'\u0131'}ndan g{'\u00fc'}venli bir {'\u015f'}ekilde ger{'\u00e7'}ekle{'\u015f'}tirilir.</li>
+                <li><span className="font-semibold">{'\u00d6'}deme Hizmeti:</span> {'\u00d6'}deme i{'\u015f'}lemleri PayTR taraf{'\u0131'}ndan g{'\u00fc'}venli bir {'\u015f'}ekilde ger{'\u00e7'}ekle{'\u015f'}tirilir.</li>
                 <li><span className="font-semibold">Kargo Firmalar{'\u0131'}:</span> Teslimat i{'\u015f'}lemleri i{'\u00e7'}in kargo firmas{'\u0131'} ile adres bilgileri payla{'\u015f'}{'\u0131'}l{'\u0131'}r.</li>
                 <li><span className="font-semibold">Yasal Gereklilikler:</span> Yasal zorunluluk halinde yetkili kurumlarla payla{'\u015f'}{'\u0131'}labilir.</li>
               </ul>
@@ -105,7 +105,7 @@ const GizlilikSozlesmesi = () => {
               </h2>
               <p>
                 Ki{'\u015f'}isel verilerinizin g{'\u00fc'}venli{'\u011f'}ini sa{'\u011f'}lamak i{'\u00e7'}in SSL sertifikas{'\u0131'} ve 
-                {'\u015f'}ifreleme teknolojileri kullan{'\u0131'}lmaktad{'\u0131'}r. {'\u00d6'}deme bilgileriniz iyzico 
+                {'\u015f'}ifreleme teknolojileri kullan{'\u0131'}lmaktad{'\u0131'}r. {'\u00d6'}deme bilgileriniz PayTR 
                 altyap{'\u0131'}s{'\u0131'} {'\u00fc'}zerinden PCI DSS standartlar{'\u0131'}na uygun {'\u015f'}ekilde i{'\u015f'}lenmektedir. 
                 Kart bilgileriniz taraf{'\u0131'}m{'\u0131'}zca kesinlikle saklanmaz.
               </p>

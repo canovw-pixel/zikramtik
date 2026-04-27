@@ -351,3 +351,88 @@ async def wc_system_status(auth: bool = Depends(verify_wc_auth)):
             "number_of_decimals": 2,
         },
     }
+
+
+# ============================================================
+# WooCommerce OAuth / WordPress compatibility endpoints
+# These simulate the WP+WC environment Yengec expects
+# ============================================================
+
+@router.get("/wc-auth/v1/authorize")
+async def wc_oauth_authorize(
+    request: Request,
+    app_name: str = Query(""),
+    scope: str = Query("read_write"),
+    user_id: str = Query("1"),
+    return_url: str = Query(""),
+    callback_url: str = Query(""),
+):
+    """
+    Simulate WooCommerce OAuth authorization.
+    Yengec redirects here to get API keys.
+    We auto-approve and send keys to callback_url, then redirect to return_url.
+    """
+    import httpx
+
+    WC_CONSUMER_KEY, WC_CONSUMER_SECRET = _get_wc_credentials()
+
+    logger.info(f"WC OAuth: app={app_name}, scope={scope}, callback={callback_url}, return={return_url}")
+
+    # POST consumer key/secret to Yengec's callback URL
+    if callback_url:
+        try:
+            async with httpx.AsyncClient(timeout=15) as client:
+                resp = await client.post(callback_url, json={
+                    "key_id": 1,
+                    "user_id": 1,
+                    "consumer_key": WC_CONSUMER_KEY,
+                    "consumer_secret": WC_CONSUMER_SECRET,
+                    "key_permissions": scope,
+                })
+                logger.info(f"WC OAuth callback response: {resp.status_code} - {resp.text[:200]}")
+        except Exception as e:
+            logger.error(f"WC OAuth callback error: {e}")
+
+    # Redirect to return_url
+    if return_url:
+        from fastapi.responses import RedirectResponse
+        return RedirectResponse(url=return_url, status_code=302)
+
+    return {"status": "authorized", "message": "API keys sent to callback URL"}
+
+
+@router.get("/wp-admin/plugin-install.php")
+async def wp_plugin_install(request: Request):
+    """Redirect plugin install requests to OAuth authorize"""
+    # Yengec sometimes hits this first — redirect to main site
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="https://zikramatik.com", status_code=302)
+
+
+@router.get("/wp-json")
+async def wp_json_root():
+    """WordPress REST API discovery endpoint"""
+    return {
+        "name": "Zikra - Craponia Atelier",
+        "description": "Zikirmatik & Aksesuar",
+        "url": "https://zikramatik.com",
+        "home": "https://zikramatik.com",
+        "gmt_offset": "3",
+        "timezone_string": "Europe/Istanbul",
+        "namespaces": ["wc/v3"],
+        "authentication": {
+            "application-passwords": {
+                "endpoints": {
+                    "authorization": "https://zikramatik.com/wp-login.php?action=authorize_application"
+                }
+            }
+        },
+        "routes": {
+            "/wc/v3": {"methods": ["GET"]},
+            "/wc/v3/orders": {"methods": ["GET", "POST"]},
+            "/wc/v3/orders/(?P<id>[\\d]+)": {"methods": ["GET", "PUT", "DELETE"]},
+        },
+        "_links": {
+            "help": [{"href": "https://developer.wordpress.org/rest-api/"}]
+        },
+    }

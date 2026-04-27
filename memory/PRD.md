@@ -10,7 +10,9 @@ E-commerce website clone of reiskuyumculuk.com for "zikirmatik" product (Brand: 
 - Global pricing (auto IP detection via ip-api.com)
 - PayTR Payment Gateway (iFrame API) with real-time currency conversion to TL - LIVE MODE
 - SMTP Email for order/cargo notifications
-- Yurtiçi Kargo & ShipEntegra integrations (Pending)
+- Yengec e-Arsiv fatura entegrasyonu (WooCommerce compatible API)
+- BasitKargo entegrasyonu (Pending - API token bekleniyor)
+- ShipEntegra entegrasyonu (Pending)
 
 ## Tech Stack
 - Frontend: React, TailwindCSS, React Router
@@ -19,13 +21,14 @@ E-commerce website clone of reiskuyumculuk.com for "zikirmatik" product (Brand: 
 - Currency: open.er-api.com (free, cached 1hr)
 - Emails: Python smtplib + email.mime
 - Font: Source Serif 4
+- Yengec Integration: WooCommerce REST API v3 compatible endpoints
 
 ## Architecture
 ```
 /app
 ├── backend
 │   ├── models/ (category.py, order.py, product.py, user.py)
-│   ├── routes/ (auth.py, categories.py, orders.py, products.py, upload.py, payment.py)
+│   ├── routes/ (auth.py, categories.py, orders.py, products.py, upload.py, payment.py, woocommerce.py)
 │   ├── utils/ (email.py, auth.py, currency.py)
 │   ├── database.py
 │   └── server.py
@@ -43,40 +46,40 @@ E-commerce website clone of reiskuyumculuk.com for "zikirmatik" product (Brand: 
 - [x] Admin panel (products, categories, orders CRUD)
 - [x] Multi-image product uploads
 - [x] IP-based geolocation pricing (ip-api.com)
-- [x] PayTR iFrame payment integration - LIVE MODE (switched from test) - 2026-04-21
-- [x] Real-time currency conversion to TL for all payments (open.er-api.com) - 2026-04-21
+- [x] PayTR iFrame payment integration - LIVE MODE
+- [x] Real-time currency conversion to TL for all payments
 - [x] SMTP email notifications (info@zikramatik.com)
-- [x] Legal pages (Hakkimizda, Teslimat/Iade, Gizlilik, Mesafeli Satis)
+- [x] Legal pages
 - [x] Source Serif 4 custom typography
-- [x] Scroll-to-top on navigation
-- [x] Footer with real payment logos (Mastercard, Troy, PayTR PNGs) - 2026-04-21
-- [x] PayTR iFrameResizer script integration
-- [x] No installment (tek cekim) payment mode
-- [x] Checkout shows TL equivalent for foreign currency orders
-- [x] Emergent watermark/badge removed from production build - 2026-04-21
-- [x] VPS deployment: server.py fixed (load_dotenv before imports, payment route added)
-- [x] VPS deployment: .env updated with PayTR credentials
-- [x] VPS deployment: Apache disabled, Nginx enabled
+- [x] Footer with real payment logos
+- [x] Emergent watermark removed
+- [x] WooCommerce compatible REST API for Yengec integration - 2026-04-21
+  - GET /wp-json/wc/v3/orders (list orders)
+  - GET /wp-json/wc/v3/orders/{id} (get order)
+  - PUT /wp-json/wc/v3/orders/{id} (update order status)
+  - Basic Auth with Consumer Key/Secret
 
-## Pending / Backlog
-- [ ] P1: Yurtici Kargo API Integration (needs API credentials from user)
-- [ ] P1: ShipEntegra API Integration (needs API key from user)
+## Pending / In Progress
+- [ ] P0: Deploy Yengec WooCommerce API to VPS + Nginx config
+- [ ] P1: BasitKargo API Integration (needs API token from user)
+- [ ] P2: ShipEntegra API Integration (needs API key from user)
 
 ## Key API Endpoints
-- POST /api/payment/get-token - PayTR iFrame token generation (auto TL conversion)
-- POST /api/payment/callback - PayTR webhook (Bildirim URL)
-- GET /api/payment/status/{order_id} - Payment status check
-- GET /api/payment/convert-to-tl?amount=X&currency=Y - Currency conversion endpoint
+- POST /api/payment/get-token - PayTR iFrame token generation
+- POST /api/payment/callback - PayTR webhook
+- GET /api/payment/convert-to-tl - Currency conversion
+- GET /wp-json/wc/v3/orders - WooCommerce orders (for Yengec)
+- GET /wp-json/wc/v3/orders/{id} - WooCommerce order detail
+- PUT /wp-json/wc/v3/orders/{id} - WooCommerce update order
+
+## Yengec Integration Credentials
+- Consumer Key: ck_aa013c45c767e5594b81a3500255b1992cb95c60
+- Consumer Secret: cs_993be2214a7043124c94392169048cdb97b105f3
+- Site URL for Yengec: https://zikramatik.com
 
 ## VPS Deployment Notes
 - Server: 89.252.185.130 (Guzelhosting)
 - Project path: /var/www/zikra
 - Backend: uvicorn with --workers 1 on port 8001
-- Frontend: yarn build, served by Nginx
-- Important: Apache must be disabled (systemctl disable apache2)
-- Important: server.py must load_dotenv BEFORE importing routes
-- Important: PayTR Bildirim URL set to https://zikramatik.com/api/payment/callback
-
-## Known Limitations
-- Preview environment cannot send emails (DNS restriction on port 465/587) - works on VPS
-- Exchange rates cached for 1 hour (open.er-api.com free tier)
+- Nginx must proxy /wp-json/ to backend port 8001
+- Apache must be disabled

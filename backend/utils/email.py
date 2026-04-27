@@ -40,6 +40,14 @@ def _send_email(to_email: str, subject: str, html_body: str):
         return False
 
 
+async def send_email_raw(to_email: str, subject: str, html_body: str):
+    """Async wrapper for sending raw HTML emails"""
+    import asyncio
+    loop = asyncio.get_event_loop()
+    return await loop.run_in_executor(None, _send_email, to_email, subject, html_body)
+
+
+
 def _base_template(content: str) -> str:
     return f"""
     <div style="font-family: 'Source Serif 4', Georgia, serif; max-width: 600px; margin: 0 auto; background: #fff;">

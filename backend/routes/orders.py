@@ -5,6 +5,7 @@ from database import db
 from typing import List, Optional
 from datetime import datetime, timezone
 from utils.email import send_shipping_notification, send_order_confirmation
+from utils.invoice import create_invoice_for_order, send_invoice_email
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 
@@ -142,15 +143,21 @@ async def update_shipping(
         }}
     )
 
-    # Send mock shipping notification email
+    # Send shipping notification email
     email_result = await send_shipping_notification(
         order, shipping_data.tracking_number, shipping_data.cargo_company
     )
+
+    # Create e-Arsiv invoice and send to customer
+    invoice_result = await create_invoice_for_order(order_id)
+    if invoice_result.get("success"):
+        await send_invoice_email(order_id)
 
     updated_order = await db.orders.find_one({"id": order_id}, {"_id": 0})
     return {
         "order": updated_order,
         "email_notification": email_result,
+        "invoice": invoice_result,
     }
 
 @router.post("/mock-payment/{order_id}")

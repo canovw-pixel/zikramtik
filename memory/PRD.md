@@ -1,7 +1,7 @@
 # Zikra E-Commerce - Product Requirements Document
 
 ## Original Problem Statement
-E-commerce website for "zikirmatik" product (Brand: Craponia Atelier, Model: Zikra).
+E-commerce website for "zikirmatik" product (Brand: Craponia Atelier, Model: Zikra). Minimal/luxurious design with burgundy theme, global sales with auto IP-based country detection for pricing, payment gateway, email notifications, cargo API and invoice integration.
 
 ## What's Been Implemented
 - [x] Full e-commerce UI with burgundy theme
@@ -9,28 +9,34 @@ E-commerce website for "zikirmatik" product (Brand: Craponia Atelier, Model: Zik
 - [x] Multi-image product uploads
 - [x] IP-based geolocation pricing
 - [x] PayTR iFrame payment (LIVE MODE)
-- [x] Real-time currency conversion to TL
-- [x] SMTP email notifications
+- [x] Real-time currency conversion to TL (open.er-api.com)
+- [x] SMTP email notifications (info@zikramatik.com)
 - [x] Legal pages, Source Serif 4 font
-- [x] Footer with real payment logos
-- [x] WooCommerce compatible REST API for Yengec
-- [x] GIB e-Arsiv Portal integration - auto invoice on shipment - 2026-04-27
-- [x] Invoice email to customer on shipment - 2026-04-27
+- [x] Footer with real payment logos (Mastercard, Troy, PayTR)
+- [x] WooCommerce compatible REST API (Yengec entegrasyonu icin)
+- [x] GIB e-Arsiv Portal integration - auto invoice on shipment
+- [x] Invoice email to customer on shipment
+- [x] Nginx proxy: /wp-json/, /wc-auth/, /wp-admin/, /api/
+- [x] Emergent watermark removed
 
-## Pending
-- [ ] P0: Deploy GIB e-Arsiv to VPS (earsivportal + pytz pip install)
-- [ ] P1: BasitKargo API Integration (needs API token)
-- [ ] P1: Yengec manual connection (contact support for manual API binding)
-- [ ] P2: ShipEntegra API Integration
+## Pending / Tomorrow's Tasks
+- [ ] P0: BasitKargo API entegrasyonu (API token bekleniyor)
+- [ ] P0: Admin panelde "Kargola" butonu + kargo firmasi secimi (varsayilan: Aras Kargo)
+- [ ] P1: Yengec destek hatti ile manuel WooCommerce API baglantisi
+- [ ] P2: ShipEntegra API entegrasyonu (yurt disi kargo)
+- [ ] P2: Admin panelde fatura goruntuleme / durum takibi
 
-## Key Credentials (.env)
-- GIB_PORTAL_USER, GIB_PORTAL_PASS (e-Arsiv Portal login)
-- WC_CONSUMER_KEY, WC_CONSUMER_SECRET (Yengec WooCommerce API)
-- PAYTR_MERCHANT_ID/KEY/SALT (PayTR payment)
+## Key Credentials
+- GIB Portal: 24205166 / 664499
+- WC API: ck_aa013c45c767e5594b81a3500255b1992cb95c60 / cs_993be2214a7043124c94392169048cdb97b105f3
+- PayTR: Merchant ID 694137
+- VPS: 89.252.185.130 (root)
+- Admin: admin@zikra.com / admin123
 
 ## VPS Deployment Notes
-- Server: 89.252.185.130
-- Nginx: /etc/nginx/sites-enabled/zikra (proxy /wp-json/, /wc-auth/, /wp-admin/, /api/)
+- Server: 89.252.185.130 (Guzelhosting)
+- Project: /var/www/zikra
 - Backend: uvicorn --workers 1 on port 8001
-- Apache must be disabled
-- VPS needs: pip install earsivportal pytz in venv
+- Nginx: /etc/nginx/sites-enabled/zikra
+- Apache must be disabled (systemctl stop apache2)
+- Backend venv needs: earsivportal, pytz, httpx

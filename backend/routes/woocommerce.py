@@ -545,3 +545,76 @@ async def wc_data(request: Request, auth: bool = Depends(verify_wc_auth)):
 async def wc_countries(request: Request, auth: bool = Depends(verify_wc_auth)):
     """WooCommerce countries data"""
     return [{"code": "TR", "name": "Turkey", "states": []}]
+
+
+# ============================================================
+# Kargonomi Webhook Endpoint
+# ============================================================
+
+@router.post("/api/webhooks/kargonomi")
+async def kargonomi_webhook(request: Request):
+    """
+    Kargonomi webhook - receives shipment status updates.
+    Updates order status when cargo is delivered.
+    """
+    try:
+        body = await request.json()
+    except Exception:
+        return {"status": "error", "message": "Invalid JSON"}
+
+    shipment = body.get("shipment", {})
+    status = shipment.get("status", "")
+    tracking_code = shipment.get("shipping_webservice_tracking_code")
+    provider_name = shipment.get("shipping_provider_name")
+    ecommerce_order_no = shipment.get("ecommerce_provider_order_no")
+    buyer_name = shipment.get("buyer_name", "")
+
+    logger.info(f"Kargonomi webhook: status={status}, tracking={tracking_code}, order={ecommerce_order_no}, buyer={buyer_name}")
+
+    # Map Kargonomi status to internal status
+    status_map = {
+        "webservice_order_created": "shipped",
+        "webservice_shipment_started": "shipped",
+        "webservice_shipment_delivered": "delivered",
+        "webservice_shipment_not_delivered": "delivery_failed",
+        "webservice_shipment_returning": "returning",
+        "cancelled": "cancelled",
+    }
+
+    internal_status = status_map.get(status)
+    if not internal_status:
+        logger.info(f"Kargonomi webhook: Ignoring status '{status}'")
+        return {"status": "ok", "message": f"Status '{status}' ignored"}
+
+    # Find order by ecommerce_provider_order_no or buyer_name
+    order = None
+    if ecommerce_order_no:
+        order = await db.orders.find_one({"order_number": ecommerce_order_no}, {"_id": 0})
+
+    if not order and tracking_code:
+        order = await db.orders.find_one({"tracking_number": tracking_code}, {"_id": 0})
+
+    if not order:
+        logger.warning(f"Kargonomi webhook: Order not found for {ecommerce_order_no}")
+        return {"status": "ok", "message": "Order not found"}
+
+    now = datetime.now(timezone.utc)
+    update_data = {
+        "status": internal_status,
+        "updated_at": now,
+    }
+
+    if tracking_code:
+        update_data["tracking_number"] = tracking_code
+    if provider_name:
+        update_data["cargo_company"] = provider_name
+
+    if internal_status == "delivered":
+        update_data["delivered_at"] = now.isoformat()
+    elif internal_status == "shipped" and not order.get("shipped_at"):
+        update_data["shipped_at"] = now.isoformat()
+
+    await db.orders.update_one({"id": order.get("id")}, {"$set": update_data})
+    logger.info(f"Kargonomi webhook: Order {order.get('order_number')} updated to '{internal_status}'")
+
+    return {"status": "ok", "message": f"Order updated to {internal_status}"}

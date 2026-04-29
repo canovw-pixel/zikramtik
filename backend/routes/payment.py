@@ -188,13 +188,23 @@ async def paytr_callback(request: Request):
         )
         logger.info(f"Payment SUCCESS for order {merchant_oid}")
 
-        # Send confirmation email
+        # Send confirmation email + create invoice
         order = await db.orders.find_one({"order_number": merchant_oid}, {"_id": 0})
         if order:
             try:
                 await send_order_confirmation(order)
             except Exception as e:
                 logger.error(f"Email send error for {merchant_oid}: {e}")
+
+            # Create e-Arsiv invoice on payment success
+            try:
+                from utils.invoice import create_invoice_for_order, send_invoice_email
+                invoice_result = await create_invoice_for_order(order.get("id"))
+                if invoice_result.get("success"):
+                    await send_invoice_email(order.get("id"))
+                    logger.info(f"Invoice created for {merchant_oid}")
+            except Exception as e:
+                logger.error(f"Invoice error for {merchant_oid}: {e}")
     else:
         await db.orders.update_one(
             {"order_number": merchant_oid},

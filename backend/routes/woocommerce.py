@@ -416,63 +416,26 @@ async def wc_oauth_authorize(
 
 @router.get("/wp-admin/plugin-install.php")
 async def wp_plugin_install(request: Request):
-    """Capture Yengec's full request and log it, then show OAuth page"""
-    from fastapi.responses import HTMLResponse
-    import httpx
-
-    full_url = str(request.url)
-    params = dict(request.query_params)
-    headers = dict(request.headers)
-    
-    logger.info(f"WP-ADMIN PLUGIN INSTALL HIT!")
-    logger.info(f"Full URL: {full_url}")
-    logger.info(f"Params: {params}")
-    logger.info(f"Referer: {headers.get('referer', 'none')}")
+    """Simulate Yengec plugin - redirect to Yengec auth-callback with keys"""
+    from fastapi.responses import RedirectResponse
+    import urllib.parse
 
     WC_CONSUMER_KEY, WC_CONSUMER_SECRET = _get_wc_credentials()
 
-    # Try multiple possible Yengec callback URLs
-    possible_callbacks = [
-        "https://app.yengec.co/api/woocommerce/callback",
-        "https://app.yengec.co/api/v1/woocommerce/callback",
-        "https://app.yengec.co/api/integrations/woocommerce/callback",
-        "https://yengec.co/api/woocommerce/callback",
-    ]
+    logger.info("WP-ADMIN PLUGIN INSTALL HIT - Redirecting to Yengec auth-callback")
 
-    for callback_url in possible_callbacks:
-        try:
-            async with httpx.AsyncClient(timeout=10) as client:
-                resp = await client.post(callback_url, json={
-                    "key_id": 1,
-                    "user_id": 1,
-                    "consumer_key": WC_CONSUMER_KEY,
-                    "consumer_secret": WC_CONSUMER_SECRET,
-                    "key_permissions": "read_write",
-                })
-                logger.info(f"Callback attempt {callback_url}: {resp.status_code}")
-                if resp.status_code in [200, 201, 202]:
-                    logger.info(f"SUCCESS! Callback accepted at: {callback_url}")
-                    break
-        except Exception as e:
-            logger.info(f"Callback failed {callback_url}: {e}")
+    # This is exactly what the Yengec WordPress plugin does:
+    # It creates API keys and redirects to app.yengec.co/auth-callback/woocommerce
+    redirect_url = "https://app.yengec.co/auth-callback/woocommerce?" + urllib.parse.urlencode({
+        "domain": "https://zikramatik.com",
+        "consumer_key": WC_CONSUMER_KEY,
+        "consumer_secret": WC_CONSUMER_SECRET,
+        "mail": "info@zikramatik.com",
+        "name": "Ramazan Celtikli",
+        "country_code": "TR",
+    })
 
-    # Show a page that redirects back or shows success
-    html = f"""<!DOCTYPE html>
-<html>
-<head><title>WooCommerce API Yetkilendirme</title></head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 40px; text-align: center;">
-<h1>API Yetkilendirme Tamamlandi</h1>
-<p style="color: green; font-size: 18px;">&#10003; Yengec entegrasyonu basariyla yetkilendirildi.</p>
-<p>Consumer Key ve Secret Yengec'e iletildi.</p>
-<p style="color: #666;">Bu pencereyi kapatip Yengec paneline donebilirsiniz.</p>
-<script>
-setTimeout(function() {{
-    if (window.opener) {{ window.close(); }}
-}}, 3000);
-</script>
-</body>
-</html>"""
-    return HTMLResponse(content=html)
+    return RedirectResponse(url=redirect_url, status_code=302)
 
 
 @router.get("/wp-json")

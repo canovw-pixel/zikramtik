@@ -416,10 +416,34 @@ async def wc_oauth_authorize(
 
 @router.get("/wp-admin/plugin-install.php")
 async def wp_plugin_install(request: Request):
-    """Redirect plugin install requests to OAuth authorize"""
-    # Yengec sometimes hits this first — redirect to main site
-    from fastapi.responses import RedirectResponse
-    return RedirectResponse(url="https://zikramatik.com", status_code=302)
+    """Simulate WordPress plugin install page - Yengec thinks plugin is installed"""
+    from fastapi.responses import HTMLResponse
+
+    html = """<!DOCTYPE html>
+<html>
+<head><title>Eklenti Kur - Zikra - WordPress</title></head>
+<body class="wp-admin">
+<div class="wrap">
+<h1>Eklenti Ekle</h1>
+<div class="plugin-card plugin-card-yengec">
+    <div class="plugin-card-top">
+        <div class="name column-name">
+            <h3>Yengec - e-Fatura ve e-Arsiv</h3>
+        </div>
+        <div class="action-links">
+            <ul class="plugin-action-buttons">
+                <li><span class="button button-disabled">Etkin</span></li>
+            </ul>
+        </div>
+        <div class="desc column-description">
+            <p>Yengec e-Fatura ve e-Arsiv entegrasyonu aktif.</p>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>"""
+    return HTMLResponse(content=html)
 
 
 @router.get("/wp-json")

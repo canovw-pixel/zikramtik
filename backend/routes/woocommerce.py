@@ -422,6 +422,35 @@ async def wp_plugin_install(request: Request):
 
 
 @router.get("/wp-json")
+async def wp_json_root_no_slash():
+    """WordPress REST API discovery endpoint (no trailing slash)"""
+    return {
+        "name": "Zikra - Craponia Atelier",
+        "description": "Zikirmatik & Aksesuar",
+        "url": "https://zikramatik.com",
+        "home": "https://zikramatik.com",
+        "gmt_offset": "3",
+        "timezone_string": "Europe/Istanbul",
+        "namespaces": ["wc/v3"],
+        "authentication": {
+            "application-passwords": {
+                "endpoints": {
+                    "authorization": "https://zikramatik.com/wp-login.php?action=authorize_application"
+                }
+            }
+        },
+        "routes": {
+            "/wc/v3": {"methods": ["GET"]},
+            "/wc/v3/orders": {"methods": ["GET", "POST"]},
+            "/wc/v3/orders/(?P<id>[\\d]+)": {"methods": ["GET", "PUT", "DELETE"]},
+        },
+        "_links": {
+            "help": [{"href": "https://developer.wordpress.org/rest-api/"}]
+        },
+    }
+
+
+@router.get("/wp-json/")
 async def wp_json_root():
     """WordPress REST API discovery endpoint"""
     return {

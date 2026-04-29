@@ -531,6 +531,16 @@ async def wc_shipping_zones(request: Request, auth: bool = Depends(verify_wc_aut
     return [{"id": 0, "name": "Everywhere", "order": 0}]
 
 
+@router.get("/wp-json/wc/v3/data")
+async def wc_data(request: Request, auth: bool = Depends(verify_wc_auth)):
+    """WooCommerce data endpoint - store info"""
+    return [
+        {"slug": "continents", "description": "List of supported continents, countries, and states."},
+        {"slug": "countries", "description": "List of supported states in a given country."},
+        {"slug": "currencies", "description": "List of supported currencies."},
+    ]
+
+
 @router.get("/wp-json/wc/v3/data/countries")
 async def wc_countries(request: Request, auth: bool = Depends(verify_wc_auth)):
     """WooCommerce countries data"""

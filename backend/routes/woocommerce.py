@@ -90,11 +90,12 @@ def _order_to_wc_format(order: dict) -> dict:
         line_items.append({
             "id": i + 1,
             "name": item.get("name", ""),
-            "product_id": hash(item.get("product_id", "")) % 100000,
+            "product_id": abs(hash(item.get("product_id", ""))) % 100000,
+            "variation_id": 0,
             "quantity": item.get("quantity", 1),
             "price": str(item.get("price", 0)),
-            "subtotal": str(item.get("price", 0) * item.get("quantity", 1)),
-            "total": str(item.get("price", 0) * item.get("quantity", 1)),
+            "subtotal": str(float(item.get("price", 0)) * int(item.get("quantity", 1))),
+            "total": str(float(item.get("price", 0)) * int(item.get("quantity", 1))),
             "sku": item.get("product_id", ""),
             "tax_class": "",
             "subtotal_tax": "0.00",
@@ -506,11 +507,16 @@ async def wc_settings_general(request: Request, auth: bool = Depends(verify_wc_a
 @router.get("/wp-json/wc/v3/products")
 async def wc_products(request: Request, auth: bool = Depends(verify_wc_auth)):
     """WooCommerce products list"""
-    products = await db.products.find({}, {"_id": 0}).to_list(100)
+    params = request.query_params
+    include = params.get("include[0]") or params.get("include")
+
+    query = {}
+    products = await db.products.find(query, {"_id": 0}).to_list(100)
     wc_products = []
     for i, p in enumerate(products):
+        product_id = abs(hash(p.get("id", ""))) % 100000
         wc_products.append({
-            "id": i + 1,
+            "id": product_id,
             "name": p.get("name", ""),
             "slug": p.get("name", "").lower().replace(" ", "-"),
             "type": "simple",
@@ -518,9 +524,17 @@ async def wc_products(request: Request, auth: bool = Depends(verify_wc_auth)):
             "sku": p.get("id", ""),
             "price": str(p.get("prices", {}).get("TR", 0)),
             "regular_price": str(p.get("prices", {}).get("TR", 0)),
+            "sale_price": "",
             "stock_quantity": p.get("stock", 100),
+            "stock_status": "instock",
             "weight": "0.5",
-            "dimensions": {"length": "10", "width": "10", "height": "5"},
+            "dimensions": {"length": "15", "width": "10", "height": "5"},
+            "shipping_required": True,
+            "shipping_taxable": True,
+            "shipping_class": "",
+            "shipping_class_id": 0,
+            "categories": [{"id": 1, "name": "Zikirmatik", "slug": "zikirmatik"}],
+            "images": [{"id": 1, "src": img} for img in p.get("images", [])[:1]],
         })
     return wc_products
 

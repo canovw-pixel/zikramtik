@@ -541,6 +541,28 @@ async def wc_data(request: Request, auth: bool = Depends(verify_wc_auth)):
     ]
 
 
+@router.get("/wp-json/wc/v3/reports/orders/totals")
+async def wc_reports_orders_totals(request: Request, auth: bool = Depends(verify_wc_auth)):
+    """WooCommerce reports orders totals - required by Kargonomi"""
+    pending = await db.orders.count_documents({"status": "pending"})
+    processing = await db.orders.count_documents({"payment_status": "success", "status": {"$in": ["paid", "processing"]}})
+    completed = await db.orders.count_documents({"status": {"$in": ["shipped", "delivered"]}})
+    cancelled = await db.orders.count_documents({"status": "cancelled"})
+    failed = await db.orders.count_documents({"payment_status": "failed"})
+    total = await db.orders.count_documents({})
+
+    return [
+        {"slug": "pending", "name": "Pending payment", "total": str(pending)},
+        {"slug": "processing", "name": "Processing", "total": str(processing)},
+        {"slug": "on-hold", "name": "On hold", "total": "0"},
+        {"slug": "completed", "name": "Completed", "total": str(completed)},
+        {"slug": "cancelled", "name": "Cancelled", "total": str(cancelled)},
+        {"slug": "refunded", "name": "Refunded", "total": "0"},
+        {"slug": "failed", "name": "Failed", "total": str(failed)},
+        {"slug": "trash", "name": "Trash", "total": "0"},
+    ]
+
+
 @router.get("/wp-json/wc/v3/data/countries")
 async def wc_countries(request: Request, auth: bool = Depends(verify_wc_auth)):
     """WooCommerce countries data"""

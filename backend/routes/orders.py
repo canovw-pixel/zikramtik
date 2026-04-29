@@ -4,7 +4,11 @@ from routes.auth import get_current_user
 from database import db
 from typing import List, Optional
 from datetime import datetime, timezone
-from utils.email import send_shipping_notification, send_order_confirmation
+from utils.email import send_shipping_notification, send_order_confirmation, send_email_raw
+import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 
@@ -111,13 +115,124 @@ async def update_order_status(
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
 
-    await db.orders.update_one(
-        {"id": order_id},
-        {"$set": {"status": status_data.status, "updated_at": datetime.now(timezone.utc)}}
-    )
+    now = datetime.now(timezone.utc)
+    update_data = {"status": status_data.status, "updated_at": now}
+
+    # If cancelling, process refund and send cancellation email
+    if status_data.status == "cancelled" and order.get("status") != "cancelled":
+        update_data["cancelled_at"] = now.isoformat()
+
+        # PayTR Refund
+        if order.get("payment_status") == "success":
+            refund_result = await _process_paytr_refund(order)
+            update_data["refund_status"] = refund_result.get("status")
+            update_data["refund_message"] = refund_result.get("message")
+
+        # Send cancellation email
+        await _send_cancellation_email(order)
+
+    await db.orders.update_one({"id": order_id}, {"$set": update_data})
 
     updated_order = await db.orders.find_one({"id": order_id}, {"_id": 0})
     return updated_order
+
+
+async def _process_paytr_refund(order: dict) -> dict:
+    """Process PayTR refund for cancelled order"""
+    import hashlib
+    import hmac
+    import base64
+    import httpx
+
+    merchant_id = os.environ.get("PAYTR_MERCHANT_ID")
+    merchant_key = os.environ.get("PAYTR_MERCHANT_KEY")
+    merchant_salt = os.environ.get("PAYTR_MERCHANT_SALT")
+
+    if not all([merchant_id, merchant_key, merchant_salt]):
+        return {"status": "error", "message": "PayTR credentials not configured"}
+
+    merchant_oid = order.get("order_number", "")
+    return_amount = f"{float(order.get('total_amount', 0)):.2f}"
+
+    # Generate token: base64(hmac_sha256(merchant_key, merchant_id + merchant_oid + return_amount + merchant_salt))
+    hash_str = f"{merchant_id}{merchant_oid}{return_amount}{merchant_salt}"
+    paytr_token = base64.b64encode(
+        hmac.new(
+            merchant_key.encode(),
+            hash_str.encode(),
+            hashlib.sha256
+        ).digest()
+    ).decode()
+
+    payload = {
+        "merchant_id": merchant_id,
+        "merchant_oid": merchant_oid,
+        "return_amount": return_amount,
+        "paytr_token": paytr_token,
+    }
+
+    try:
+        async with httpx.AsyncClient(timeout=30) as client:
+            resp = await client.post("https://www.paytr.com/odeme/iade", data=payload)
+            result = resp.json()
+
+        if result.get("status") == "success":
+            logger.info(f"PayTR refund SUCCESS for {merchant_oid}: {return_amount} TL")
+            return {"status": "success", "message": f"Iade basarili: {return_amount} TL"}
+        else:
+            err_msg = result.get("err_msg", "Bilinmeyen hata")
+            logger.error(f"PayTR refund FAILED for {merchant_oid}: {err_msg}")
+            return {"status": "error", "message": f"Iade hatasi: {err_msg}"}
+    except Exception as e:
+        logger.error(f"PayTR refund error: {e}")
+        return {"status": "error", "message": str(e)}
+
+
+async def _send_cancellation_email(order: dict):
+    """Send cancellation email to customer"""
+    from utils.email import send_email_raw
+
+    customer_email = order.get("customer_email")
+    if not customer_email:
+        return
+
+    order_number = order.get("order_number", "")
+    full_name = order.get("shipping_address", {}).get("full_name", "Degerli Musterimiz")
+    total = order.get("total_amount", 0)
+    currency = order.get("currency", "TRY")
+
+    subject = f"Siparisiniz Iptal Edildi - #{order_number} | Craponia Atelier"
+    html_body = f"""
+    <html>
+    <body style="font-family: 'Source Serif 4', Georgia, serif; color: #333;">
+        <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="background: linear-gradient(135deg, #5a0a1a, #7a1a2e); padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+                <h1 style="color: #fff; margin: 0; font-size: 24px;">Zikra</h1>
+                <p style="color: #e8b4b8; margin: 5px 0 0; font-size: 12px;">Craponia Atelier</p>
+            </div>
+            <div style="padding: 20px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 8px 8px;">
+                <h2 style="color: #c0392b;">Siparisiniz Iptal Edildi</h2>
+                <p>Sayin {full_name},</p>
+                <p><strong>#{order_number}</strong> numarali siparisiniz iptal edilmistir.</p>
+                <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                    <tr><td style="padding: 8px; border-bottom: 1px solid #eee; color: #666;">Siparis No:</td><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">{order_number}</td></tr>
+                    <tr><td style="padding: 8px; border-bottom: 1px solid #eee; color: #666;">Tutar:</td><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">{total} {currency}</td></tr>
+                    <tr><td style="padding: 8px; border-bottom: 1px solid #eee; color: #666;">Iade Durumu:</td><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; color: #27ae60;">Iade isleminiz baslatilmistir</td></tr>
+                </table>
+                <p>Odemeniz 3-5 is gunu icerisinde kartiniza/hesabiniza iade edilecektir.</p>
+                <p style="color: #666; font-size: 12px; margin-top: 20px;">Sorulariniz icin: info@zikramatik.com</p>
+                <p style="color: #666; font-size: 12px;">Craponia Atelier | zikramatik.com</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+    try:
+        await send_email_raw(customer_email, subject, html_body)
+        logger.info(f"Cancellation email sent to {customer_email} for order {order_number}")
+    except Exception as e:
+        logger.error(f"Cancellation email error: {e}")
 
 @router.put("/{order_id}/shipping")
 async def update_shipping(

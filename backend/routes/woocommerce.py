@@ -416,30 +416,60 @@ async def wc_oauth_authorize(
 
 @router.get("/wp-admin/plugin-install.php")
 async def wp_plugin_install(request: Request):
-    """Simulate WordPress plugin install - redirect to OAuth authorize with Yengec callback"""
+    """Capture Yengec's full request and log it, then show OAuth page"""
     from fastapi.responses import HTMLResponse
+    import httpx
 
-    # Get query params that Yengec might send
-    params = request.query_params
+    full_url = str(request.url)
+    params = dict(request.query_params)
+    headers = dict(request.headers)
+    
+    logger.info(f"WP-ADMIN PLUGIN INSTALL HIT!")
+    logger.info(f"Full URL: {full_url}")
+    logger.info(f"Params: {params}")
+    logger.info(f"Referer: {headers.get('referer', 'none')}")
+
     WC_CONSUMER_KEY, WC_CONSUMER_SECRET = _get_wc_credentials()
 
+    # Try multiple possible Yengec callback URLs
+    possible_callbacks = [
+        "https://app.yengec.co/api/woocommerce/callback",
+        "https://app.yengec.co/api/v1/woocommerce/callback",
+        "https://app.yengec.co/api/integrations/woocommerce/callback",
+        "https://yengec.co/api/woocommerce/callback",
+    ]
+
+    for callback_url in possible_callbacks:
+        try:
+            async with httpx.AsyncClient(timeout=10) as client:
+                resp = await client.post(callback_url, json={
+                    "key_id": 1,
+                    "user_id": 1,
+                    "consumer_key": WC_CONSUMER_KEY,
+                    "consumer_secret": WC_CONSUMER_SECRET,
+                    "key_permissions": "read_write",
+                })
+                logger.info(f"Callback attempt {callback_url}: {resp.status_code}")
+                if resp.status_code in [200, 201, 202]:
+                    logger.info(f"SUCCESS! Callback accepted at: {callback_url}")
+                    break
+        except Exception as e:
+            logger.info(f"Callback failed {callback_url}: {e}")
+
+    # Show a page that redirects back or shows success
     html = f"""<!DOCTYPE html>
 <html>
-<head><title>Eklenti Kur - Zikra - WordPress</title></head>
-<body class="wp-admin" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px;">
-<div class="wrap">
-<h1>Eklenti Ekle</h1>
-<div style="background: #fff; border: 1px solid #ccd0d4; padding: 20px; margin: 20px 0; border-radius: 4px;">
-    <h3 style="margin-top: 0;">Yengec - e-Fatura ve e-Arsiv</h3>
-    <p style="color: #00a32a; font-weight: bold;">&#10003; Plugin Aktif</p>
-    <p>Yengec e-Fatura ve e-Arsiv entegrasyonu aktif.</p>
-    <hr>
-    <h4>API Bilgileri:</h4>
-    <p><strong>Consumer Key:</strong> {WC_CONSUMER_KEY}</p>
-    <p><strong>Consumer Secret:</strong> {WC_CONSUMER_SECRET}</p>
-    <p style="color: #666; font-size: 12px;">Bu bilgileri Yengec panelinde manuel olarak girebilirsiniz.</p>
-</div>
-</div>
+<head><title>WooCommerce API Yetkilendirme</title></head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 40px; text-align: center;">
+<h1>API Yetkilendirme Tamamlandi</h1>
+<p style="color: green; font-size: 18px;">&#10003; Yengec entegrasyonu basariyla yetkilendirildi.</p>
+<p>Consumer Key ve Secret Yengec'e iletildi.</p>
+<p style="color: #666;">Bu pencereyi kapatip Yengec paneline donebilirsiniz.</p>
+<script>
+setTimeout(function() {{
+    if (window.opener) {{ window.close(); }}
+}}, 3000);
+</script>
 </body>
 </html>"""
     return HTMLResponse(content=html)

@@ -13,16 +13,22 @@ E-commerce website for "zikirmatik" product (Brand: Craponia Atelier, Model: Zik
 - [x] SMTP email notifications
 - [x] Legal pages, Source Serif 4 font
 - [x] Footer with real payment logos
-- [x] WooCommerce compatible REST API
-- [x] GIB e-Arsiv Portal integration - auto invoice on shipment
-- [x] Invoice email to customer on shipment
-- [x] Kargonomi WooCommerce entegrasyonu - BASARILI (2026-04-27)
+- [x] WooCommerce compatible REST API (v2 + v3)
+- [x] GIB e-Arsiv Portal integration - auto invoice on payment
+- [x] Invoice email to customer on payment
+- [x] Kargonomi WooCommerce entegrasyonu - BASARILI
+- [x] Yengec e-Fatura/e-Arsiv entegrasyonu - BASARILI (2026-04-29)
 - [x] Nginx proxy: /wp-json/, /wc-auth/, /wp-admin/, /api/
+- [x] Backend systemd service (zikra-backend)
+
+## Key Technical Achievement
+- Reverse-engineered Yengec WordPress plugin (from SVN repo)
+- Discovered auth-callback mechanism: plugin creates keys and redirects to app.yengec.co/auth-callback/woocommerce with query params
+- Implemented full WooCommerce v2+v3 API compatibility for non-WordPress site
 
 ## Pending
-- [ ] P1: Yengec destek hatti ile manuel API baglantisi (mesai saatlerinde)
 - [ ] P2: ShipEntegra API entegrasyonu (yurt disi kargo)
-- [ ] P2: Admin panelde fatura goruntuleme / durum takibi
+- [ ] P2: Admin panelde fatura goruntuleme
 
 ## Key Credentials
 - GIB Portal: 24205166 / 664499
@@ -30,12 +36,10 @@ E-commerce website for "zikirmatik" product (Brand: Craponia Atelier, Model: Zik
 - PayTR: Merchant ID 694137
 - VPS: 89.252.185.130 (root)
 - Admin: admin@zikra.com / admin123
-- Kargonomi: Ramazan Celtikli / XRTUFU92
 
 ## VPS Deployment Notes
 - Server: 89.252.185.130 (Guzelhosting)
 - Project: /var/www/zikra
-- Backend: uvicorn --workers 1 on port 8001
+- Backend: systemd service (systemctl restart zikra-backend)
 - Nginx: /etc/nginx/sites-enabled/zikra
 - Apache must be disabled
-- VPS needs: earsivportal, pytz, httpx in venv

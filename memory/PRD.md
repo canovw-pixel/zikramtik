@@ -1,7 +1,7 @@
 # Zikra E-Commerce - Product Requirements Document
 
 ## Original Problem Statement
-E-commerce website for "zikirmatik" product (Brand: Craponia Atelier, Model: Zikra). Minimal/luxurious design with burgundy theme, global sales with auto IP-based country detection for pricing, payment gateway, email notifications, cargo API and invoice integration.
+E-commerce website for "zikirmatik" product (Brand: Craponia Atelier, Model: Zikra).
 
 ## What's Been Implemented
 - [x] Full e-commerce UI with burgundy theme
@@ -9,20 +9,18 @@ E-commerce website for "zikirmatik" product (Brand: Craponia Atelier, Model: Zik
 - [x] Multi-image product uploads
 - [x] IP-based geolocation pricing
 - [x] PayTR iFrame payment (LIVE MODE)
-- [x] Real-time currency conversion to TL (open.er-api.com)
-- [x] SMTP email notifications (info@zikramatik.com)
+- [x] Real-time currency conversion to TL
+- [x] SMTP email notifications
 - [x] Legal pages, Source Serif 4 font
-- [x] Footer with real payment logos (Mastercard, Troy, PayTR)
-- [x] WooCommerce compatible REST API (Yengec entegrasyonu icin)
+- [x] Footer with real payment logos
+- [x] WooCommerce compatible REST API
 - [x] GIB e-Arsiv Portal integration - auto invoice on shipment
 - [x] Invoice email to customer on shipment
+- [x] Kargonomi WooCommerce entegrasyonu - BASARILI (2026-04-27)
 - [x] Nginx proxy: /wp-json/, /wc-auth/, /wp-admin/, /api/
-- [x] Emergent watermark removed
 
-## Pending / Tomorrow's Tasks
-- [ ] P0: BasitKargo API entegrasyonu (API token bekleniyor)
-- [ ] P0: Admin panelde "Kargola" butonu + kargo firmasi secimi (varsayilan: Aras Kargo)
-- [ ] P1: Yengec destek hatti ile manuel WooCommerce API baglantisi
+## Pending
+- [ ] P1: Yengec destek hatti ile manuel API baglantisi (mesai saatlerinde)
 - [ ] P2: ShipEntegra API entegrasyonu (yurt disi kargo)
 - [ ] P2: Admin panelde fatura goruntuleme / durum takibi
 
@@ -32,11 +30,12 @@ E-commerce website for "zikirmatik" product (Brand: Craponia Atelier, Model: Zik
 - PayTR: Merchant ID 694137
 - VPS: 89.252.185.130 (root)
 - Admin: admin@zikra.com / admin123
+- Kargonomi: Ramazan Celtikli / XRTUFU92
 
 ## VPS Deployment Notes
 - Server: 89.252.185.130 (Guzelhosting)
 - Project: /var/www/zikra
 - Backend: uvicorn --workers 1 on port 8001
 - Nginx: /etc/nginx/sites-enabled/zikra
-- Apache must be disabled (systemctl stop apache2)
-- Backend venv needs: earsivportal, pytz, httpx
+- Apache must be disabled
+- VPS needs: earsivportal, pytz, httpx in venv

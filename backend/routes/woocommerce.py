@@ -324,8 +324,8 @@ async def wc_update_order(
 
 
 @router.get("/wp-json/wc/v3")
-async def wc_api_root(auth: bool = Depends(verify_wc_auth)):
-    """WooCommerce API root - returns store info"""
+async def wc_api_root(request: Request):
+    """WooCommerce API root - no auth required for discovery"""
     return {
         "store": {
             "name": "Zikra - Craponia Atelier",
@@ -346,8 +346,8 @@ async def wc_api_root(auth: bool = Depends(verify_wc_auth)):
 
 
 @router.get("/wp-json/wc/v3/system_status")
-async def wc_system_status(auth: bool = Depends(verify_wc_auth)):
-    """WooCommerce system status endpoint"""
+async def wc_system_status(request: Request):
+    """WooCommerce system status endpoint - no auth for discovery"""
     return {
         "environment": {
             "home_url": "https://zikramatik.com",
@@ -357,7 +357,7 @@ async def wc_system_status(auth: bool = Depends(verify_wc_auth)):
         },
         "settings": {
             "currency": "TRY",
-            "currency_symbol": "₺",
+            "currency_symbol": "\u20ba",
             "currency_position": "right_space",
             "thousand_separator": ".",
             "decimal_separator": ",",

@@ -17,21 +17,33 @@ def _get_wc_credentials():
     secret = os.environ.get("WC_CONSUMER_SECRET")
     return key, secret
 
-security = HTTPBasic()
+security = HTTPBasic(auto_error=False)
 
 
-def verify_wc_auth(credentials: HTTPBasicCredentials = Depends(security)):
-    """Verify WooCommerce API authentication (Basic Auth with consumer key/secret)"""
+async def verify_wc_auth(request: Request, credentials: Optional[HTTPBasicCredentials] = Depends(security)):
+    """Verify WooCommerce API authentication (Basic Auth OR query params)"""
     WC_CONSUMER_KEY, WC_CONSUMER_SECRET = _get_wc_credentials()
     if not WC_CONSUMER_KEY or not WC_CONSUMER_SECRET:
         raise HTTPException(status_code=500, detail="WooCommerce API not configured")
 
-    key_ok = secrets.compare_digest(credentials.username, WC_CONSUMER_KEY)
-    secret_ok = secrets.compare_digest(credentials.password, WC_CONSUMER_SECRET)
+    # Try Basic Auth first
+    if credentials and credentials.username and credentials.password:
+        key_ok = secrets.compare_digest(credentials.username, WC_CONSUMER_KEY)
+        secret_ok = secrets.compare_digest(credentials.password, WC_CONSUMER_SECRET)
+        if key_ok and secret_ok:
+            return True
 
-    if not (key_ok and secret_ok):
-        raise HTTPException(status_code=401, detail="Invalid API credentials")
-    return True
+    # Try query parameter auth (WooCommerce style)
+    params = request.query_params
+    ck = params.get("consumer_key", "")
+    cs = params.get("consumer_secret", "")
+    if ck and cs:
+        key_ok = secrets.compare_digest(ck, WC_CONSUMER_KEY)
+        secret_ok = secrets.compare_digest(cs, WC_CONSUMER_SECRET)
+        if key_ok and secret_ok:
+            return True
+
+    raise HTTPException(status_code=401, detail="Invalid API credentials")
 
 
 def _map_status_to_wc(status: str, payment_status: str) -> str:
@@ -436,3 +448,61 @@ async def wp_json_root():
             "help": [{"href": "https://developer.wordpress.org/rest-api/"}]
         },
     }
+
+
+# Additional WooCommerce endpoints that Kargonomi may need
+
+@router.get("/wp-json/wc/v3/settings")
+async def wc_settings(request: Request, auth: bool = Depends(verify_wc_auth)):
+    """WooCommerce settings endpoint"""
+    return [
+        {"id": "general", "label": "General", "description": ""},
+        {"id": "products", "label": "Products", "description": ""},
+        {"id": "shipping", "label": "Shipping", "description": ""},
+    ]
+
+
+@router.get("/wp-json/wc/v3/settings/general")
+async def wc_settings_general(request: Request, auth: bool = Depends(verify_wc_auth)):
+    """WooCommerce general settings"""
+    return [
+        {"id": "woocommerce_currency", "value": "TRY", "label": "Currency"},
+        {"id": "woocommerce_store_address", "value": "ALEMDAR MAH. HACI TAHSINBEY SK. NO:5 D:7 FATIH/ISTANBUL"},
+        {"id": "woocommerce_store_city", "value": "Istanbul"},
+        {"id": "woocommerce_default_country", "value": "TR"},
+        {"id": "woocommerce_store_postcode", "value": "34110"},
+    ]
+
+
+@router.get("/wp-json/wc/v3/products")
+async def wc_products(request: Request, auth: bool = Depends(verify_wc_auth)):
+    """WooCommerce products list"""
+    products = await db.products.find({}, {"_id": 0}).to_list(100)
+    wc_products = []
+    for i, p in enumerate(products):
+        wc_products.append({
+            "id": i + 1,
+            "name": p.get("name", ""),
+            "slug": p.get("name", "").lower().replace(" ", "-"),
+            "type": "simple",
+            "status": "publish",
+            "sku": p.get("id", ""),
+            "price": str(p.get("prices", {}).get("TR", 0)),
+            "regular_price": str(p.get("prices", {}).get("TR", 0)),
+            "stock_quantity": p.get("stock", 100),
+            "weight": "0.5",
+            "dimensions": {"length": "10", "width": "10", "height": "5"},
+        })
+    return wc_products
+
+
+@router.get("/wp-json/wc/v3/shipping/zones")
+async def wc_shipping_zones(request: Request, auth: bool = Depends(verify_wc_auth)):
+    """WooCommerce shipping zones"""
+    return [{"id": 0, "name": "Everywhere", "order": 0}]
+
+
+@router.get("/wp-json/wc/v3/data/countries")
+async def wc_countries(request: Request, auth: bool = Depends(verify_wc_auth)):
+    """WooCommerce countries data"""
+    return [{"code": "TR", "name": "Turkey", "states": []}]

@@ -508,12 +508,19 @@ async def wc_settings_general(request: Request, auth: bool = Depends(verify_wc_a
 async def wc_products(request: Request, auth: bool = Depends(verify_wc_auth)):
     """WooCommerce products list"""
     params = request.query_params
-    include = params.get("include[0]") or params.get("include")
 
-    query = {}
-    products = await db.products.find(query, {"_id": 0}).to_list(100)
+    # Handle include parameter (Kargonomi sends include[0]=ID)
+    include_ids = []
+    for key, val in params.items():
+        if key.startswith("include"):
+            try:
+                include_ids.append(int(val))
+            except (ValueError, TypeError):
+                pass
+
+    products = await db.products.find({}, {"_id": 0}).to_list(100)
     wc_products = []
-    for i, p in enumerate(products):
+    for p in products:
         product_id = abs(hash(p.get("id", ""))) % 100000
         wc_products.append({
             "id": product_id,
@@ -536,6 +543,18 @@ async def wc_products(request: Request, auth: bool = Depends(verify_wc_auth)):
             "categories": [{"id": 1, "name": "Zikirmatik", "slug": "zikirmatik"}],
             "images": [{"id": 1, "src": img} for img in p.get("images", [])[:1]],
         })
+
+    # If include filter, return matching or all if not found
+    if include_ids:
+        filtered = [p for p in wc_products if p["id"] in include_ids]
+        if filtered:
+            return filtered
+        # If not found by hash ID, return first product as fallback
+        # (Kargonomi needs at least one product for weight/dimensions)
+        if wc_products:
+            wc_products[0]["id"] = include_ids[0]
+            return [wc_products[0]]
+
     return wc_products
 
 

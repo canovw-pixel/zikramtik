@@ -7,6 +7,12 @@ const ProductGrid = ({ selectedCountry, products, categories }) => {
     return products.filter(p => p.category === categoryId && !p.featured);
   };
 
+  // Products without a category
+  const uncategorizedProducts = products.filter(p => (!p.category || p.category === "") && !p.featured);
+
+  // All non-featured products for "no products" check
+  const allNonFeatured = products.filter(p => !p.featured);
+
   return (
     <section id="products" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,8 +58,19 @@ const ProductGrid = ({ selectedCountry, products, categories }) => {
             </div>
           );
         })}
+
+        {/* Uncategorized Products */}
+        {uncategorizedProducts.length > 0 && (
+          <div className="mb-20 last:mb-0">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {uncategorizedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} selectedCountry={selectedCountry} />
+              ))}
+            </div>
+          </div>
+        )}
         
-        {products.filter(p => !p.featured).length === 0 && (
+        {allNonFeatured.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-500">Henüz ürün bulunmamaktadır.</p>
           </div>

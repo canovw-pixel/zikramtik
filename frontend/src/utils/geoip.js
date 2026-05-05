@@ -14,23 +14,27 @@ export const detectCountryByIP = async () => {
       }
     }
 
-    const response = await fetch('http://ip-api.com/json/?fields=countryCode');
+    const response = await fetch('https://ipapi.co/json/');
     if (!response.ok) throw new Error('IP API failed');
     
     const data = await response.json();
-    const countryCode = data.countryCode;
+    const countryCode = data.country_code || data.country;
 
     const detected = countries.find(c => c.code === countryCode);
-    const result = detected || countries.find(c => c.code === 'US');
+    const result = detected || countries.find(c => c.code === 'TR');
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      code: result.code,
-      timestamp: Date.now(),
-    }));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        code: result.code,
+        timestamp: Date.now(),
+      }));
+    } catch (e) {
+      // localStorage may not be available in some contexts
+    }
 
     return result;
   } catch (error) {
     console.warn('Country detection failed, defaulting to TR:', error);
-    return countries.find(c => c.code === 'TR');
+    return countries.find(c => c.code === 'TR') || countries[0];
   }
 };

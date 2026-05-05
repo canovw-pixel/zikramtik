@@ -7,8 +7,9 @@ const ProductGrid = ({ selectedCountry, products, categories }) => {
     return products.filter(p => p.category === categoryId && !p.featured);
   };
 
-  // Products without a category
-  const uncategorizedProducts = products.filter(p => (!p.category || p.category === "") && !p.featured);
+  // Products without a category or with unmatched category
+  const categoryIds = categories.map(c => c.id);
+  const uncategorizedProducts = products.filter(p => (!p.category || p.category === "" || !categoryIds.includes(p.category)) && !p.featured);
 
   // All non-featured products for "no products" check
   const allNonFeatured = products.filter(p => !p.featured);

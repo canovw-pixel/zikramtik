@@ -67,9 +67,23 @@ const Cart = () => {
                     <div className="flex-1 min-w-0">
                       <h3 className="font-bold text-gray-900 mb-1 truncate">{item.name}</h3>
                       <p className="text-sm text-gray-600 mb-2">{item.category}</p>
-                      <p className="text-lg font-bold text-burgundy-700">
-                        {formatPrice(item.price, item.symbol)}
-                      </p>
+                      {item.discount_percent > 0 && item.original_price ? (
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                          <span className="text-sm line-through text-gray-400">
+                            {formatPrice(item.original_price, item.symbol)}
+                          </span>
+                          <span className="text-lg font-bold text-red-600">
+                            {formatPrice(item.price, item.symbol)}
+                          </span>
+                          <span className="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-bold rounded-full">
+                            %{Math.round(item.discount_percent)}
+                          </span>
+                        </div>
+                      ) : (
+                        <p className="text-lg font-bold text-burgundy-700">
+                          {formatPrice(item.price, item.symbol)}
+                        </p>
+                      )}
                     </div>
                     <div className="flex items-center space-x-3">
                       <button

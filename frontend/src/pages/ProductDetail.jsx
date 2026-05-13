@@ -8,7 +8,7 @@ import { ShoppingCart, Heart, ChevronLeft, ChevronRight, Star } from 'lucide-rea
 import { Button } from '../components/ui/button';
 import { useCart } from '../context/CartContext';
 import { toast } from '../hooks/use-toast';
-import { formatPrice } from '../utils/format';
+import { formatPrice, getProductPricing } from '../utils/format';
 import { detectCountryByIP } from '../utils/geoip';
 import ProductReviews from '../components/ProductReviews';
 
@@ -44,9 +44,11 @@ const ProductDetail = () => {
 
   const getPrice = () => {
     if (!product) return 0;
-    const countryPrice = product.prices?.[selectedCountry.code];
-    return countryPrice?.price || 0;
+    const pricing = getProductPricing(product, selectedCountry.code);
+    return pricing.final;
   };
+
+  const pricing = product ? getProductPricing(product, selectedCountry.code) : { base: 0, final: 0, discount: 0, hasDiscount: false };
 
   const formatPriceLocal = (price) => {
     return formatPrice(price, selectedCountry.symbol);
@@ -195,12 +197,31 @@ const ProductDetail = () => {
 
             {/* Price */}
             <div className="border-t border-b border-gray-200 py-6">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between flex-wrap gap-4">
                 <div>
                   <p className="text-sm text-gray-500 mb-1">Fiyat</p>
-                  <p className="text-4xl font-bold text-burgundy-700">
-                    {formatPriceLocal(getPrice())}
-                  </p>
+                  {pricing.hasDiscount ? (
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl line-through text-gray-400" data-testid="detail-old-price">
+                          {formatPriceLocal(pricing.base)}
+                        </span>
+                        <span className="px-3 py-1 bg-red-600 text-white text-sm font-bold rounded-full" data-testid="detail-discount-badge">
+                          %{Math.round(pricing.discount)} İNDİRİM
+                        </span>
+                      </div>
+                      <p className="text-4xl font-bold text-red-600" data-testid="detail-new-price">
+                        {formatPriceLocal(pricing.final)}
+                      </p>
+                      <p className="text-sm text-green-700 font-medium">
+                        {formatPriceLocal(pricing.base - pricing.final)} kazanıyorsunuz
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-4xl font-bold text-burgundy-700">
+                      {formatPriceLocal(pricing.base)}
+                    </p>
+                  )}
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-gray-500">{selectedCountry.flag} {selectedCountry.name}</p>

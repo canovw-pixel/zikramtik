@@ -1,16 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Star, ShoppingBag } from 'lucide-react';
-import { formatPrice } from '../utils/format';
+import { formatPrice, getProductPricing } from '../utils/format';
 
 const FeaturedProducts = ({ selectedCountry, products }) => {
   const navigate = useNavigate();
   const featuredProducts = products.filter(p => p.featured);
-
-  const getPrice = (product) => {
-    const countryPrice = product.prices?.[selectedCountry.code];
-    return countryPrice?.price || 0;
-  };
 
   if (featuredProducts.length === 0) {
     return null;
@@ -36,54 +31,73 @@ const FeaturedProducts = ({ selectedCountry, products }) => {
 
         {/* Featured Products Grid */}
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-          {featuredProducts.map((product) => (
-            <div
-              key={product.id}
-              onClick={() => navigate(`/product/${product.id}`)}
-              className="group relative bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer"
-            >
-              {/* Featured Badge */}
-              <div className="absolute top-6 left-6 z-10">
-                <span className="px-4 py-2 bg-burgundy-700 text-white text-sm font-semibold rounded-full shadow-lg flex items-center space-x-1">
-                  <Star className="w-4 h-4 fill-white" />
-                  <span>Öne Çıkan</span>
-                </span>
-              </div>
+          {featuredProducts.map((product) => {
+            const pricing = getProductPricing(product, selectedCountry.code);
+            return (
+              <div
+                key={product.id}
+                onClick={() => navigate(`/product/${product.id}`)}
+                className="group relative bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer"
+              >
+                {/* Featured Badge */}
+                <div className="absolute top-6 left-6 z-10 flex flex-col gap-2 items-start">
+                  <span className="px-4 py-2 bg-burgundy-700 text-white text-sm font-semibold rounded-full shadow-lg flex items-center space-x-1">
+                    <Star className="w-4 h-4 fill-white" />
+                    <span>Öne Çıkan</span>
+                  </span>
+                  {pricing.hasDiscount && (
+                    <span className="px-4 py-2 bg-red-600 text-white text-sm font-bold rounded-full shadow-lg">
+                      %{Math.round(pricing.discount)} İNDİRİM
+                    </span>
+                  )}
+                </div>
 
-              {/* Product Image */}
-              <div className="relative h-96 overflow-hidden bg-gradient-to-br from-burgundy-50 to-gold-50">
-                <img
-                  src={product.images?.[0] || 'https://via.placeholder.com/400'}
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              </div>
+                {/* Product Image */}
+                <div className="relative h-96 overflow-hidden bg-gradient-to-br from-burgundy-50 to-gold-50">
+                  <img
+                    src={product.images?.[0] || 'https://via.placeholder.com/400'}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </div>
 
-              {/* Product Info */}
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-burgundy-700 transition-colors" style={{ fontFamily: "'Source Serif 4', serif" }}>
-                  {product.name}
-                </h3>
-                <p className="text-gray-600 mb-6 leading-relaxed product-description">
-                  {product.description}
-                </p>
+                {/* Product Info */}
+                <div className="p-8">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-burgundy-700 transition-colors" style={{ fontFamily: "'Source Serif 4', serif" }}>
+                    {product.name}
+                  </h3>
+                  <p className="text-gray-600 mb-6 leading-relaxed product-description">
+                    {product.description}
+                  </p>
 
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-500 mb-1">Fiyat</p>
-                    <p className="text-3xl font-bold text-burgundy-700">
-                      {formatPrice(getPrice(product), selectedCountry.symbol)}
-                    </p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-500 mb-1">Fiyat</p>
+                      {pricing.hasDiscount ? (
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                          <span className="text-lg line-through text-gray-400">
+                            {formatPrice(pricing.base, selectedCountry.symbol)}
+                          </span>
+                          <span className="text-3xl font-bold text-red-600">
+                            {formatPrice(pricing.final, selectedCountry.symbol)}
+                          </span>
+                        </div>
+                      ) : (
+                        <p className="text-3xl font-bold text-burgundy-700">
+                          {formatPrice(pricing.base, selectedCountry.symbol)}
+                        </p>
+                      )}
+                    </div>
+                    <button className="px-6 py-3 bg-burgundy-700 text-white rounded-xl font-semibold hover:bg-burgundy-800 transition-all shadow-lg hover:shadow-xl flex items-center space-x-2">
+                      <ShoppingBag className="w-5 h-5" />
+                      <span>Sepete Ekle</span>
+                    </button>
                   </div>
-                  <button className="px-6 py-3 bg-burgundy-700 text-white rounded-xl font-semibold hover:bg-burgundy-800 transition-all shadow-lg hover:shadow-xl flex items-center space-x-2">
-                    <ShoppingBag className="w-5 h-5" />
-                    <span>Sepete Ekle</span>
-                  </button>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

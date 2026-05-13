@@ -18,6 +18,7 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
     images: [],
     in_stock: true,
     featured: false,
+    discount_percent: 0,
   });
   
   const [uploadedImages, setUploadedImages] = useState([]);
@@ -36,6 +37,7 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
         images: product.images || [],
         in_stock: product.in_stock ?? true,
         featured: product.featured ?? false,
+        discount_percent: product.discount_percent ?? 0,
       });
       setPrices(product.prices || {});
       setUploadedImages(product.images || []);
@@ -107,6 +109,7 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
         category_name: category?.name || '',
         images: uploadedImages,
         prices: prices,
+        discount_percent: Math.max(0, Math.min(100, parseFloat(formData.discount_percent) || 0)),
         featured: formData.featured,
         in_stock: formData.in_stock,
       };
@@ -297,7 +300,39 @@ const ProductModal = ({ isOpen, onClose, product, categories, onSuccess }) => {
           {/* Pricing */}
           <div className="space-y-4 border-t pt-6">
             <h3 className="text-lg font-semibold text-gray-900">Ülke Bazlı Fiyatlandırma</h3>
-            
+
+            {/* Discount */}
+            <div className="bg-gradient-to-br from-burgundy-50 to-red-50 border border-burgundy-200 rounded-xl p-4">
+              <label className="block text-sm font-semibold text-burgundy-800 mb-2 flex items-center gap-2">
+                <span>🏷️</span>
+                <span>İndirim Yüzdesi (Tüm ülkelere uygulanır)</span>
+              </label>
+              <div className="flex items-center gap-3">
+                <div className="relative flex-1 max-w-[200px]">
+                  <Input
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={formData.discount_percent}
+                    onChange={(e) => setFormData({ ...formData, discount_percent: e.target.value })}
+                    placeholder="0"
+                    data-testid="product-discount-input"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">%</span>
+                </div>
+                {Number(formData.discount_percent) > 0 && (
+                  <div className="text-sm text-burgundy-700 font-medium">
+                    Örn: 100 ₺ → <span className="line-through text-gray-400">100,00</span>{' '}
+                    <span className="font-bold">{(100 * (1 - Math.min(100, Math.max(0, Number(formData.discount_percent))) / 100)).toFixed(2)} ₺</span>
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-burgundy-700/70 mt-2">
+                0 girerseniz indirim uygulanmaz. Üzeri çizili fiyat ve yeni fiyat müşteriye gösterilir.
+              </p>
+            </div>
+
             <div className="grid md:grid-cols-3 gap-4">
               {countries.slice(0, 12).map(country => (
                 <div key={country.code} className="border rounded-lg p-3">

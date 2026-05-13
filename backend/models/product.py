@@ -17,6 +17,7 @@ class Product(BaseModel):
     category_name: str
     images: List[str] = []
     prices: Dict[str, CountryPrice] = {}  # {"US": {price: 1299, currency: "USD", symbol: "$"}}
+    discount_percent: float = 0.0  # 0-100, indirim yuzdesi
     featured: bool = False
     in_stock: bool = True
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -30,6 +31,7 @@ class ProductCreate(BaseModel):
     category_name: str
     images: List[str] = []
     prices: Dict[str, CountryPrice] = {}
+    discount_percent: float = 0.0
     featured: bool = False
     in_stock: bool = True
 
@@ -41,6 +43,7 @@ class ProductUpdate(BaseModel):
     category_name: Optional[str] = None
     images: Optional[List[str]] = None
     prices: Optional[Dict[str, CountryPrice]] = None
+    discount_percent: Optional[float] = None
     featured: Optional[bool] = None
     in_stock: Optional[bool] = None
 

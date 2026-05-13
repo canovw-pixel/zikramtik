@@ -44,8 +44,10 @@ export const CartProvider = ({ children }) => {
             : item
         );
       } else {
-        // Add new item
-        const price = product.prices?.[country.code]?.price || 0;
+        // Add new item — use discounted price if product has discount_percent
+        const basePrice = product.prices?.[country.code]?.price || 0;
+        const discount = Math.max(0, Math.min(100, Number(product.discount_percent) || 0));
+        const finalPrice = Math.round(basePrice * (1 - discount / 100) * 100) / 100;
         return [...prevItems, {
           id: product.id,
           name: product.name,
@@ -53,7 +55,9 @@ export const CartProvider = ({ children }) => {
           description: product.description,
           image: product.images?.[0] || '',
           category: product.category_name,
-          price: price,
+          price: finalPrice,
+          original_price: basePrice,
+          discount_percent: discount,
           quantity: quantity,
           currency: country.currency,
           symbol: country.symbol,

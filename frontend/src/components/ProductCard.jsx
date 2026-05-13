@@ -1,15 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Heart } from 'lucide-react';
-import { formatPrice } from '../utils/format';
+import { formatPrice, getProductPricing } from '../utils/format';
 
 const ProductCard = ({ product, selectedCountry }) => {
   const navigate = useNavigate();
-  
-  const getPrice = (product) => {
-    const countryPrice = product.prices?.[selectedCountry.code];
-    return countryPrice?.price || 0;
-  };
+
+  const pricing = getProductPricing(product, selectedCountry.code);
 
   const handleProductClick = () => {
     navigate(`/product/${product.id}`);
@@ -19,7 +16,18 @@ const ProductCard = ({ product, selectedCountry }) => {
     <div 
       className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 cursor-pointer"
       onClick={handleProductClick}
+      data-testid={`product-card-${product.id}`}
     >
+      {/* Discount Badge */}
+      {pricing.hasDiscount && (
+        <div className="absolute top-4 left-4 z-10">
+          <span className="px-3 py-1.5 bg-red-600 text-white text-xs font-bold rounded-full shadow-lg flex items-center gap-1" data-testid={`discount-badge-${product.id}`}>
+            <span>%{Math.round(pricing.discount)}</span>
+            <span>İNDİRİM</span>
+          </span>
+        </div>
+      )}
+
       {/* Favorite Button */}
       <button className="absolute top-4 right-4 z-10 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-md hover:bg-burgundy-700 hover:text-white transition-all">
         <Heart className="w-5 h-5" />
@@ -61,9 +69,20 @@ const ProductCard = ({ product, selectedCountry }) => {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs text-gray-500 mb-1">Fiyat</p>
-            <p className="text-2xl font-bold text-burgundy-700">
-              {formatPrice(getPrice(product), selectedCountry.symbol)}
-            </p>
+            {pricing.hasDiscount ? (
+              <div className="flex items-baseline gap-2 flex-wrap">
+                <span className="text-sm line-through text-gray-400" data-testid={`old-price-${product.id}`}>
+                  {formatPrice(pricing.base, selectedCountry.symbol)}
+                </span>
+                <span className="text-2xl font-bold text-red-600" data-testid={`new-price-${product.id}`}>
+                  {formatPrice(pricing.final, selectedCountry.symbol)}
+                </span>
+              </div>
+            ) : (
+              <p className="text-2xl font-bold text-burgundy-700">
+                {formatPrice(pricing.base, selectedCountry.symbol)}
+              </p>
+            )}
           </div>
           
           <button className="p-3 bg-burgundy-700 text-white rounded-xl hover:bg-burgundy-800 transition-all shadow-md hover:shadow-lg">

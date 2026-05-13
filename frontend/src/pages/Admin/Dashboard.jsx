@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productsAPI, categoriesAPI, ordersAPI } from '../../services/api';
 import { Button } from '../../components/ui/button';
-import { Star, Plus, Edit, Trash2, LogOut, Package, ShoppingCart, Truck, Eye, X, Search, ExternalLink, Printer, Ticket } from 'lucide-react';
+import { Star, Plus, Edit, Trash2, LogOut, Package, ShoppingCart, Truck, Eye, X, Search, ExternalLink, Printer, Ticket, MessageSquare } from 'lucide-react';
 import { toast } from '../../hooks/use-toast';
 import ProductModal from '../../components/ProductModal';
 import ConfirmDialog from '../../components/ConfirmDialog';
 import CouponsTab from '../../components/CouponsTab';
+import ReviewsTab from '../../components/ReviewsTab';
 import { getCargoTrackingUrl, CARGO_COMPANIES } from '../../utils/cargo';
 import ShippingLabel from '../../components/ShippingLabel';
 import { formatPrice } from '../../utils/format';
@@ -224,6 +225,13 @@ const AdminDashboard = () => {
             data-testid="tab-coupons"
           >
             <Ticket className="w-4 h-4" /><span>Kuponlar</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('reviews')}
+            className={`flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-md text-sm font-medium transition-colors ${activeTab === 'reviews' ? 'bg-burgundy-700 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+            data-testid="tab-reviews"
+          >
+            <MessageSquare className="w-4 h-4" /><span>Yorumlar</span>
           </button>
         </div>
       </div>
@@ -486,6 +494,7 @@ const AdminDashboard = () => {
         )}
 
         {activeTab === 'coupons' && <CouponsTab />}
+        {activeTab === 'reviews' && <ReviewsTab />}
       </main>
 
       {/* Shipping Modal */}

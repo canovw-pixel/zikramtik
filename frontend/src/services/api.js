@@ -67,6 +67,16 @@ export const couponsAPI = {
   delete: (id) => api.delete(`/coupons/${id}`),
 };
 
+// Reviews API
+export const reviewsAPI = {
+  getProductReviews: (productId) => api.get(`/reviews/product/${productId}`),
+  create: (data) => api.post('/reviews', data),
+  // admin
+  getAll: (params) => api.get('/reviews', { params }),
+  setApproval: (id, approved) => api.put(`/reviews/${id}/approve`, null, { params: { approved } }),
+  delete: (id) => api.delete(`/reviews/${id}`),
+};
+
 // Upload API
 export const uploadAPI = {
   uploadImages: async (files) => {

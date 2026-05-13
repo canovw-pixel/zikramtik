@@ -16,6 +16,7 @@ import PaymentFail from './pages/PaymentFail';
 import AdminLogin from './pages/Admin/Login';
 import AdminDashboard from './pages/Admin/Dashboard';
 import { Toaster } from './components/ui/toaster';
+import WhatsAppFloat from './components/WhatsAppFloat';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Routes>
+          <WhatsAppFloat />
         </BrowserRouter>
         <Toaster />
       </CartProvider>

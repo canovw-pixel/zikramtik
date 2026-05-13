@@ -20,6 +20,10 @@ E-commerce website for "zikirmatik" product (Brand: Craponia Atelier, Model: Zik
 - [x] Yengec e-Fatura/e-Arsiv entegrasyonu - BASARILI (2026-04-29)
 - [x] Nginx proxy: /wp-json/, /wc-auth/, /wp-admin/, /api/
 - [x] Backend systemd service (zikra-backend)
+- [x] SMTP DNS fix - mail.zikramatik.com A record added via cPanel (2026-05-13)
+- [x] SMTP fallback - uses direct IP 45.84.189.83 if hostname DNS fails (email.py auto-detects)
+- [x] Order cancellation flow with PayTR refund + cancellation email
+- [x] **Kupon / Indirim Kodu Sistemi (2026-05-13)** - percent/fixed types, min_order_amount, max_discount cap, usage_limit, valid_until, active flag, used_count auto-increment. Admin CRUD UI at /admin (Kuponlar tab). Checkout integration with apply/remove + discount display. 20/20 backend pytest passing.
 
 ## Key Technical Achievement
 - Reverse-engineered Yengec WordPress plugin (from SVN repo)
@@ -27,8 +31,12 @@ E-commerce website for "zikirmatik" product (Brand: Craponia Atelier, Model: Zik
 - Implemented full WooCommerce v2+v3 API compatibility for non-WordPress site
 
 ## Pending
+- [ ] P1: Dusuk Stok Uyarilari (admin email + low stock filtre)
+- [ ] P1: SEO Optimizasyonu (meta tags, sitemap.xml, Open Graph, JSON-LD)
+- [ ] P1: Kargonomi Bearer Token (webhook icin, WhatsApp destekten alinacak)
 - [ ] P2: ShipEntegra API entegrasyonu (yurt disi kargo)
 - [ ] P2: Admin panelde fatura goruntuleme
+- [ ] P2: Yengec manuel API key girisi (destekle iletisim)
 
 ## Key Credentials
 - GIB Portal: 24205166 / 664499

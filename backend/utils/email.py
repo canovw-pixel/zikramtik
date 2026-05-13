@@ -30,6 +30,10 @@ def _send_email(to_email: str, subject: str, html_body: str):
 
     try:
         context = ssl.create_default_context()
+        # When connecting via IP (not hostname), SSL cert hostname won't match
+        if SMTP_HOST.replace(".", "").isdigit():
+            context.check_hostname = False
+            context.verify_mode = ssl.CERT_NONE
         with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, context=context, timeout=15) as server:
             server.login(SMTP_USER, SMTP_PASSWORD)
             server.sendmail(SMTP_FROM, to_email, msg.as_string())

@@ -58,6 +58,15 @@ export const paymentAPI = {
   convertToTL: (amount, currency) => api.get(`/payment/convert-to-tl`, { params: { amount, currency } }),
 };
 
+// Coupons API
+export const couponsAPI = {
+  validate: (data) => api.post('/coupons/validate', data),
+  getAll: () => api.get('/coupons'),
+  create: (data) => api.post('/coupons', data),
+  update: (id, data) => api.put(`/coupons/${id}`, data),
+  delete: (id) => api.delete(`/coupons/${id}`),
+};
+
 // Upload API
 export const uploadAPI = {
   uploadImages: async (files) => {

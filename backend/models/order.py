@@ -37,6 +37,9 @@ class Order(BaseModel):
     shipping_address: Address
     billing_address: Address
     customer_email: Optional[str] = None
+    subtotal_amount: float = 0.0
+    discount_amount: float = 0.0
+    coupon_code: Optional[str] = None
     total_amount: float
     currency: str
     status: str = "pending"
@@ -54,6 +57,7 @@ class OrderCreate(BaseModel):
     shipping_address: Address
     billing_address: Address
     customer_email: Optional[str] = None
+    coupon_code: Optional[str] = None
 
 class OrderStatusUpdate(BaseModel):
     status: str

@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
 import { useCart } from '../context/CartContext';
-import { ordersAPI, paymentAPI } from '../services/api';
+import { ordersAPI, paymentAPI, couponsAPI } from '../services/api';
 import { countries } from '../data/mock';
 import { toast } from '../hooks/use-toast';
 import { formatPrice } from '../utils/format';
@@ -21,6 +21,9 @@ const Checkout = () => {
   const [iframeUrl, setIframeUrl] = useState('');
   const [currentOrderId, setCurrentOrderId] = useState('');
   const [tlEquivalent, setTlEquivalent] = useState(null);
+  const [couponCode, setCouponCode] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState(null); // {code, discount_amount, discount_type, discount_value}
+  const [couponLoading, setCouponLoading] = useState(false);
   const iframeRef = useRef(null);
 
   useEffect(() => {
@@ -37,7 +40,52 @@ const Checkout = () => {
     phone: '',
   });
 
-  const totalAmount = getCartTotal();
+  const subtotal = getCartTotal();
+  const discountAmount = appliedCoupon?.discount_amount || 0;
+  const totalAmount = Math.max(0, subtotal - discountAmount);
+
+  // Re-validate coupon when subtotal changes (cart updates)
+  useEffect(() => {
+    if (appliedCoupon && subtotal > 0) {
+      const currency = cartItems[0]?.currency || 'TRY';
+      couponsAPI.validate({ code: appliedCoupon.code, subtotal, currency })
+        .then(r => setAppliedCoupon(r.data))
+        .catch(() => {
+          setAppliedCoupon(null);
+          toast({ title: 'Bilgi', description: 'Sepet degisti, kupon kaldirildi' });
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subtotal]);
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) {
+      toast({ title: 'Hata', description: 'Kupon kodu girin', variant: 'destructive' });
+      return;
+    }
+    setCouponLoading(true);
+    try {
+      const currency = cartItems[0]?.currency || 'TRY';
+      const resp = await couponsAPI.validate({
+        code: couponCode.trim(),
+        subtotal,
+        currency,
+      });
+      setAppliedCoupon(resp.data);
+      toast({ title: 'Basarili', description: `Kupon uygulandi: -${resp.data.discount_amount.toFixed(2)} ${currency}` });
+    } catch (error) {
+      const msg = error.response?.data?.detail || 'Kupon uygulanamadi';
+      toast({ title: 'Hata', description: msg, variant: 'destructive' });
+      setAppliedCoupon(null);
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode('');
+  };
 
   // Fetch TL equivalent when currency is not TRY
   useEffect(() => {
@@ -105,6 +153,7 @@ const Checkout = () => {
         shipping_address: { ...form },
         billing_address: { ...form },
         customer_email: customerEmail,
+        coupon_code: appliedCoupon?.code || null,
       };
 
       const orderResponse = await ordersAPI.create(orderData);
@@ -321,12 +370,61 @@ const Checkout = () => {
                 <div className="border-t pt-4 space-y-3">
                   <div className="flex justify-between text-gray-600">
                     <span>{`Ara Toplam (${getCartCount()} \u00FCr\u00FCn)`}</span>
-                    <span>{formatPrice(totalAmount, cartItems[0]?.symbol)}</span>
+                    <span>{formatPrice(subtotal, cartItems[0]?.symbol)}</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Kargo</span>
                     <span className="text-green-600">{"\u00DCcretsiz"}</span>
                   </div>
+
+                  {/* Coupon Section */}
+                  {!appliedCoupon ? (
+                    <div className="pt-2" data-testid="coupon-input-section">
+                      <label className="block text-xs font-medium text-gray-600 mb-1">{"Kupon Kodu"}</label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponCode}
+                          onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                          placeholder="KUPON"
+                          className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-burgundy-500 focus:border-transparent outline-none uppercase"
+                          data-testid="coupon-input"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleApplyCoupon}
+                          disabled={couponLoading || !couponCode.trim()}
+                          className="px-4 py-2 text-sm bg-burgundy-700 hover:bg-burgundy-800 text-white rounded-lg disabled:opacity-50 transition-colors"
+                          data-testid="apply-coupon-btn"
+                        >
+                          {couponLoading ? '...' : 'Uygula'}
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between items-center bg-green-50 border border-green-200 rounded-lg p-2" data-testid="applied-coupon">
+                      <div className="text-sm">
+                        <p className="font-bold text-green-700">{appliedCoupon.code}</p>
+                        <p className="text-xs text-green-600">{"\u0130ndirim uyguland\u0131"}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleRemoveCoupon}
+                        className="text-xs text-red-600 hover:text-red-700 underline"
+                        data-testid="remove-coupon-btn"
+                      >
+                        {"Kald\u0131r"}
+                      </button>
+                    </div>
+                  )}
+
+                  {appliedCoupon && (
+                    <div className="flex justify-between text-green-700" data-testid="discount-line">
+                      <span>{`\u0130ndirim (${appliedCoupon.code})`}</span>
+                      <span>-{formatPrice(appliedCoupon.discount_amount, cartItems[0]?.symbol)}</span>
+                    </div>
+                  )}
+
                   <div className="border-t pt-3 flex justify-between text-lg font-bold text-gray-900">
                     <span>Toplam</span>
                     <span className="text-burgundy-700" data-testid="checkout-total">

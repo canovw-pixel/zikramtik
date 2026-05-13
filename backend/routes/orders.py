@@ -15,7 +15,27 @@ router = APIRouter(prefix="/orders", tags=["Orders"])
 @router.post("", response_model=dict)
 async def create_order(order_data: OrderCreate):
     """Create a new order"""
-    total_amount = sum(item.price * item.quantity for item in order_data.products)
+    subtotal = sum(item.price * item.quantity for item in order_data.products)
+    discount_amount = 0.0
+    applied_code = None
+
+    # Apply coupon if provided
+    if order_data.coupon_code:
+        from routes.coupons import _validate_coupon_doc, _calculate_discount
+        try:
+            coupon = await _validate_coupon_doc(order_data.coupon_code, subtotal)
+            discount_amount = _calculate_discount(coupon, subtotal)
+            applied_code = coupon["code"]
+            # increment used_count
+            await db.coupons.update_one(
+                {"id": coupon["id"]},
+                {"$inc": {"used_count": 1}}
+            )
+        except HTTPException:
+            # re-raise to inform user that coupon was invalid at order time
+            raise
+
+    total_amount = round(subtotal - discount_amount, 2)
 
     order = Order(
         products=order_data.products,
@@ -23,6 +43,9 @@ async def create_order(order_data: OrderCreate):
         shipping_address=order_data.shipping_address,
         billing_address=order_data.billing_address,
         customer_email=order_data.customer_email,
+        subtotal_amount=round(subtotal, 2),
+        discount_amount=round(discount_amount, 2),
+        coupon_code=applied_code,
         total_amount=total_amount,
         currency=order_data.country.currency,
         status="pending",

@@ -78,6 +78,15 @@ const OrderConfirmation = () => {
                   </span>
                 </div>
 
+                {order.coupon_code && order.discount_amount > 0 && (
+                  <div className="flex justify-between items-center text-green-700" data-testid="order-discount-info">
+                    <span className="text-sm">{`Uygulanan Kupon (${order.coupon_code})`}</span>
+                    <span className="text-sm font-medium">
+                      -{formatPrice(order.discount_amount, order.currency + ' ')}
+                    </span>
+                  </div>
+                )}
+
                 {order.products && order.products.length > 0 && (
                   <div className="border-t pt-4">
                     <p className="text-sm font-medium text-gray-700 mb-3">Urunler</p>
